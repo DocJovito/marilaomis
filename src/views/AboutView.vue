@@ -18,7 +18,7 @@ function updateValue(inputValue) {
 }
 
 function tryevent() {
-  console.log("Hello world");
+  value2.value++;
 }
 
 

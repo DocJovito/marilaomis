@@ -1,0 +1,34 @@
+{
+    "residents": [
+        {
+            "residentid": 1,
+            "precinctid": 101,
+            "lastname": "Doe",
+            "firstname": "John",
+            "middlename": "Smith",
+            "addressline1": "123 Main St",
+            "baranggay": "Barangay A",
+            "bday": "1990-01-01"
+        },
+        {
+            "residentid": 2,
+            "precinctid": 102,
+            "lastname": "Smith",
+            "firstname": "Jane",
+            "middlename": "Doe",
+            "addressline1": "456 Elm St",
+            "baranggay": "Barangay B",
+            "bday": "1985-05-15"
+        },
+        {
+            "residentid": 3,
+            "precinctid": 103,
+            "lastname": "Johnson",
+            "firstname": "Robert",
+            "middlename": "Johnson",
+            "addressline1": "789 Oak St",
+            "baranggay": "Barangay C",
+            "bday": "1978-11-30"
+        }
+    ]
+}

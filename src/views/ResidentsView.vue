@@ -33,49 +33,21 @@
   </table>
 </template>
 
+
 <script setup>
-const residents = [
-  {
-    residentid: 1,
-    precinctid: 101,
-    lastname: 'Doe',
-    firstname: 'John',
-    middlename: 'Smith',
-    addressline1: '123 Main St',
-    baranggay: 'Barangay A',
-    bday: '1990-01-01'
-  },
-  {
-    residentid: 2,
-    precinctid: 102,
-    lastname: 'Smith',
-    firstname: 'Jane',
-    middlename: 'Doe',
-    addressline1: '456 Elm St',
-    baranggay: 'Barangay B',
-    bday: '1985-05-15'
-  },
-  {
-    residentid: 3,
-    precinctid: 103,
-    lastname: 'Johnson',
-    firstname: 'Robert',
-    middlename: 'Johnson',
-    addressline1: '789 Oak St',
-    baranggay: 'Barangay C',
-    bday: '1978-11-30'
-  }
-];
+import { ref, onMounted } from 'vue';
 
-// const data = ref(null)
+const residents = ref([]);
 
-// fetch('...')
-//   .then((res) => res.json())
-//   .then((json) => (data.value = json))
-//   .catch((err) => (console.log(err.message)))
-
-
+//select
 const selectResident = (resident) => {
   console.log(resident);
 };
+
+onMounted(() => {
+  fetch('http://localhost:3000/residents')
+    .then((res) => res.json())
+    .then((json) => (residents.value = json))
+    .catch((err) => (console.log(err.message)))
+});
 </script>
