@@ -52,6 +52,7 @@
 
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+import axios from 'axios';
 
 const residents = ref([]);
 const pageSize = 5;
@@ -69,11 +70,24 @@ const selectResident = (resident) => {
   console.log(resident);
 };
 
+// onMounted(() => {
+//   fetch('http://localhost:3000/residents')
+//     // fetch('http://localhost:8080/marilaomis/backend/personapi.php?action=get_all')
+//     .then((res) => res.json())
+//     .then((json) => (residents.value = json))
+//     .catch((err) => console.log(err.message));
+// });
+
+
 onMounted(() => {
-  fetch('http://localhost:3000/residents')
-    .then((res) => res.json())
-    .then((json) => (residents.value = json))
-    .catch((err) => console.log(err.message));
+  // axios.get('http://localhost:3000/residents')
+  axios.get('http://localhost:8080/marilaomis/backend/personapi.php?action=get_all')
+    .then((response) => {
+      residents.value = response.data; // Assuming your data is in response.data
+    })
+    .catch((error) => {
+      console.error('Error fetching data:', error);
+    });
 });
 </script>
 
