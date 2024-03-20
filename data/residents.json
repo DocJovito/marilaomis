@@ -29,6 +29,176 @@
             "addressline1": "789 Oak St",
             "baranggay": "Barangay C",
             "bday": "1978-11-30"
+        },
+        {
+            "residentid": 4,
+            "precinctid": 104,
+            "lastname": "Garcia",
+            "firstname": "Maria",
+            "middlename": "Garcia",
+            "addressline1": "321 Pine St",
+            "baranggay": "Barangay D",
+            "bday": "1982-03-20"
+        },
+        {
+            "residentid": 5,
+            "precinctid": 105,
+            "lastname": "Martinez",
+            "firstname": "Carlos",
+            "middlename": "Martinez",
+            "addressline1": "654 Maple St",
+            "baranggay": "Barangay E",
+            "bday": "1995-07-10"
+        },
+        {
+            "residentid": 6,
+            "precinctid": 106,
+            "lastname": "Brown",
+            "firstname": "Emily",
+            "middlename": "Brown",
+            "addressline1": "987 Birch St",
+            "baranggay": "Barangay F",
+            "bday": "1989-04-25"
+        },
+        {
+            "residentid": 7,
+            "precinctid": 107,
+            "lastname": "Anderson",
+            "firstname": "David",
+            "middlename": "Anderson",
+            "addressline1": "741 Cedar St",
+            "baranggay": "Barangay G",
+            "bday": "1975-09-05"
+        },
+        {
+            "residentid": 8,
+            "precinctid": 108,
+            "lastname": "Taylor",
+            "firstname": "Jessica",
+            "middlename": "Taylor",
+            "addressline1": "852 Walnut St",
+            "baranggay": "Barangay H",
+            "bday": "1987-12-12"
+        },
+        {
+            "residentid": 9,
+            "precinctid": 109,
+            "lastname": "Hernandez",
+            "firstname": "Juan",
+            "middlename": "Hernandez",
+            "addressline1": "369 Cherry St",
+            "baranggay": "Barangay I",
+            "bday": "1972-06-18"
+        },
+        {
+            "residentid": 10,
+            "precinctid": 110,
+            "lastname": "Lopez",
+            "firstname": "Samantha",
+            "middlename": "Lopez",
+            "addressline1": "147 Peach St",
+            "baranggay": "Barangay J",
+            "bday": "1980-02-28"
+        },
+        {
+            "residentid": 11,
+            "precinctid": 111,
+            "lastname": "Gonzalez",
+            "firstname": "Miguel",
+            "middlename": "Gonzalez",
+            "addressline1": "258 Plum St",
+            "baranggay": "Barangay K",
+            "bday": "1992-08-08"
+        },
+        {
+            "residentid": 12,
+            "precinctid": 112,
+            "lastname": "Rodriguez",
+            "firstname": "Amanda",
+            "middlename": "Rodriguez",
+            "addressline1": "963 Grape St",
+            "baranggay": "Barangay L",
+            "bday": "1984-10-14"
+        },
+        {
+            "residentid": 13,
+            "precinctid": 113,
+            "lastname": "Wilson",
+            "firstname": "Michael",
+            "middlename": "Wilson",
+            "addressline1": "531 Lemon St",
+            "baranggay": "Barangay M",
+            "bday": "1977-03-03"
+        },
+        {
+            "residentid": 14,
+            "precinctid": 114,
+            "lastname": "Martinez",
+            "firstname": "Michelle",
+            "middlename": "Martinez",
+            "addressline1": "852 Lime St",
+            "baranggay": "Barangay N",
+            "bday": "1983-09-23"
+        },
+        {
+            "residentid": 15,
+            "precinctid": 115,
+            "lastname": "Hernandez",
+            "firstname": "Daniel",
+            "middlename": "Hernandez",
+            "addressline1": "369 Avocado St",
+            "baranggay": "Barangay O",
+            "bday": "1979-04-05"
+        },
+        {
+            "residentid": 16,
+            "precinctid": 116,
+            "lastname": "Garcia",
+            "firstname": "Vanessa",
+            "middlename": "Garcia",
+            "addressline1": "741 Olive St",
+            "baranggay": "Barangay P",
+            "bday": "1993-11-15"
+        },
+        {
+            "residentid": 17,
+            "precinctid": 117,
+            "lastname": "Brown",
+            "firstname": "William",
+            "middlename": "Brown",
+            "addressline1": "852 Papaya St",
+            "baranggay": "Barangay Q",
+            "bday": "1974-12-25"
+        },
+        {
+            "residentid": 18,
+            "precinctid": 118,
+            "lastname": "Taylor",
+            "firstname": "Lauren",
+            "middlename": "Taylor",
+            "addressline1": "963 Banana St",
+            "baranggay": "Barangay R",
+            "bday": "1981-06-30"
+        },
+        {
+            "residentid": 19,
+            "precinctid": 119,
+            "lastname": "Gonzalez",
+            "firstname": "Pedro",
+            "middlename": "Gonzalez",
+            "addressline1": "147 Mango St",
+            "baranggay": "Barangay S",
+            "bday": "1976-02-14"
+        },
+        {
+            "residentid": 20,
+            "precinctid": 120,
+            "lastname": "Rodriguez",
+            "firstname": "Rachel",
+            "middlename": "Rodriguez",
+            "addressline1": "258 Coconut St",
+            "baranggay": "Barangay T",
+            "bday": "1991-07-20"
         }
     ]
 }
