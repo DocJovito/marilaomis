@@ -1,5 +1,6 @@
 <template>
-    <div>
+    <div class="container mt-4">
+        <RouterLink to="/residents/create" class="btn btn-success ">Add Resident</RouterLink>
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -27,8 +28,9 @@
                     <td>{{ resident.baranggay }}</td>
                     <td>{{ resident.bday }}</td>
                     <td>
-                        <button @click="selectResident(resident)">Select</button>
-                        <RouterLink to="/" class="btn btn-success ">Add </RouterLink>
+                        <!-- <button @click="selectResident(resident)">Select</button> -->
+                        <RouterLink :to="'/residents/' + resident.residentid + '/edit'" class="btn btn-success"> Edit
+                        </RouterLink>
                         <RouterLink to="/" class="btn btn-danger ">Delete </RouterLink>
                     </td>
                 </tr>

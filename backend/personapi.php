@@ -52,6 +52,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (PDOException $e) {
             echo json_encode(array("error" => "Error creating record: " . $e->getMessage()));
         }
+    } elseif ($data['action'] === 'update') {
+        try {
+            $id = $data['id'];
+            $residentid = $data['residentid'];
+            $precinctid = $data['precinctid'];
+            $lastname = $data['lastname'];
+            $firstname = $data['firstname'];
+            $middlename = $data['middlename'];
+            $addressline1 = $data['addressline1'];
+            $baranggay = $data['baranggay'];
+            $bday = $data['bday'];
+
+            $stmt = $conn->prepare("UPDATE tblperson SET residentid=?, precinctid=?, lastname=?, firstname=?, middlename=?, addressline1=?, baranggay=?, bday=? WHERE id=?");
+            $stmt->execute([$residentid, $precinctid, $lastname, $firstname, $middlename, $addressline1, $baranggay, $bday, $id]);
+
+            echo json_encode(array("message" => "Record updated successfully"));
+        } catch (PDOException $e) {
+            echo json_encode(array("error" => "Error updating record: " . $e->getMessage()));
+        }
     } else {
         echo json_encode(array("error" => "Invalid action"));
     }
@@ -59,3 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 // Close database connection
 $conn = null;
+
+
+
+//https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_id&id=3

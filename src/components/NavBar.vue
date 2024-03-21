@@ -21,10 +21,7 @@ import { RouterLink } from 'vue-router'
               <RouterLink class="nav-link" active-class="active-link" to="/about">About</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" active-class="active-link" to="/residents">Residents</RouterLink>
-            </li>
-            <li class="nav-item">
-              <RouterLink class="nav-link" active-class="active-link" to="/resident">Resident</RouterLink>
+              <RouterLink class="nav-link" active-class="active-link" to="/residents/view">Residents</RouterLink>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"

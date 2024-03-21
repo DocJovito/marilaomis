@@ -87,9 +87,8 @@ const saveRecord = () => {
     axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', newRecord)
         .then(response => {
             console.log('Record saved successfully:', response.data);
-            console.log(newRecord);
-            console.log(response.data);
-            // Optionally, you can close the modal or show a success message here
+            // console.log(newRecord);
+            // console.log(response.data);
             closeModal();
         })
         .catch(error => {
@@ -98,8 +97,11 @@ const saveRecord = () => {
 };
 
 const closeModal = () => {
-    // Function to close the modal
-    // You can implement this based on your modal library or framework
+    const modal = document.getElementById('exampleModal');
+    if (modal) {
+        const bsModal = new bootstrap.Modal(modal);
+        bsModal.hide();
+    }
 };
 </script>
 
