@@ -1,9 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import TestComp from '@/components/TestComp.vue';
-
 const inputValue = ref('');
-
 </script>
 
 

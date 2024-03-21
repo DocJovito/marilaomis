@@ -5,6 +5,8 @@ include 'connection.php';
 
 //header for allowing cors 
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Headers: Content-Type");
 
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Retrieve all records
@@ -40,9 +42,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $stmt = $conn->prepare("INSERT INTO tblperson (residentid, precinctid, lastname, firstname, middlename, addressline1, baranggay, bday) 
                                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
         $stmt->execute([$residentid, $precinctid, $lastname, $firstname, $middlename, $addressline1, $baranggay, $bday]);
+
         echo "Record created successfully";
     }
 }
+
+
+
 
 // Add update and delete operations as needed
 

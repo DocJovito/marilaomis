@@ -39,6 +39,8 @@
             <p>No resident selected.</p>
         </div>
     </div>
+
+
 </template>
 
 <script setup>
