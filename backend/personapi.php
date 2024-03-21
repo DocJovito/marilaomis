@@ -1,13 +1,13 @@
 <?php
 include 'connection.php';
 
-// header('Content-Type: application/json');
-
-//header for allowing cors 
+// Set headers for allowing CORS and specifying JSON content type
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
+header('Content-Type: application/json');
 
+// Handle GET requests
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Retrieve all records
     if ($_GET['action'] === 'get_all') {
@@ -27,29 +27,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 }
 
+// Handle POST requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Parse incoming JSON data
+    $data = json_decode(file_get_contents("php://input"), true);
+
     // Create a new record
-    if ($_POST['action'] === 'create') {
-        $residentid = $_POST['residentid'];
-        $precinctid = $_POST['precinctid'];
-        $lastname = $_POST['lastname'];
-        $firstname = $_POST['firstname'];
-        $middlename = $_POST['middlename'];
-        $addressline1 = $_POST['addressline1'];
-        $baranggay = $_POST['baranggay'];
-        $bday = $_POST['bday'];
+    if ($data['action'] === 'create') {
+        try {
+            $residentid = $data['residentid'];
+            $precinctid = $data['precinctid'];
+            $lastname = $data['lastname'];
+            $firstname = $data['firstname'];
+            $middlename = $data['middlename'];
+            $addressline1 = $data['addressline1'];
+            $baranggay = $data['baranggay'];
+            $bday = $data['bday'];
 
-        $stmt = $conn->prepare("INSERT INTO tblperson (residentid, precinctid, lastname, firstname, middlename, addressline1, baranggay, bday) 
-                                VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$residentid, $precinctid, $lastname, $firstname, $middlename, $addressline1, $baranggay, $bday]);
+            $stmt = $conn->prepare("INSERT INTO tblperson (residentid, precinctid, lastname, firstname, middlename, addressline1, baranggay, bday) 
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$residentid, $precinctid, $lastname, $firstname, $middlename, $addressline1, $baranggay, $bday]);
 
-        echo "Record created successfully";
+            echo json_encode(array("message" => "Record created successfully"));
+        } catch (PDOException $e) {
+            echo json_encode(array("error" => "Error creating record: " . $e->getMessage()));
+        }
+    } else {
+        echo json_encode(array("error" => "Invalid action"));
     }
 }
 
-
-
-
-// Add update and delete operations as needed
-
-$conn = null; // Close database connection
+// Close database connection
+$conn = null;

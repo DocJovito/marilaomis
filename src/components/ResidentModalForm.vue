@@ -88,6 +88,7 @@ const saveRecord = () => {
         .then(response => {
             console.log('Record saved successfully:', response.data);
             console.log(newRecord);
+            console.log(response.data);
             // Optionally, you can close the modal or show a success message here
             closeModal();
         })
