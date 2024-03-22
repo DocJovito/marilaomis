@@ -29,9 +29,9 @@
                     <td>{{ resident.bday }}</td>
                     <td>
                         <!-- <button @click="selectResident(resident)">Select</button> -->
-                        <RouterLink :to="'/residents/' + resident.residentid + '/edit'" class="btn btn-success"> Edit
+                        <RouterLink :to="'/residents/' + resident.id + '/edit'" class="btn btn-success"> Edit
                         </RouterLink>
-                        <RouterLink to="/" class="btn btn-danger ">Delete </RouterLink>
+                        <RouterLink to="/" class="btn btn-danger" @:click="deleterec(resident.id)">Delete </RouterLink>
                     </td>
                 </tr>
             </tbody>
@@ -59,6 +59,9 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
+
+const targetid = ref('');
+const targetRecord = ref('');
 
 const residents = ref([]);
 const pageSize = 5;
@@ -93,6 +96,26 @@ onMounted(() => {
             console.error('Error fetching data:', error);
         });
 });
+
+//delete
+function deleterec(targetid) {
+    if (confirm("Are you sure you want to delete this data?")) {
+        const targetRecord = {
+            action: 'delete',
+            id: targetid
+        };
+        axios.delete(`https://rjprint10.com/marilaomis/backend/personapi.php`, { data: targetRecord })
+            .then(response => {
+                console.log('Record Delete Successfully:', response.data);
+                alert("Record Deleted");
+
+            })
+            .catch(error => {
+                console.error('Error deleting record:', error);
+            });
+    }
+}
+
 </script>
 
 <style>

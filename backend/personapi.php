@@ -3,7 +3,7 @@ include 'connection.php';
 
 // Set headers for allowing CORS and specifying JSON content type
 header("Access-Control-Allow-Origin: *");
-header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE");
 header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
 
@@ -73,6 +73,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else {
         echo json_encode(array("error" => "Invalid action"));
+    }
+}
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+    $data = json_decode(file_get_contents("php://input"), true);
+
+    // Delete a record by ID
+    if ($data['action'] === 'delete' && isset($data['id'])) {
+        try {
+            $id = $data['id'];
+            $stmt = $conn->prepare("DELETE FROM tblperson WHERE id = ?");
+            $stmt->execute([$id]);
+
+            echo json_encode(array("message" => "Record deleted successfully"));
+        } catch (PDOException $e) {
+            echo json_encode(array("error" => "Error deleting record: " . $e->getMessage()));
+        }
+    } else {
+        echo json_encode(array("error" => "Invalid action or missing ID"));
     }
 }
 
