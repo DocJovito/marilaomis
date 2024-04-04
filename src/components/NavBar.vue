@@ -23,6 +23,10 @@ import { RouterLink } from 'vue-router'
             <li class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/residents/view">Residents</RouterLink>
             </li>
+            <li class="nav-item">
+              <RouterLink class="nav-link" active-class="active-link" to="/
+              /scanner">Scanner</RouterLink>
+            </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
