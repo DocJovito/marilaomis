@@ -6,11 +6,14 @@
         <input type="text" id="inputValue" v-model="inputValue" />
         <button @click="generateQR">Generate QR</button>
 
-        <div v-if="qrCodeData">
+        <div v-if="qrCodeData" class="mt-4">
             <qrcode-vue :value="qrCodeData" :size="150" :bg-color="'#ffffff'" />
         </div>
 
         <button @click="openCamera">Open Camera</button>
+
+        <label>Scanned output</label>
+        <input type="text" v-model="scannedOutput" />
     </div>
 </template>
 
@@ -21,6 +24,7 @@ import jsQR from 'jsqr';
 
 const inputValue = ref('');
 const qrCodeData = ref('');
+const scannedOutput = ref('');
 
 const generateQR = () => {
     if (inputValue.value.trim() !== '') {
@@ -34,32 +38,30 @@ const openCamera = async () => {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         const video = document.createElement('video');
+        document.body.appendChild(video);
         video.srcObject = stream;
-        video.setAttribute('playsinline', 'true');
-        video.play();
+        await video.play();
 
         const canvas = document.createElement('canvas');
-        const ctx = canvas.getContext('2d');
+        const context = canvas.getContext('2d');
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
 
-        const scanQRCode = () => {
-            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-            const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-            const code = jsQR(imageData.data, imageData.width, imageData.height);
+        const scanQR = () => {
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const imageData = context.getImageData(0, 0, canvas.width, canvas.height);
+            const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                inversionAttempts: 'dontInvert',
+            });
+
             if (code) {
-                qrCodeData.value = code.data;
-                stream.getTracks().forEach((track) => track.stop());
-                video.remove();
-                canvas.remove();
-            } else {
-                requestAnimationFrame(scanQRCode);
+                scannedOutput.value = code.data;
             }
+
+            requestAnimationFrame(scanQR);
         };
 
-        video.addEventListener('loadedmetadata', scanQRCode);
-        document.body.appendChild(video);
-        document.body.appendChild(canvas);
+        scanQR();
     } catch (error) {
         console.error('Error accessing camera:', error);
     }
