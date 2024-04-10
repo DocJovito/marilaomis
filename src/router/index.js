@@ -1,13 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import ResidentsView from "@/views/ResidentsView.vue";
-import ResidentView from "@/views/ResidentView.vue";
 import AboutView from "@/views/AboutView.vue";
 
 //from crud
 import View from "@/views/residents/View.vue";
 import Create from "@/views/residents/Create.vue";
 import Edit from "@/views/residents/Edit.vue";
+import IdCard from "@/views/residents/IdCard.vue";
+
+//scanner
+import ScannerView from "@/views/ScannerView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -36,6 +38,16 @@ const router = createRouter({
       path: "/residents/:id/edit",
       name: "edit",
       component: Edit,
+    },
+    {
+      path: "/residents/:id/idcard",
+      name: "idcard",
+      component: IdCard,
+    },
+    {
+      path: "/scanner",
+      name: "scanner",
+      component: ScannerView,
     },
   ],
 });

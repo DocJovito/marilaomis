@@ -12,9 +12,8 @@ const inputValue = ref('');
     <p>Parent to Child</p>
     <input v-model="inputValue">
     <TestComp :value="inputValue" />
-
-    <hr>
-    <QrScanner />
+    <!-- <hr>
+    <QrScanner /> -->
 
 
   </main>

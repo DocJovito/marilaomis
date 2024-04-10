@@ -5,8 +5,10 @@ import { RouterLink } from 'vue-router'
 
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <nav class="navbar navbar-expand-lg bg-greenish">
       <div class="container-fluid">
+        <!-- <img src="../assets/images/greenmarilao.png" alt="MIS" width="30" height="24"> -->
+        <img src="../assets/images/greenmarilao.png" alt="MIS" width="75" class="mx-2">
         <a class="navbar-brand" href="#">Marilao MIS</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
           aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -24,8 +26,7 @@ import { RouterLink } from 'vue-router'
               <RouterLink class="nav-link" active-class="active-link" to="/residents/view">Residents</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" active-class="active-link" to="/
-              /scanner">Scanner</RouterLink>
+              <RouterLink class="nav-link" active-class="active-link" to="/scanner">Scanner</RouterLink>
             </li>
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
@@ -47,6 +48,11 @@ import { RouterLink } from 'vue-router'
 
 
 <style scoped>
+.bg-greenish {
+  background-color: #8dc63f;
+  /* Adjust this color as needed */
+}
+
 .active-link {
   font-weight: bold;
 }

@@ -31,6 +31,8 @@
                         <!-- <button @click="selectResident(resident)">Select</button> -->
                         <RouterLink :to="'/residents/' + resident.id + '/edit'" class="btn btn-success"> Edit
                         </RouterLink>
+                        <RouterLink :to="'/residents/' + resident.id + '/idcard'" class="btn btn-primary"> Print
+                        </RouterLink>
                         <RouterLink to="/" class="btn btn-danger" @:click="deleterec(resident.id)">Delete </RouterLink>
                     </td>
                 </tr>

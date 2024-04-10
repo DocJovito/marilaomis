@@ -1,16 +1,6 @@
 <template>
     <div class="container">
         <h1>Scanner Module</h1>
-
-        <label for="inputValue">Enter value:</label>
-        <input type="text" id="inputValue" v-model="inputValue" />
-        <button @click="generateQR">Generate QR</button>
-
-        <div v-if="qrCodeData" class="mt-4">
-            <qrcode-vue :value="qrCodeData" :size="250" :bg-color="'#ffffff'" />
-        </div>
-        <br>
-
         <button @click="toggleCamera">{{ cameraActive ? 'Close Camera' : 'Open Camera' }}</button>
         <button @click="switchCameraSource">Switch Camera Source</button>
 
