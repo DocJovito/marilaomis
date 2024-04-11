@@ -1,6 +1,7 @@
 <template>
     <div class="container mt-4">
         <RouterLink to="/residents/create" class="btn btn-success ">Add Resident</RouterLink>
+
         <table class="table table-hover">
             <thead>
                 <tr>
@@ -53,7 +54,11 @@
                 </li>
             </ul>
         </nav>
+
+        <button class="btn btn-success" @click="exportexcel">Export to Excel</button>
+        <button class="btn btn-danger" @click="readexcel">Import From Excel</button>
     </div>
+
 
 
 </template>
@@ -61,9 +66,12 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 
 const targetid = ref('');
 const targetRecord = ref('');
+const exportrecords = ref([]);
 
 const residents = ref([]);
 const pageSize = 5;
@@ -117,6 +125,59 @@ function deleterec(targetid) {
             });
     }
 }
+
+
+function exportexcel() {
+    const data = residents.value.map(resident => ({
+        'Resident ID': resident.residentid,
+        'Precinct ID': resident.precinctid,
+        'Last Name': resident.lastname,
+        'First Name': resident.firstname,
+        'Middle Name': resident.middlename,
+        'Address': resident.addressline1,
+        'Barangay': resident.baranggay,
+        'Birthday': resident.bday
+    }));
+
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Residents');
+
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+    function s2ab(s) {
+        const buf = new ArrayBuffer(s.length);
+        const view = new Uint8Array(buf);
+        for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+        return buf;
+    }
+
+    saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'residents.xlsx');
+}
+
+
+function readexcel() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.xlsx, .xls';
+    input.addEventListener('change', handleFile);
+    input.click();
+}
+
+function handleFile(event) {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        console.log('Excel data:', excelData);
+    };
+    reader.readAsArrayBuffer(file);
+}
+
 
 </script>
 

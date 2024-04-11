@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-4">
+    <div id="printable-container" class="container mt-4">
 
         <div class="row">
             <div class="card"
@@ -111,6 +111,16 @@ onMounted(() => {
 function printID() {
     window.print();
 }
+
+// function printID() {
+//     const printableContainer = document.getElementById('printable-container');
+//     const originalContents = document.body.innerHTML;
+//     const printContents = printableContainer.innerHTML;
+
+//     document.body.innerHTML = printContents;
+//     window.print();
+//     document.body.innerHTML = originalContents;
+// }
 
 </script>
 
