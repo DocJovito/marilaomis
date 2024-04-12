@@ -2,43 +2,46 @@
     <div class="container mt-4">
         <RouterLink to="/residents/create" class="btn btn-success ">Add Resident</RouterLink>
 
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Resident ID</th>
-                    <th scope="col">Precinct ID</th>
-                    <th scope="col">Last Name</th>
-                    <th scope="col">First Name</th>
-                    <th scope="col">Middle Name</th>
-                    <th scope="col">Address</th>
-                    <th scope="col">Barangay</th>
-                    <th scope="col">Birthday</th>
-                    <th scope="col">Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(resident, index) in paginatedResidents" :key="resident.residentid">
-                    <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
-                    <td>{{ resident.residentid }}</td>
-                    <td>{{ resident.precinctid }}</td>
-                    <td>{{ resident.lastname }}</td>
-                    <td>{{ resident.firstname }}</td>
-                    <td>{{ resident.middlename }}</td>
-                    <td>{{ resident.addressline1 }}</td>
-                    <td>{{ resident.baranggay }}</td>
-                    <td>{{ resident.bday }}</td>
-                    <td>
-                        <!-- <button @click="selectResident(resident)">Select</button> -->
-                        <RouterLink :to="'/residents/' + resident.id + '/edit'" class="btn btn-success"> Edit
-                        </RouterLink>
-                        <RouterLink :to="'/residents/' + resident.id + '/idcard'" class="btn btn-primary"> Print
-                        </RouterLink>
-                        <RouterLink to="/" class="btn btn-danger" @:click="deleterec(resident.id)">Delete </RouterLink>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <div class="table-responsive">
+            <table class="table table-hover ">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Resident ID</th>
+                        <th scope="col">Precinct ID</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Middle Name</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Barangay</th>
+                        <th scope="col">Birthday</th>
+                        <th scope="col">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(resident, index) in paginatedResidents" :key="resident.residentid">
+                        <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
+                        <td>{{ resident.residentid }}</td>
+                        <td>{{ resident.precinctid }}</td>
+                        <td>{{ resident.lastname }}</td>
+                        <td>{{ resident.firstname }}</td>
+                        <td>{{ resident.middlename }}</td>
+                        <td>{{ resident.addressline1 }}</td>
+                        <td>{{ resident.baranggay }}</td>
+                        <td>{{ resident.bday }}</td>
+                        <td>
+                            <!-- <button @click="selectResident(resident)">Select</button> -->
+                            <RouterLink :to="'/residents/' + resident.id + '/edit'" class="btn btn-success"> Edit
+                            </RouterLink>
+                            <RouterLink :to="'/residents/' + resident.id + '/idcard'" class="btn btn-primary"> Print
+                            </RouterLink>
+                            <RouterLink to="/" class="btn btn-danger" @:click="deleterec(resident.id)">Delete
+                            </RouterLink>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
 
         <nav aria-label="Pagination" class="d-flex justify-content-center">
             <ul class="pagination">
