@@ -1,15 +1,5 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import AboutView from "@/views/AboutView.vue";
-
-//from crud
-import View from "@/views/residents/View.vue";
-import Create from "@/views/residents/Create.vue";
-import Edit from "@/views/residents/Edit.vue";
-import IdCard from "@/views/residents/IdCard.vue";
-
-//scanner
-import ScannerView from "@/views/ScannerView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,32 +12,32 @@ const router = createRouter({
     {
       path: "/about",
       name: "about",
-      component: AboutView,
+      component: () => import("@/views/AboutView.vue"),
     },
     {
       path: "/residents/view",
       name: "view",
-      component: View,
+      component: () => import("@/views/residents/View.vue"),
     },
     {
       path: "/residents/create",
       name: "create",
-      component: Create,
+      component: () => import("@/views/residents/Create.vue"),
     },
     {
       path: "/residents/:id/edit",
       name: "edit",
-      component: Edit,
+      component: () => import("@/views/residents/Edit.vue"),
     },
     {
       path: "/residents/:id/idcard",
       name: "idcard",
-      component: IdCard,
+      component: () => import("@/views/residents/IdCard.vue"),
     },
     {
       path: "/scanner",
       name: "scanner",
-      component: ScannerView,
+      component: () => import("@/views/ScannerView.vue"),
     },
   ],
 });
