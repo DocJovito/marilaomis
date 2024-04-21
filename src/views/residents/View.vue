@@ -1,6 +1,6 @@
 <template>
     <div class="container mt-4">
-        <h4>Resident Management</h4>
+        <p>Resident Management</p>
         <RouterLink to="/residents/create" class="btn btn-success ">Add Resident</RouterLink>
 
         <div class="table-responsive">

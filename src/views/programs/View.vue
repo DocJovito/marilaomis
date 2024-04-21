@@ -2,13 +2,14 @@
     <div class="container mt-4">
         <h4>Program Management</h4>
         <!-- <RouterLink to="/users/create" class="btn btn-success ">Add User</RouterLink> -->
+        <RouterLink to="/" class="btn btn-success ">Create Program</RouterLink>
 
         <div class="table-responsive">
             <table class="table table-hover ">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">id</th>
+                        <th scope="col">programid</th>
                         <th scope="col">programname</th>
                         <th scope="col">description</th>
                         <th scope="col">barangayscope</th>
@@ -16,16 +17,16 @@
                         <th scope="col">isactive</th>
                         <th scope="col">createdby</th>
                         <th scope="col">createdat</th>
-                        <th scope="col">isdeleted</th>
+                        <!-- <th scope="col">isdeleted</th> -->
                         <th scope="col">actions</th>
 
 
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(program, index) in paginatedPrograms" :key="program.id">
+                    <tr v-for="(program, index) in paginatedPrograms" :key="program.programid">
                         <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
-                        <td>{{ program.id }}</td>
+                        <td>{{ program.programid }}</td>
                         <td>{{ program.programname }}</td>
                         <td>{{ program.description }}</td>
                         <td>{{ program.barangayscope }}</td>
@@ -33,11 +34,19 @@
                         <td>{{ program.isactive }}</td>
                         <td>{{ program.createdby }}</td>
                         <td>{{ program.createdat }}</td>
-                        <td>{{ program.isdeleted }}</td>
+                        <!-- <td>{{ program.isdeleted }}</td> -->
 
 
                         <td>
-                            <RouterLink to="/" class="btn btn-success"> Edit
+                            <RouterLink :to="'/programs/' + program.programid + '/' + program.programname + '/Scanner'"
+                                class="btn btn-success">Open
+                                Scanner
+                            </RouterLink> <br>
+                            <RouterLink :to="'/programs/' + program.programid + '/Scanner'" class="btn btn-warning">
+                                Scanned
+                                List
+                            </RouterLink><br>
+                            <RouterLink to="/" class="btn btn-primary"> Edit
                             </RouterLink>
                             <RouterLink to="/" class="btn btn-danger" @:click="deleterec(user.userid)">Delete
                             </RouterLink>
