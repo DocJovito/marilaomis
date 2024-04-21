@@ -39,6 +39,16 @@ const router = createRouter({
       name: "scanner",
       component: () => import("@/views/ScannerView.vue"),
     },
+    {
+      path: "/users/view",
+      name: "userview",
+      component: () => import("@/views/users/View.vue"),
+    },
+    {
+      path: "/programs/view",
+      name: "programview",
+      component: () => import("@/views/programs/View.vue"),
+    },
   ],
 });
 

@@ -2,7 +2,9 @@
 import { ref } from 'vue';
 import TestComp from '@/components/TestComp.vue';
 import QrScanner from '@/components/QrScanner.vue';
+
 const inputValue = ref('');
+
 </script>
 
 
@@ -15,6 +17,7 @@ const inputValue = ref('');
     <!-- <hr>
     <QrScanner /> -->
 
+    <button @click="nextpage">load next page</button>
 
   </main>
 </template>
