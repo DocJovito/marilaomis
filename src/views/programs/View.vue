@@ -42,7 +42,9 @@
                                 class="btn btn-success">Open
                                 Scanner
                             </RouterLink> <br>
-                            <RouterLink :to="'/programs/' + program.programid + '/Scanner'" class="btn btn-warning">
+                            <RouterLink
+                                :to="'/programs/' + program.programid + '/' + program.programname + '/ScanReport'"
+                                class="btn btn-warning">
                                 Scanned
                                 List
                             </RouterLink><br>

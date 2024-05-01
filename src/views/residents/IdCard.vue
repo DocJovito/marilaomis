@@ -3,7 +3,7 @@
 
         <div class="row">
             <div class="card"
-                style="width:340px; height:204px; background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20210824/pngtree-yellow-green-background-stock-images-wallpaper-image_769660.jpg');">
+                style="width:408px; height:224px; background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20210824/pngtree-yellow-green-background-stock-images-wallpaper-image_769660.jpg');">
                 <div class="card-body">
                     <div class="row">
                         <!-- QR Code Section -->
@@ -11,7 +11,7 @@
                             <div id="qr">
                                 <img class="card-img-top" src="@/assets/images/greenmarilao.png" alt="MIS">
                                 <div v-if="residentID" class="mt-2">
-                                    <qrcode-vue :value="residentID" style="width: 90px; height: 90px;" />
+                                    <qrcode-vue :value="residentID" style="width: 120px; height: 120px;" />
                                 </div>
                             </div>
                         </div>
@@ -37,18 +37,19 @@
 
 
 
-            <div class="card" style="width:340px; height:204px;">
+            <div class="card" style="width:408px; height:224px;">
                 <!-- <img class="card-img-top" src="@/assets/images/greenmarilao.png" alt="MIS"> -->
                 <div class="card-body">
                     <h5 style="text-align: center;">ID Back</h5>
                     <ul>
-                        <li>Lorem ipsum, dolor sit amet consectetur adipisicing.</li>
-                        <li>Lorem ipsum, dolor sit amet consectetur adipisicing.</li>
-                        <li>Lorem ipsum, dolor sit amet consectetur adipisicing.</li>
-                        <li>Lorem ipsum, dolor sit amet consectetur adipisicing.</li>
-                        <li>Lorem ipsum, dolor sit amet consectetur adipisicing.</li>
-                        <li>Lorem ipsum, dolor sit amet consectetur adipisicing.</li>
-                        <li>Lorem ipsum, dolor sit amet consectetur adipisicing.</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
+                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
                     </ul>
                     <p style="text-align: center;" class="mt-4">Signature</p>
                 </div>

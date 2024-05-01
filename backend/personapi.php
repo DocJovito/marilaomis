@@ -25,6 +25,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         echo json_encode($row);
     }
+
+    // Retrieve a single record by ID
+    if ($_GET['action'] === 'get_by_rid' && isset($_GET['id'])) {
+        $id = $_GET['id'];
+        $stmt = $conn->prepare("SELECT * FROM tblperson WHERE residentid = ?");
+        $stmt->execute([$id]);
+        $row = $stmt->fetch(PDO::FETCH_ASSOC);
+        echo json_encode($row);
+    }
 }
 
 // Handle POST requests
