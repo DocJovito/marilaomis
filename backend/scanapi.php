@@ -43,12 +43,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             tblperson.lastname, tblperson.firstname, tblperson.addressline1
             FROM tblscan
             INNER JOIN tblperson ON tblscan.residentid = tblperson.residentid
-            WHERE (tblscan.residentid = ? OR tblperson.lastname LIKE ? OR tblscan.barangay = ?) AND tblscan.programid = ?;
+    WHERE (tblscan.residentid LIKE ? OR tblperson.lastname LIKE ?) and tblscan.barangay like ?
+      AND tblscan.programid = ?;
             ";
             $stmt = $conn->prepare($sql);
 
             // Bind parameters and execute the query
-            $stmt->execute([$residentid, "%{$lastname}%", $barangay, $programid]); // Corrected $programid
+            $stmt->execute([$residentid, "%{$lastname}%", "%{$barangay}%", $programid]); // Corrected $programid
 
             // Fetch and return the results as JSON
             $results = $stmt->fetchAll(PDO::FETCH_ASSOC);
