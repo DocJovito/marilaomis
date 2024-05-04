@@ -34,8 +34,7 @@
                         <!-- <td>{{ program.isdeleted }}</td> -->
                         <td>
                             <RouterLink :to="'/programs/' + program.programid + '/' + program.programname + '/Scanner'"
-                                class="btn btn-success">Open
-                                Scanner
+                                class="btn btn-success">Open Scanner
                             </RouterLink> <br>
                             <RouterLink
                                 :to="'/programs/' + program.programid + '/' + program.programname + '/ScanReport'"
