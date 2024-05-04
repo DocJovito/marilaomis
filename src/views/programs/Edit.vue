@@ -23,8 +23,9 @@
           </div>
           <div class="form-group">
             <label for="isActive">Is Active:</label><br>
-            <input type="checkbox" id="isActive" v-model="isActive">
-          </div>
+            <input type="checkbox" id="isActive" v-model="isActive" true-value="1" false-value="0">
+        </div>
+
           <!-- Add more form fields for other program details as needed -->
         </div>
       </div>
@@ -67,20 +68,21 @@
   
   const updateProgram = () => {
     const updatedProgram = {
+      action: 'update',
       id: id.value,
       programname: programName.value,
       description: description.value,
       barangayscope: barangayScope.value,
       eventDate: eventDate.value,
       isactive: isActive.value,
-      // Add other program details to be updated
+      id: id.value
     };
   
-    axios.put('https://rjprint10.com/marilaomis/backend/programapi.php', updatedProgram)
+    axios.post('https://rjprint10.com/marilaomis/backend/programapi.php', updatedProgram)
       .then(response => {
         console.log('Program updated successfully:', response.data);
         alert('Program updated successfully');
-        router.push('/programs'); // Redirect to programs list after successful update
+        router.push('/programs/view'); // Redirect to programs list after successful update
       })
       .catch(error => {
         console.error('Error updating program:', error);
