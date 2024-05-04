@@ -34,7 +34,7 @@
   <script setup>
   import { ref, onMounted } from 'vue';
   import axios from 'axios';
-  import { useRoute } from 'vue-router'
+  import { useRoute, useRouter } from 'vue-router'; // Import useRouter from Vue Router
   
   const id = ref('');
   const email = ref('');
@@ -46,6 +46,9 @@
   // Use route to get target id from params
   const route = useRoute();
   id.value = route.params.id;
+  
+  // Define router object
+  const router = useRouter();
   
   onMounted(() => {
     axios.get(`https://rjprint10.com/marilaomis/backend/userapi.php?action=get_by_id&id=` + id.value)
@@ -78,7 +81,7 @@
       .then(response => {
         console.log('User updated successfully:', response.data);
         
-        router.push('/users/view');
+        router.push('/users/view'); // Use router.push to navigate to the desired route
       })
       .catch(error => {
         console.error('Error updating user:', error);
@@ -89,4 +92,3 @@
   <style>
   /* Your CSS styles here */
   </style>
-  
