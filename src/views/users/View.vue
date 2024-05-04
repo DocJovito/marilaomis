@@ -1,7 +1,7 @@
 <template>
     <div class="container mt-4">
         <h4>User Management</h4>
-        <!-- <RouterLink to="/users/create" class="btn btn-success ">Add User</RouterLink> -->
+        <RouterLink to="/users/create" class="btn btn-success ">Add User</RouterLink>
 
         <div class="table-responsive">
             <table class="table table-hover ">
@@ -34,7 +34,7 @@
                         <!-- <td>{{ user.isdeleted }}</td> -->
                         <td>
                             <!-- <button @click="selectResident(resident)">Select</button> -->
-                            <RouterLink :to="'/users/' + users.userid + '/edit'" class="btn btn-success"> Edit
+                            <RouterLink :to="'/users/' + user.userid + '/edit'" class="btn btn-success"> Edit
                             </RouterLink>
                             <RouterLink to="/" class="btn btn-danger" @:click="deleterec(user.userid)">Delete
                             </RouterLink>
