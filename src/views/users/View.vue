@@ -1,10 +1,10 @@
 <template>
     <div class="container mt-4">
         <h4>User Management</h4>
-        <RouterLink to="/users/create" class="btn btn-success ">Add User</RouterLink>
+        <RouterLink to="/users/create" class="btn btn-success">Add User</RouterLink>
 
         <div class="table-responsive">
-            <table class="table table-hover ">
+            <table class="table table-hover">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
@@ -14,10 +14,7 @@
                         <th scope="col">usertype</th>
                         <th scope="col">name</th>
                         <th scope="col">address</th>
-                        <!-- <th scope="col">createdat</th> -->
-                        <!-- <th scope="col">isdeleted</th> -->
-
-
+                        <th scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -25,19 +22,13 @@
                         <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
                         <td>{{ user.userid }}</td>
                         <td>{{ user.email }}</td>
-                        <!-- <td>{{ user.password }}</td> -->
                         <td> ******** </td>
                         <td>{{ user.usertype }}</td>
                         <td>{{ user.name }}</td>
                         <td>{{ user.address }}</td>
-                        <!-- <td>{{ user.createdat }}</td> -->
-                        <!-- <td>{{ user.isdeleted }}</td> -->
                         <td>
-                            <!-- <button @click="selectResident(resident)">Select</button> -->
-                            <RouterLink :to="'/users/' + user.userid + '/edit'" class="btn btn-success"> Edit
-                            </RouterLink>
-                            <RouterLink to="/" class="btn btn-danger" @:click="deleterec(user.userid)">Delete
-                            </RouterLink>
+                            <RouterLink :to="'/users/' + user.userid + '/edit'" class="btn btn-success">Edit</RouterLink>
+                            <button class="btn btn-danger" @click="deleteUser(user.userid)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -59,12 +50,9 @@
             </ul>
         </nav>
 
-        <button class="btn btn-success" @click="exportexcel">Export to Excel</button>
-        <button class="btn btn-danger" @click="readexcel">Import From Excel</button>
+        <button class="btn btn-success" @click="exportExcel">Export to Excel</button>
+        <button class="btn btn-danger" @click="importExcel">Import From Excel</button>
     </div>
-
-
-
 </template>
 
 <script setup>
@@ -72,14 +60,12 @@ import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
-
-const targetid = ref('');
-const targetRecord = ref('');
-const exportrecords = ref([]);
+import { useRouter } from 'vue-router';
 
 const users = ref([]);
-const pageSize = 5;
 const currentPage = ref(1);
+const pageSize = 5;
+const router = useRouter();
 
 const paginatedUsers = computed(() => {
     const startIndex = (currentPage.value - 1) * pageSize;
@@ -98,61 +84,72 @@ onMounted(() => {
         });
 });
 
-//delete
+const deleteUser = (userId) => {
+    if (confirm("Are you sure you want to delete this user?")) {
+        const targetRecord = {
+            action: 'delete',
+            id: userId
+        };
+        axios.delete(`https://rjprint10.com/marilaomis/backend/userapi.php`, { data: targetRecord })
+            .then(() => {
+                users.value = users.value.filter(user => user.userid !== userId);
+                console.log('User deleted successfully');
+                alert("User Deleted");
+            })
+            .catch((error) => {
+                console.error('Error deleting user:', error);
+            });
+    }
+};
 
+const exportExcel = () => {
+    const data = users.value.map(user => ({
+        'User ID': user.userid,
+        'Email': user.email,
+        'Password': '********', // Masking the password
+        'User Type': user.usertype,
+        'Name': user.name,
+        'Address': user.address
+    }));
 
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Users');
 
-// function exportexcel() {
-//     const data = residents.value.map(resident => ({
-//         'Resident ID': resident.residentid,
-//         'Precinct ID': resident.precinctid,
-//         'Last Name': resident.lastname,
-//         'First Name': resident.firstname,
-//         'Middle Name': resident.middlename,
-//         'Address': resident.addressline1,
-//         'Barangay': resident.baranggay,
-//         'Birthday': resident.bday
-//     }));
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
 
-//     const ws = XLSX.utils.json_to_sheet(data);
-//     const wb = XLSX.utils.book_new();
-//     XLSX.utils.book_append_sheet(wb, ws, 'Residents');
+    function s2ab(s) {
+        const buf = new ArrayBuffer(s.length);
+        const view = new Uint8Array(buf);
+        for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+        return buf;
+    }
 
-//     const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+    saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'users.xlsx');
+};
 
-//     function s2ab(s) {
-//         const buf = new ArrayBuffer(s.length);
-//         const view = new Uint8Array(buf);
-//         for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
-//         return buf;
-//     }
+const importExcel = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.xlsx, .xls';
+    input.addEventListener('change', handleFile);
+    input.click();
+};
 
-//     saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'residents.xlsx');
-// }
-
-
-// function readexcel() {
-//     const input = document.createElement('input');
-//     input.type = 'file';
-//     input.accept = '.xlsx, .xls';
-//     input.addEventListener('change', handleFile);
-//     input.click();
-// }
-
-// function handleFile(event) {
-//     const file = event.target.files[0];
-//     const reader = new FileReader();
-//     reader.onload = (e) => {
-//         const data = new Uint8Array(e.target.result);
-//         const workbook = XLSX.read(data, { type: 'array' });
-//         const sheetName = workbook.SheetNames[0];
-//         const worksheet = workbook.Sheets[sheetName];
-//         const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-//         console.log('Excel data:', excelData);
-//     };
-//     reader.readAsArrayBuffer(file);
-// }
-
+const handleFile = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        console.log('Excel data:', excelData);
+        // Process the imported data as needed
+    };
+    reader.readAsArrayBuffer(file);
+};
 
 </script>
 
