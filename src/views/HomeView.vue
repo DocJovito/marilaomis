@@ -3,6 +3,8 @@ import { ref } from 'vue';
 import TestComp from '@/components/TestComp.vue';
 import QrScanner from '@/components/QrScanner.vue';
 
+
+
 const inputValue = ref('');
 
 </script>
@@ -10,14 +12,13 @@ const inputValue = ref('');
 
 <template>
   <main>
-    <h1>Hello World Home</h1>
-    <p>Parent to Child</p>
+    <h1>Home</h1>
+
+
+    <!-- <p>Parent to Child</p>
     <input v-model="inputValue">
     <TestComp :value="inputValue" />
-    <!-- <hr>
-    <QrScanner /> -->
-
-    <button @click="nextpage">load next page</button>
+    <button @click="nextpage">load next page</button> -->
 
   </main>
 </template>

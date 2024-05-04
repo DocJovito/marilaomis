@@ -28,13 +28,13 @@ import { RouterLink } from 'vue-router'
             <li class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/residents/view">Residents</RouterLink>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/scanner">Scanner</RouterLink>
-            </li>
+            </li> -->
             <li class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/programs/view">Programs</RouterLink>
             </li>
-            <li class="nav-item dropdown">
+            <!-- <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
                 aria-expanded="false">
                 Dropdown link
@@ -44,8 +44,19 @@ import { RouterLink } from 'vue-router'
                 <li><a class="dropdown-item" href="#">Another action</a></li>
                 <li><a class="dropdown-item" href="#">Something else here</a></li>
               </ul>
+            </li> -->
+
+          </ul>
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-item">
+              <RouterLink class="nav-link" active-class="active-link" to="/login">Log In</RouterLink>
+            </li>
+            <li class="nav-item">
+              <RouterLink class="nav-link" active-class="active-link" to="/login">Log Out</RouterLink>
             </li>
           </ul>
+
+
         </div>
       </div>
     </nav>

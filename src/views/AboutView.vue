@@ -26,11 +26,12 @@ function tryevent() {
 
 <template>
   <main>
-    <h1>Hello World About</h1>
+    <h1>About</h1>
+    <!-- <h1>Hello World About</h1>
     <p>Child to Parent</p>
     <p>{{ value }}</p>
     <p>{{ value2 }}</p>
     <TestComp2 @change-value="updateValue" />
-    <TestComp3 @some-event="addev" @event-without-param="tryevent" />
+    <TestComp3 @some-event="addev" @event-without-param="tryevent" /> -->
   </main>
 </template>
