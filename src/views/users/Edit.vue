@@ -70,7 +70,8 @@
       password: password.value,
       usertype: usertype.value,
       name: name.value,
-      address: address.value
+      address: address.value,
+      id: id.value
     };
   
     axios.post('https://rjprint10.com/marilaomis/backend/userapi.php', updatedUser)
