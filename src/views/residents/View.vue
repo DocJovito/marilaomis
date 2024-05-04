@@ -28,7 +28,7 @@
                         <td>{{ resident.firstname }}</td>
                         <td>{{ resident.middlename }}</td>
                         <td>{{ resident.addressline1 }}</td>
-                        <td>{{ resident.baranggay }}</td>
+                        <td>{{ resident.barangay }}</td>
                         <td>{{ resident.bday }}</td>
                         <td>
                             <!-- <button @click="selectResident(resident)">Select</button> -->
@@ -139,7 +139,7 @@ function exportexcel() {
         'First Name': resident.firstname,
         'Middle Name': resident.middlename,
         'Address': resident.addressline1,
-        'Barangay': resident.baranggay,
+        'Barangay': resident.barangay,
         'Birthday': resident.bday
     }));
 

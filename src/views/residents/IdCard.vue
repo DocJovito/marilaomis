@@ -26,7 +26,7 @@
                                 <p>firstName: {{ firstName }}</p>
                                 <p>middleName: {{ middleName }}</p>
                                 <p>address: {{ address }}</p>
-                                <p>barangay: {{ baranggay }}</p>
+                                <p>barangay: {{ barangay }}</p>
                                 <p>birthday: {{ birthday }}</p>
                             </div>
                         </div>
@@ -82,7 +82,7 @@ const lastName = ref('');
 const firstName = ref('');
 const middleName = ref('');
 const address = ref('');
-const baranggay = ref('');
+const barangay = ref('');
 const birthday = ref('');
 
 //use route to get target id from params
@@ -101,7 +101,7 @@ onMounted(() => {
             firstName.value = residents.value.firstname;
             middleName.value = residents.value.middlename;
             address.value = residents.value.addressline1;
-            baranggay.value = residents.value.baranggay;
+            barangay.value = residents.value.barangay;
             birthday.value = residents.value.bday;
         })
         .catch((error) => {

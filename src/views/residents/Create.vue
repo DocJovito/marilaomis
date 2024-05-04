@@ -33,7 +33,25 @@
                 </div>
                 <div class="form-group">
                     <label for="barangay">Barangay:</label><br>
-                    <input type="text" id="barangay" class="form-control" v-model="barangay">
+                    <select id="barangay" class="form-control" v-model="barangay">
+                        <option value="Abangan Norte">Abangan Norte</option>
+                        <option value="Abangan Sur">Abangan Sur</option>
+                        <option value="Ibayo">Ibayo</option>
+                        <option value="Lambakin">Lambakin</option>
+                        <option value="Lias">Lias</option>
+                        <option value="Loma de Gato">Loma de Gato</option>
+                        <option value="Nagbalon">Nagbalon</option>
+                        <option value="Patubig">Patubig</option>
+                        <option value="Poblacion 1st">Poblacion 1st</option>
+                        <option value="Poblacion 2nd">Poblacion 2nd</option>
+                        <option value="Prenza 1st">Prenza 1st</option>
+                        <option value="Prenza 2nd">Prenza 2nd</option>
+                        <option value="Santa Rosa 1st">Santa Rosa 1st</option>
+                        <option value="Santa Rosa 2nd">Santa Rosa 2nd</option>
+                        <option value="Saog">Saog</option>
+                        <option value="Tabing-ilog">Tabing-ilog</option>
+                        <!-- Add more options as needed -->
+                    </select>
                 </div>
                 <div class="form-group">
                     <label for="birthday">Birthday:</label><br>
@@ -71,7 +89,7 @@ const saveRecord = () => {
         firstname: firstName.value,
         middlename: middleName.value,
         addressline1: address.value,
-        baranggay: barangay.value,
+        barangay: barangay.value,
         bday: birthday.value
     };
 
