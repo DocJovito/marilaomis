@@ -1,7 +1,6 @@
 <template>
     <div class="container mt-4">
         <h4>Program Management</h4>
-        <!-- <RouterLink to="/users/create" class="btn btn-success ">Add User</RouterLink> -->
         <RouterLink to="/programs/create" class="btn btn-success ">Create Program</RouterLink>
 
         <div class="table-responsive">
@@ -19,8 +18,6 @@
                         <th scope="col">createdat</th>
                         <!-- <th scope="col">isdeleted</th> -->
                         <th scope="col">actions</th>
-
-
                     </tr>
                 </thead>
                 <tbody>
@@ -35,8 +32,6 @@
                         <td>{{ program.createdby }}</td>
                         <td>{{ program.createdat }}</td>
                         <!-- <td>{{ program.isdeleted }}</td> -->
-
-
                         <td>
                             <RouterLink :to="'/programs/' + program.programid + '/' + program.programname + '/Scanner'"
                                 class="btn btn-success">Open
@@ -49,7 +44,7 @@
                                 List
                             </RouterLink><br>
                             <RouterLink :to="'/programs/' + program.programid + '/edit'" class="btn btn-primary">Edit</RouterLink>
-                            <button class="btn btn-danger" @click="deleteRecord(program.programid)">Delete</button>
+                            <button class="btn btn-danger" @click="deleteProgram(program.programid)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -74,8 +69,6 @@
         <button class="btn btn-success" @click="exportexcel">Export to Excel</button>
         <button class="btn btn-danger" @click="readexcel">Import From Excel</button>
     </div>
-
-
 
 </template>
 
@@ -112,7 +105,11 @@ const fetchPrograms = () => {
 
 const deleteProgram = (programId) => {
     if (confirm("Are you sure you want to delete this program?")) {
-        axios.delete(`https://rjprint10.com/marilaomis/backend/programapi.php`, { data: { action: 'delete', id: programId } })
+        const targetRecord = {
+            action: 'delete',
+            id: programId
+        };
+        axios.delete(`https://rjprint10.com/marilaomis/backend/programapi.php`, { data: targetRecord })
             .then(() => {
                 programs.value = programs.value.filter(program => program.programid !== programId);
                 console.log('Program deleted successfully');
@@ -123,6 +120,7 @@ const deleteProgram = (programId) => {
             });
     }
 };
+
 
 const exportExcel = () => {
     const data = programs.value.map(program => ({
