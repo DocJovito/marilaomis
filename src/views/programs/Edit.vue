@@ -1,117 +1,95 @@
 <template>
     <div class="container mt-4">
-
-        <div class="card">
-            <div class="card-header">
-                <h4>Edit Resident</h4>
-            </div>
-            <div class="card-body">
-
-                <div class="form-group">
-                    <label for="residentID">Resident ID:</label><br>
-                    <input type="text" id="residentID" class="form-control" v-model="residentID">
-                </div>
-                <div class="form-group">
-                    <label for="precinctID">Precinct ID:</label><br>
-                    <input type="text" id="precinctID" class="form-control" v-model="precinctID">
-                </div>
-                <div class="form-group">
-                    <label for="lastName">Last Name:</label><br>
-                    <input type="text" id="lastName" class="form-control" v-model="lastName">
-                </div>
-                <div class="form-group">
-                    <label for="firstName">First Name:</label><br>
-                    <input type="text" id="firstName" class="form-control" v-model="firstName">
-                </div>
-                <div class="form-group">
-                    <label for="middleName">Middle Name:</label><br>
-                    <input type="text" id="middleName" class="form-control" v-model="middleName">
-                </div>
-                <div class="form-group">
-                    <label for="address">Address:</label><br>
-                    <input type="text" id="address" class="form-control" v-model="address">
-                </div>
-                <div class="form-group">
-                    <label for="barangay">Barangay:</label><br>
-                    <input type="text" id="barangay" class="form-control" v-model="baranggay">
-                </div>
-                <div class="form-group">
-                    <label for="birthday">Birthday:</label><br>
-                    <input type="date" id="birthday" class="form-control" v-model="birthday">
-                </div>
-                <button type="button" class="btn btn-primary" @click="UpdateRecord">Update</button>
-            </div>
+      <div class="card">
+        <div class="card-header">
+          <h4>Edit Program</h4>
         </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="programName">Program Name:</label><br>
+            <input type="text" id="programName" class="form-control" v-model="programName">
+          </div>
+          <div class="form-group">
+            <label for="description">Description:</label><br>
+            <textarea id="description" class="form-control" rows="3" v-model="description"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="barangayScope">Barangay Scope:</label><br>
+            <input type="text" id="barangayScope" class="form-control" v-model="barangayScope">
+          </div>
+          <div class="form-group">
+            <label for="eventDate">Event Date:</label><br>
+            <input type="date" id="eventDate" class="form-control" v-model="eventDate">
+          </div>
+          <div class="form-group">
+            <label for="isActive">Is Active:</label><br>
+            <input type="checkbox" id="isActive" v-model="isActive">
+          </div>
+          <!-- Add more form fields for other program details as needed -->
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary" @click="updateProgram">Update</button>
     </div>
-</template>
-
-
-<script setup>
-import { ref, onMounted } from 'vue';
-import axios from 'axios';
-import { useRoute } from 'vue-router'
-
-const residents = ref([]);
-
-const id = ref('');
-const residentID = ref('');
-const precinctID = ref('');
-const lastName = ref('');
-const firstName = ref('');
-const middleName = ref('');
-const address = ref('');
-const baranggay = ref('');
-const birthday = ref('');
-
-//use route to get target id from params
-const route = useRoute();
-id.value = route.params.id;
-console.log(route.params.id);
-
-onMounted(() => {
-    axios.get(`https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_id&id=` + id.value)
-        .then((response) => {
-            residents.value = response.data;
-            id.value = residents.value.id;
-            residentID.value = residents.value.residentid;
-            precinctID.value = residents.value.precinctid;
-            lastName.value = residents.value.lastname;
-            firstName.value = residents.value.firstname;
-            middleName.value = residents.value.middlename;
-            address.value = residents.value.addressline1;
-            baranggay.value = residents.value.baranggay;
-            birthday.value = residents.value.bday;
-        })
-        .catch((error) => {
-            console.error('Error fetching data:', error);
-        });
-});
-
-const UpdateRecord = () => {
-    const newRecord = {
-        action: 'update',
-        id: id.value,
-        residentid: residentID.value,
-        precinctid: precinctID.value,
-        lastname: lastName.value,
-        firstname: firstName.value,
-        middlename: middleName.value,
-        addressline1: address.value,
-        baranggay: barangay.value,
-        bday: birthday.value,
-        id: id.value
+  </template>
+  
+  <script setup>
+  import { ref, onMounted } from 'vue';
+  import axios from 'axios';
+  import { useRoute, useRouter } from 'vue-router';
+  
+  const id = ref('');
+  const programName = ref('');
+  const description = ref('');
+  const barangayScope = ref('');
+  const eventDate = ref('');
+  const isActive = ref(false); // Assuming isActive is a boolean
+  
+  const route = useRoute();
+  id.value = route.params.id;
+  
+  const router = useRouter();
+  
+  onMounted(() => {
+    axios.get(`https://rjprint10.com/marilaomis/backend/programapi.php?action=get_by_id&id=` + id.value)
+      .then(response => {
+        const program = response.data;
+        programName.value = program.programname;
+        description.value = program.description;
+        barangayScope.value = program.barangayscope;
+        eventDate.value = program.eventDate;
+        isActive.value = program.isactive;
+        // Assign other program details to respective variables
+      })
+      .catch(error => {
+        console.error('Error fetching program data:', error);
+      });
+  });
+  
+  const updateProgram = () => {
+    const updatedProgram = {
+      id: id.value,
+      programname: programName.value,
+      description: description.value,
+      barangayscope: barangayScope.value,
+      eventDate: eventDate.value,
+      isactive: isActive.value,
+      // Add other program details to be updated
     };
-
-    axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', newRecord)
-        .then(response => {
-            console.log('Record saved successfully:', response.data);
-        })
-        .catch(error => {
-            console.error('Error saving record:', error);
-        });
-};
-</script>
-
-<style>
-/* Your CSS styles here */
-</style>
+  
+    axios.put('https://rjprint10.com/marilaomis/backend/programapi.php', updatedProgram)
+      .then(response => {
+        console.log('Program updated successfully:', response.data);
+        alert('Program updated successfully');
+        router.push('/programs'); // Redirect to programs list after successful update
+      })
+      .catch(error => {
+        console.error('Error updating program:', error);
+        alert('Failed to update program. Please try again.');
+      });
+  };
+  </script>
+  
+  <style>
+  /* Your CSS styles here */
+  </style>
+  

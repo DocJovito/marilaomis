@@ -60,6 +60,16 @@ const router = createRouter({
       component: () => import("@/views/programs/View.vue"),
     },
     {
+      path: "/programs/create",
+      name: "programscreate",
+      component: () => import("@/views/programs/Create.vue"),
+    },
+    {
+      path: "/programs/:id/edit",
+      name: "programsedit",
+      component: () => import("@/views/programs/Edit.vue"),
+    },
+    {
       path: "/programs/:programid/:programname/scanner",
       name: "programscanner",
       component: () => import("@/views/programs/Scanner.vue"),

@@ -2,7 +2,7 @@
     <div class="container mt-4">
         <h4>Program Management</h4>
         <!-- <RouterLink to="/users/create" class="btn btn-success ">Add User</RouterLink> -->
-        <RouterLink to="/" class="btn btn-success ">Create Program</RouterLink>
+        <RouterLink to="/programs/create" class="btn btn-success ">Create Program</RouterLink>
 
         <div class="table-responsive">
             <table class="table table-hover ">
@@ -48,10 +48,8 @@
                                 Scanned
                                 List
                             </RouterLink><br>
-                            <RouterLink to="/" class="btn btn-primary"> Edit
-                            </RouterLink>
-                            <RouterLink to="/" class="btn btn-danger" @:click="deleterec(user.userid)">Delete
-                            </RouterLink>
+                            <RouterLink :to="'/programs/' + program.programid + '/edit'" class="btn btn-primary">Edit</RouterLink>
+                            <button class="btn btn-danger" @click="deleteRecord(program.programid)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -87,10 +85,6 @@ import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
-const targetid = ref('');
-const targetRecord = ref('');
-const exportrecords = ref([]);
-
 const programs = ref([]);
 const pageSize = 5;
 const currentPage = ref(1);
@@ -103,6 +97,10 @@ const paginatedPrograms = computed(() => {
 const totalPages = computed(() => Math.ceil(programs.value.length / pageSize));
 
 onMounted(() => {
+    fetchPrograms();
+});
+
+const fetchPrograms = () => {
     axios.get('https://rjprint10.com/marilaomis/backend/programapi.php?action=get_all')
         .then((response) => {
             programs.value = response.data;
@@ -110,64 +108,72 @@ onMounted(() => {
         .catch((error) => {
             console.error('Error fetching data:', error);
         });
-});
+};
 
-//delete
+const deleteProgram = (programId) => {
+    if (confirm("Are you sure you want to delete this program?")) {
+        axios.delete(`https://rjprint10.com/marilaomis/backend/programapi.php`, { data: { action: 'delete', id: programId } })
+            .then(() => {
+                programs.value = programs.value.filter(program => program.programid !== programId);
+                console.log('Program deleted successfully');
+                alert("Program Deleted");
+            })
+            .catch((error) => {
+                console.error('Error deleting program:', error);
+            });
+    }
+};
 
+const exportExcel = () => {
+    const data = programs.value.map(program => ({
+        'Program ID': program.programid,
+        'Program Name': program.programname,
+        'Description': program.description,
+        'Barangay Scope': program.barangayscope,
+        'Event Date': program.eventDate,
+        'Is Active': program.isactive,
+        'Created By': program.createdby,
+        'Created At': program.createdat
+    }));
 
+    const ws = XLSX.utils.json_to_sheet(data);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Programs');
 
-// function exportexcel() {
-//     const data = residents.value.map(resident => ({
-//         'Resident ID': resident.residentid,
-//         'Precinct ID': resident.precinctid,
-//         'Last Name': resident.lastname,
-//         'First Name': resident.firstname,
-//         'Middle Name': resident.middlename,
-//         'Address': resident.addressline1,
-//         'Barangay': resident.baranggay,
-//         'Birthday': resident.bday
-//     }));
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
 
-//     const ws = XLSX.utils.json_to_sheet(data);
-//     const wb = XLSX.utils.book_new();
-//     XLSX.utils.book_append_sheet(wb, ws, 'Residents');
+    function s2ab(s) {
+        const buf = new ArrayBuffer(s.length);
+        const view = new Uint8Array(buf);
+        for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+        return buf;
+    }
 
-//     const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+    saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'programs.xlsx');
+};
 
-//     function s2ab(s) {
-//         const buf = new ArrayBuffer(s.length);
-//         const view = new Uint8Array(buf);
-//         for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
-//         return buf;
-//     }
+const importExcel = () => {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.xlsx, .xls';
+    input.addEventListener('change', handleFile);
+    input.click();
+};
 
-//     saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'residents.xlsx');
-// }
-
-
-// function readexcel() {
-//     const input = document.createElement('input');
-//     input.type = 'file';
-//     input.accept = '.xlsx, .xls';
-//     input.addEventListener('change', handleFile);
-//     input.click();
-// }
-
-// function handleFile(event) {
-//     const file = event.target.files[0];
-//     const reader = new FileReader();
-//     reader.onload = (e) => {
-//         const data = new Uint8Array(e.target.result);
-//         const workbook = XLSX.read(data, { type: 'array' });
-//         const sheetName = workbook.SheetNames[0];
-//         const worksheet = workbook.Sheets[sheetName];
-//         const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
-//         console.log('Excel data:', excelData);
-//     };
-//     reader.readAsArrayBuffer(file);
-// }
-
-
+const handleFile = (event) => {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const data = new Uint8Array(e.target.result);
+        const workbook = XLSX.read(data, { type: 'array' });
+        const sheetName = workbook.SheetNames[0];
+        const worksheet = workbook.Sheets[sheetName];
+        const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        console.log('Excel data:', excelData);
+        // Process the imported data as needed
+    };
+    reader.readAsArrayBuffer(file);
+};
 </script>
 
 <style>

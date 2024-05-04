@@ -1,97 +1,76 @@
 <template>
     <div class="container mt-4">
-
-        <div class="card">
-            <div class="card-header">
-                <h4>Add Resident</h4>
-            </div>
-            <div class="card-body">
-
-                <div class="form-group">
-                    <label for="residentID">Resident ID:</label><br>
-                    <input type="text" id="residentID" class="form-control" v-model="residentID">
-                </div>
-                <div class="form-group">
-                    <label for="precinctID">Precinct ID:</label><br>
-                    <input type="text" id="precinctID" class="form-control" v-model="precinctID">
-                </div>
-                <div class="form-group">
-                    <label for="lastName">Last Name:</label><br>
-                    <input type="text" id="lastName" class="form-control" v-model="lastName">
-                </div>
-                <div class="form-group">
-                    <label for="firstName">First Name:</label><br>
-                    <input type="text" id="firstName" class="form-control" v-model="firstName">
-                </div>
-                <div class="form-group">
-                    <label for="middleName">Middle Name:</label><br>
-                    <input type="text" id="middleName" class="form-control" v-model="middleName">
-                </div>
-                <div class="form-group">
-                    <label for="address">Address:</label><br>
-                    <input type="text" id="address" class="form-control" v-model="address">
-                </div>
-                <div class="form-group">
-                    <label for="barangay">Barangay:</label><br>
-                    <input type="text" id="barangay" class="form-control" v-model="barangay">
-                </div>
-                <div class="form-group">
-                    <label for="birthday">Birthday:</label><br>
-                    <input type="date" id="birthday" class="form-control" v-model="birthday">
-                </div>
-            </div>
+      <h4>Create Program</h4>
+      <form @submit.prevent="createProgram">
+        <div class="mb-3">
+          <label for="programName" class="form-label">Program Name</label>
+          <input type="text" class="form-control" id="programName" v-model="newProgram.programname" required>
         </div>
-
-        <button type="button" class="btn btn-primary" @click="saveRecord">Save</button>
-
+        <div class="mb-3">
+          <label for="description" class="form-label">Description</label>
+          <input type="text" class="form-control" id="description" v-model="newProgram.description" required>
+        </div>
+        <div class="mb-3">
+          <label for="barangayScope" class="form-label">Barangay Scope</label>
+          <input type="text" class="form-control" id="barangayScope" v-model="newProgram.barangayscope" required>
+        </div>
+        <div class="mb-3">
+          <label for="eventDate" class="form-label">Event Date</label>
+          <input type="date" class="form-control" id="eventDate" v-model="newProgram.eventDate" required>
+        </div>
+        <div class="mb-3">
+          <label for="isActive" class="form-label">Is Active</label>
+          <select class="form-select" id="isActive" v-model="newProgram.isactive" required>
+            <option value="1">Yes</option>
+            <option value="0">No</option>
+          </select>
+        </div>
+        <div class="mb-3">
+          <label for="createdBy" class="form-label">Created By</label>
+          <input type="text" class="form-control" id="createdBy" v-model="newProgram.createdby" required>
+        </div>
+        <div class="mb-3">
+          <label for="createdAt" class="form-label">Created At</label>
+          <input type="date" class="form-control" id="createdAt" v-model="newProgram.createdat" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Create Program</button>
+      </form>
     </div>
-
-</template>
-
-
-<script setup>
-import { ref } from 'vue';
-import axios from 'axios';
-
-const residentID = ref('');
-const precinctID = ref('');
-const lastName = ref('');
-const firstName = ref('');
-const middleName = ref('');
-const address = ref('');
-const barangay = ref('');
-const birthday = ref('');
-
-const saveRecord = () => {
-    const newRecord = {
-        action: 'create',
-        residentid: residentID.value,
-        precinctid: precinctID.value,
-        lastname: lastName.value,
-        firstname: firstName.value,
-        middlename: middleName.value,
-        addressline1: address.value,
-        baranggay: barangay.value,
-        bday: birthday.value
+  </template>
+  
+  <script setup>
+  import { ref } from 'vue';
+  import axios from 'axios';
+  import { useRouter } from 'vue-router';
+  
+  const newProgram = ref({
+    programname: '',
+    description: '',
+    barangayscope: '',
+    eventDate: '',
+    isactive: '',
+    createdby: '',
+    createdat: ''
+  });
+  
+  const router = useRouter();
+  
+  const createProgram = () => {
+    const programData = {
+      action: 'create',
+      ...newProgram.value
     };
-
-    console.log(newRecord);
-
-    axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', newRecord)
-        .then(response => {
-            console.log('Record saved successfully:', response.data);
-            closeModal();
-        })
-        .catch(error => {
-            console.error('Error saving record:', error);
-        });
-};
-
-const closeModal = () => {
-
-};
-</script>
-
-<style>
-/* Your CSS styles here */
-</style>
+  
+    axios.post('https://rjprint10.com/marilaomis/backend/programapi.php', programData)
+      .then(response => {
+        console.log('Program created successfully:', response.data);
+        alert("Program Created");
+        router.push('/programs/view'); // Redirect to program management page
+      })
+      .catch(error => {
+        console.error('Error creating program:', error);
+        alert("Failed to create program. Please try again.");
+      });
+  };
+  </script>
+  
