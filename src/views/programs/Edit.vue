@@ -15,21 +15,12 @@
         </div>
         <div class="form-group">
           <label for="barangayScope">Barangay Scope:</label><br>
-          <div class="dropdown">
-            <button class="btn btn-success dropdown-toggle" type="button" id="barangayDropdown" data-bs-toggle="dropdown" aria-expanded="false">
-              Select
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="barangayDropdown">
-              <li v-for="barangay in barangays" :key="barangay">
-                <label>
-                  <input type="checkbox" :value="barangay" v-model="selectedBarangays"> {{ barangay }}
-                </label>
-              </li>
-            </ul>
-          </div>
-          <label for="selectedBarangays" class="form-label">Selected Barangays:</label>
-          <div id="selectedBarangays">
-            {{ selectedBarangays.join(', ') }}
+          <div class="row">
+            <div class="col-md-3" v-for="barangay in barangays" :key="barangay">
+              <label>
+                <input type="checkbox" :value="barangay" v-model="selectedBarangays"> {{ barangay }}
+              </label>
+            </div>
           </div>
         </div>
         <div class="form-group">
@@ -40,7 +31,6 @@
           <label for="isActive">Is Active:</label><br>
           <input type="checkbox" id="isActive" class="form-check-input" v-model="program.isactive" true-value="1" false-value="0">
         </div>
-        <!-- Add more form fields for other program details as needed -->
       </div>
     </div>
     <button type="button" class="btn btn-primary mt-3" @click="updateProgram">Update Program</button>
@@ -71,7 +61,7 @@ onMounted(() => {
   axios.get(`https://rjprint10.com/marilaomis/backend/programapi.php?action=get_by_id&id=${id.value}`)
     .then(response => {
       program.value = response.data;
-      selectedBarangays.value = program.value.barangayscope.split(', ');
+      selectedBarangays.value = program.value.barangayscope.split(',').map(b => b.trim());
     })
     .catch(error => {
       console.error('Error fetching program data:', error);
@@ -101,7 +91,7 @@ const updateProgram = () => {
     });
 };
 
-// You can define the list of barangays here
+// List of barangays
 const barangays = [
   "Abangan Norte",
   "Abangan Sur",
@@ -124,4 +114,7 @@ const barangays = [
 
 <style>
 /* Your CSS styles here */
+.form-group {
+  margin-bottom: 1rem;
+}
 </style>
