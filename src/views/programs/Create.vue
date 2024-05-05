@@ -12,7 +12,23 @@
         </div>
         <div class="mb-3">
           <label for="barangayScope" class="form-label">Barangay Scope</label>
-          <input type="text" class="form-control" id="barangayScope" v-model="newProgram.barangayscope" required>
+          <div class="dropdown">
+            <button class="btn btn-success dropdown-toggle" type="button" id="barangayDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+              Select
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="barangayDropdown">
+              <li v-for="barangay in barangays" :key="barangay">
+                <label>
+                  <input type="checkbox" :value="barangay" v-model="selectedBarangays">
+                  {{ barangay }}
+                </label>
+              </li>
+            </ul>
+          </div>
+          <label for="selectedBarangays" class="form-label">Selected Barangays:</label>
+          <div id="selectedBarangays">
+            {{ selectedBarangays.join(', ') }}
+          </div>
         </div>
         <div class="mb-3">
           <label for="eventDate" class="form-label">Event Date</label>
@@ -43,6 +59,26 @@
   import axios from 'axios';
   import { useRouter } from 'vue-router';
   
+  const selectedBarangays = ref([]);
+  const barangays = [
+    "Abangan Norte",
+    "Abangan Sur",
+    "Ibayo",
+    "Lambakin",
+    "Lias",
+    "Loma de Gato",
+    "Nagbalon",
+    "Patubig",
+    "Poblacion 1st",
+    "Poblacion 2nd",
+    "Prenza 1st",
+    "Prenza 2nd",
+    "Santa Rosa 1st",
+    "Santa Rosa 2nd",
+    "Saog",
+    "Tabing-ilog"
+  ];
+  
   const newProgram = ref({
     programname: '',
     description: '',
@@ -58,7 +94,8 @@
   const createProgram = () => {
     const programData = {
       action: 'create',
-      ...newProgram.value
+      ...newProgram.value,
+      barangayscope: selectedBarangays.value.join(', ') // Concatenate selected barangays
     };
   
     axios.post('https://rjprint10.com/marilaomis/backend/programapi.php', programData)

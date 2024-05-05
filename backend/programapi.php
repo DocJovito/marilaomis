@@ -61,19 +61,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $barangayscope = $data['barangayscope'];
             $eventDate = $data['eventDate'];
             $isactive = $data['isactive'];
-            $createdby = $data['createdby'];
-            $createdat = $data['createdat']; // Assuming createdat is provided for update
-            $isdeleted = $data['isdeleted']; // Assuming isdeleted is provided for update
 
-            $stmt = $conn->prepare("UPDATE tblprogram SET programname=?, description=?, barangayscope=?, eventDate=?, isactive=?, createdby=?, createdat=?, isdeleted=? WHERE programid=?");
-            $stmt->execute([$programname, $description, $barangayscope, $eventDate, $isactive, $createdby, $createdat, $isdeleted, $programid]);
+            $stmt = $conn->prepare("UPDATE tblprogram SET programname=?, description=?, barangayscope=?, eventDate=?, isactive=? WHERE programid=?");
+            $stmt->execute([$programname, $description, $barangayscope, $eventDate, $isactive, $programid]);
 
             echo json_encode(array("message" => "Program updated successfully"));
         } catch (PDOException $e) {
             echo json_encode(array("error" => "Error updating program: " . $e->getMessage()));
         }
-    } 
-    else {
+    } else {
         echo json_encode(array("error" => "Invalid action"));
     }
 }
@@ -100,4 +96,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 
 // Close database connection
 $conn = null;
-?>
