@@ -87,11 +87,11 @@ const birthday = ref('');
 
 //use route to get target id from params
 const route = useRoute();
-id.value = route.params.id;
-console.log(route.params.id);
+residentID.value = route.params.residentid;
+console.log(route.params.residentid);
 
 onMounted(() => {
-    axios.get(`https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_id&id=` + id.value)
+    axios.get(`https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_id&residentid=` + residentID.value)
         .then((response) => {
             residents.value = response.data;
             id.value = residents.value.id;

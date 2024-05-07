@@ -6,11 +6,6 @@
                 <h4>Edit Resident</h4>
             </div>
             <div class="card-body">
-
-                <div class="form-group">
-                    <label for="residentID">Resident ID:</label><br>
-                    <input type="text" id="residentID" class="form-control" v-model="residentID">
-                </div>
                 <div class="form-group">
                     <label for="precinctID">Precinct ID:</label><br>
                     <input type="text" id="precinctID" class="form-control" v-model="precinctID">
@@ -71,8 +66,8 @@ import { useRoute } from 'vue-router'
 
 const residents = ref([]);
 
-const id = ref('');
-const residentID = ref('');
+
+const residentid = ref('');
 const precinctID = ref('');
 const lastName = ref('');
 const firstName = ref('');
@@ -83,15 +78,14 @@ const birthday = ref('');
 
 //use route to get target id from params
 const route = useRoute();
-id.value = route.params.id;
-console.log(route.params.id);
+residentid.value = route.params.residentid;
+console.log(route.params.residentid);
 
 onMounted(() => {
-    axios.get(`https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_id&id=` + id.value)
+    axios.get(`https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_id&residentid=` + residentid.value)
         .then((response) => {
             residents.value = response.data;
-            id.value = residents.value.id;
-            residentID.value = residents.value.residentid;
+            residentid.value = residents.value.residentid;
             precinctID.value = residents.value.precinctid;
             lastName.value = residents.value.lastname;
             firstName.value = residents.value.firstname;
@@ -108,8 +102,7 @@ onMounted(() => {
 const UpdateRecord = () => {
     const newRecord = {
         action: 'update',
-        id: id.value,
-        residentid: residentID.value,
+        residentid: residentid.value,
         precinctid: precinctID.value,
         lastname: lastName.value,
         firstname: firstName.value,
@@ -117,7 +110,7 @@ const UpdateRecord = () => {
         addressline1: address.value,
         barangay: barangay.value,
         bday: birthday.value,
-        id: id.value
+
     };
 
     axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', newRecord)

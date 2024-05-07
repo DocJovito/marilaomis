@@ -32,11 +32,13 @@
                         <td>{{ resident.bday }}</td>
                         <td>
                             <!-- <button @click="selectResident(resident)">Select</button> -->
-                            <RouterLink :to="'/residents/' + resident.id + '/edit'" class="btn btn-success"> Edit
+                            <RouterLink :to="'/residents/' + resident.residentid + '/edit'" class="btn btn-success">
+                                Edit
                             </RouterLink>
-                            <RouterLink :to="'/residents/' + resident.id + '/idcard'" class="btn btn-primary"> Print
+                            <RouterLink :to="'/residents/' + resident.residentid + '/idcard'" class="btn btn-primary">
+                                Print
                             </RouterLink>
-                            <RouterLink to="/" class="btn btn-danger" @:click="deleterec(resident.id)">Delete
+                            <RouterLink to="/" class="btn btn-danger" @:click="deleterec(resident.residentid)">Delete
                             </RouterLink>
                         </td>
                     </tr>
@@ -116,7 +118,7 @@ function deleterec(targetid) {
     if (confirm("Are you sure you want to delete this data?")) {
         const targetRecord = {
             action: 'delete',
-            id: targetid
+            residentid: targetid
         };
         axios.delete(`https://rjprint10.com/marilaomis/backend/personapi.php`, { data: targetRecord })
             .then(response => {

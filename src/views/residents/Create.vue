@@ -7,10 +7,10 @@
             </div>
             <div class="card-body">
 
-                <div class="form-group">
+                <!-- <div class="form-group">
                     <label for="residentID">Resident ID:</label><br>
                     <input type="text" id="residentID" class="form-control" v-model="residentID">
-                </div>
+                </div> -->
                 <div class="form-group">
                     <label for="precinctID">Precinct ID:</label><br>
                     <input type="text" id="precinctID" class="form-control" v-model="precinctID">
@@ -83,7 +83,6 @@ const birthday = ref('');
 const saveRecord = () => {
     const newRecord = {
         action: 'create',
-        residentid: residentID.value,
         precinctid: precinctID.value,
         lastname: lastName.value,
         firstname: firstName.value,

@@ -30,14 +30,13 @@ programname.value = route.params.programname;
 
 //resident variables
 const residents = ref([]);
-const id = ref('');
 const residentID = ref('');
 const precinctID = ref('');
 const lastName = ref('');
 const firstName = ref('');
 const middleName = ref('');
 const address = ref('');
-const baranggay = ref('');
+const barangay = ref('');
 const birthday = ref('');
 
 
@@ -77,7 +76,7 @@ async function insertScan() {
         id: "p" + programid.value + "r" + residentID.value,
         programid: programid.value,
         residentid: residentID.value,
-        barangay: baranggay.value,
+        barangay: barangay.value,
         createdby: createdby.value, //user
     };
 
@@ -92,16 +91,15 @@ async function insertScan() {
 
 async function getResident() {
     try {
-        const response = await axios.get(`https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_rid&id=` + scannedOutput.value);
+        const response = await axios.get(`https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_id&residentid=` + scannedOutput.value);
         residents.value = response.data;
-        id.value = residents.value.id;
         residentID.value = residents.value.residentid;
         precinctID.value = residents.value.precinctid;
         lastName.value = residents.value.lastname;
         firstName.value = residents.value.firstname;
         middleName.value = residents.value.middlename;
         address.value = residents.value.addressline1;
-        baranggay.value = residents.value.baranggay;
+        barangay.value = residents.value.barangay;
         birthday.value = residents.value.bday;
     } catch (error) {
         console.error('Error fetching data:', error);

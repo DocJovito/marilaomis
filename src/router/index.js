@@ -25,12 +25,12 @@ const router = createRouter({
       component: () => import("@/views/residents/Create.vue"),
     },
     {
-      path: "/residents/:id/edit",
+      path: "/residents/:residentid/edit",
       name: "edit",
       component: () => import("@/views/residents/Edit.vue"),
     },
     {
-      path: "/residents/:id/idcard",
+      path: "/residents/:residentid/idcard",
       name: "idcard",
       component: () => import("@/views/residents/IdCard.vue"),
     },
