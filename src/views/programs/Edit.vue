@@ -29,7 +29,8 @@
         </div>
         <div class="form-group">
           <label for="isActive">Is Active:</label><br>
-          <input type="checkbox" id="isActive" class="form-check-input" v-model="program.isactive" true-value="1" false-value="0">
+          <input type="checkbox" id="isActive" class="form-check-input" v-model="program.isactive" true-value="1"
+            false-value="0">
         </div>
       </div>
     </div>
@@ -112,7 +113,7 @@ const barangays = [
 ];
 </script>
 
-<style>
+<style scoped>
 /* Your CSS styles here */
 .form-group {
   margin-bottom: 1rem;

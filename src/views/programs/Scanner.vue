@@ -39,6 +39,10 @@ const address = ref('');
 const barangay = ref('');
 const birthday = ref('');
 
+//program scope
+const program = ref([]);
+const selectedBarangays = ref([]);
+
 
 //userid
 const createdby = ref(123);
@@ -58,9 +62,28 @@ watch(scannedOutput, async (newValue, oldValue) => {
             await getResident();
 
             //add if resident count = 0 then dont insert
+            if (residents.value === false) {
+                alert("No Record Found.");
+            }
+            else {
+                //add if resident address not in array
+                // console.log(barangay.value)
+                if (selectedBarangays.value.includes(barangay.value)) {
+                    // alert("you belong with me");
+                    await insertScan();
+                }
+                else {
+                    alert("Resident doesn't belong in the Program.");
+                }
+                // Call an asynchronous function to insert scan data
 
-            // Call an asynchronous function to insert scan data
-            await insertScan();
+            }
+
+
+
+
+
+
 
         } catch (error) {
             console.error('Error:', error);
@@ -101,6 +124,8 @@ async function getResident() {
         address.value = residents.value.addressline1;
         barangay.value = residents.value.barangay;
         birthday.value = residents.value.bday;
+
+
     } catch (error) {
         console.error('Error fetching data:', error);
 
@@ -168,6 +193,7 @@ const switchCameraSource = () => {
 
 onMounted(() => {
     toggleCamera();
+    getProgram();
 }),
 
     // Automatically close the camera when changing routes
@@ -176,4 +202,17 @@ onMounted(() => {
             toggleCamera();
         }
     });
+
+
+
+function getProgram() {
+    axios.get(`https://rjprint10.com/marilaomis/backend/programapi.php?action=get_by_id&id=${route.params.programid}`)
+        .then(response => {
+            program.value = response.data;
+            selectedBarangays.value = program.value.barangayscope.split(',').map(b => b.trim());
+        })
+        .catch(error => {
+            console.error('Error fetching program data:', error);
+        });
+}
 </script>

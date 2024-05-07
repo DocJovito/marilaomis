@@ -34,16 +34,18 @@
                         <!-- <td>{{ program.isdeleted }}</td> -->
                         <td>
                             <RouterLink :to="'/programs/' + program.programid + '/' + program.programname + '/Scanner'"
-                                class="btn btn-success">Open Scanner
+                                class="btn btn-success ctr">Open Scanner
                             </RouterLink> <br>
                             <RouterLink
                                 :to="'/programs/' + program.programid + '/' + program.programname + '/ScanReport'"
-                                class="btn btn-warning">
+                                class="btn btn-warning ctr">
                                 Scanned
                                 List
                             </RouterLink><br>
-                            <RouterLink :to="'/programs/' + program.programid + '/edit'" class="btn btn-primary">Edit</RouterLink>
-                            <button class="btn btn-danger" @click="deleteProgram(program.programid)">Delete</button>
+                            <RouterLink :to="'/programs/' + program.programid + '/edit'" class="btn btn-primary ctr">
+                                Edit
+                            </RouterLink>
+                            <button class="btn btn-danger ctr" @click="deleteProgram(program.programid)">Delete</button>
                         </td>
                     </tr>
                 </tbody>
@@ -173,6 +175,10 @@ const handleFile = (event) => {
 };
 </script>
 
-<style>
+<style scoped>
+.ctr {
+    width: 130px;
+}
+
 /* Add your custom styles here */
 </style>
