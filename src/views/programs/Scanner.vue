@@ -76,15 +76,7 @@ watch(scannedOutput, async (newValue, oldValue) => {
                     alert("Resident doesn't belong in the Program.");
                 }
                 // Call an asynchronous function to insert scan data
-
             }
-
-
-
-
-
-
-
         } catch (error) {
             console.error('Error:', error);
             // Handle the error (e.g., show a message to the user)
