@@ -1,5 +1,9 @@
 <script setup>
 import { RouterLink } from 'vue-router'
+import { useStore } from 'vuex';
+const store = useStore();
+const userId = store.state.userState[0].userID;
+
 </script>
 
 
@@ -48,11 +52,11 @@ import { RouterLink } from 'vue-router'
 
           </ul>
           <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
+            <li v-if="userId === '111'" class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/login">Log In</RouterLink>
             </li>
-            <li class="nav-item">
-              <RouterLink class="nav-link" active-class="active-link" to="/login">Log Out</RouterLink>
+            <li v-else class="nav-item">
+              <RouterLink class="nav-link" active-class="active-link" to="/logout">Log Out</RouterLink>
             </li>
           </ul>
 

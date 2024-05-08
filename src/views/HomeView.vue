@@ -5,7 +5,8 @@
         <h1 class="display-4">Marilao Municipality MIS</h1>
         <p class="lead">Welcome to the Marilao Municipality Management Information System.</p>
         <hr class="my-4">
-        <p>This system provides comprehensive management and analysis tools for various municipal operations and services.</p>
+        <p>This system provides comprehensive management and analysis tools for various municipal operations and
+          services.</p>
         <a class="btn btn-primary btn-lg" href="#" role="button">Get Started</a>
       </div>
 
@@ -44,61 +45,70 @@
       </div>
     </div>
   </main>
+
+  <!-- <p>Parent to Child</p>
+    <input v-model="inputValue">
+    <TestComp :value="inputValue" />
+    <button @click="nextpage">load next page</button> -->
 </template>
 
 <script setup>
-  import { ref } from 'vue';
-  import TestComp from '@/components/TestComp.vue';
-  import QrScanner from '@/components/QrScanner.vue';
+import { ref } from 'vue';
+import TestComp from '@/components/TestComp.vue';
+import QrScanner from '@/components/QrScanner.vue';
 
-  const inputValue = ref('');
+const inputValue = ref('');
+
+
 </script>
 
 <style scoped>
-  .jumbotron {
-    background-color: #b7dab8; /* Green background color */
-    color: #024110; /* White text color */
-    padding: 100px 0;
-    border-radius: 15px;
-  }
+.jumbotron {
+  background-color: #b7dab8;
+  /* Green background color */
+  color: #024110;
+  /* White text color */
+  padding: 100px 0;
+  border-radius: 15px;
+}
 
-  .jumbotron h1 {
-    font-weight: bold;
-    font-size: 3.5rem;
-    margin-bottom: 20px;
-  }
+.jumbotron h1 {
+  font-weight: bold;
+  font-size: 3.5rem;
+  margin-bottom: 20px;
+}
 
-  .jumbotron p {
-    font-size: 1.5rem;
-    margin-bottom: 30px;
-  }
+.jumbotron p {
+  font-size: 1.5rem;
+  margin-bottom: 30px;
+}
 
-  .jumbotron a {
-    font-size: 1.2rem;
-  }
+.jumbotron a {
+  font-size: 1.2rem;
+}
 
-  .feature-box .card {
-    border: none;
-    transition: all 0.3s ease;
-  }
+.feature-box .card {
+  border: none;
+  transition: all 0.3s ease;
+}
 
-  .feature-box .card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-  }
+.feature-box .card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+}
 
-  .feature-icon {
-    font-size: 3rem;
-    color: #007bff;
-  }
+.feature-icon {
+  font-size: 3rem;
+  color: #007bff;
+}
 
-  .feature-title {
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-  }
+.feature-title {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
 
-  .feature-description {
-    font-size: 1.1rem;
-    color: #6c757d;
-  }
+.feature-description {
+  font-size: 1.1rem;
+  color: #6c757d;
+}
 </style>
