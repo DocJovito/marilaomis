@@ -13,7 +13,7 @@
                         <th scope="col">password</th>
                         <th scope="col">usertype</th>
                         <th scope="col">name</th>
-                        <th scope="col">address</th>
+                        <th scope="col">address Scope</th>
                         <th scope="col">Actions</th>
                     </tr>
                 </thead>
@@ -27,7 +27,8 @@
                         <td>{{ user.name }}</td>
                         <td>{{ user.address }}</td>
                         <td>
-                            <RouterLink :to="'/users/' + user.userid + '/edit'" class="btn btn-success">Edit</RouterLink>
+                            <RouterLink :to="'/users/' + user.userid + '/edit'" class="btn btn-success">Edit
+                            </RouterLink>
                             <button class="btn btn-danger" @click="deleteUser(user.userid)">Delete</button>
                         </td>
                     </tr>
