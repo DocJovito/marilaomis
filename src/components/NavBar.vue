@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import { useStore } from 'vuex';
+
 const store = useStore();
 const userID = store.state.userState[0].userID;
 const userLevel = store.state.userState[0].userLevel;
