@@ -52,6 +52,7 @@ function login() {
         .then(response => {
             currentuser.value = response.data;
 
+            //maki store kay store.js
             localStorage.setItem('token', response.data.token);
 
             if (response.data.length == 1) {
