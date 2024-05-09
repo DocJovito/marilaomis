@@ -15,8 +15,13 @@
           <input type="password" id="password" class="form-control" v-model="password">
         </div>
         <div class="form-group">
-          <label for="usertype">User Type:</label><br>
-          <input type="text" id="usertype" class="form-control" v-model="usertype">
+          <label for="usertype">User Level:</label><br>
+          <select id="usertype" class="form-control" v-model="usertype">
+            <option value="Admin">Admin</option>
+            <option value="Municipal Staff">Municipal Staff</option>
+            <option value="Mother Leader">Mother Leader</option>
+            <!-- Add more options as needed -->
+          </select>
         </div>
         <div class="form-group">
           <label for="name">Name:</label><br>
