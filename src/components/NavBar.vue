@@ -29,9 +29,10 @@ const userLevel = store.state.userState[0].userLevel;
               <RouterLink class="nav-link" active-class="active-link" to="/about">About</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" active-class="active-link" to="/users/view" v-if="userId = 'Admin'">Users
-              </RouterLink>
+              <RouterLink class="nav-link" active-class="active-link" to="/users/view"
+                v-if="userLevel === 'Admin' || userLevel === 'Municipal Staff'">Users</RouterLink>
             </li>
+
             <li class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/residents/view">Residents</RouterLink>
             </li>

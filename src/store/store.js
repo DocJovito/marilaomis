@@ -6,7 +6,12 @@ const store = createStore({
     return {
       userState: [
         //token dapat ito instead na static
-        { userID: "111", userEmail: "a@a.com", userLevel: "mother father" },
+        {
+          userID: "111",
+          userEmail: "a@a.com",
+          userLevel: "Admin",
+          address: "All",
+        },
       ],
     };
   },
