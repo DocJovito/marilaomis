@@ -2,7 +2,8 @@
 import { RouterLink } from 'vue-router'
 import { useStore } from 'vuex';
 const store = useStore();
-const userId = store.state.userState[0].userID;
+const userID = store.state.userState[0].userID;
+const userLevel = store.state.userState[0].userLevel;
 
 </script>
 
@@ -27,7 +28,8 @@ const userId = store.state.userState[0].userID;
               <RouterLink class="nav-link" active-class="active-link" to="/about">About</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" active-class="active-link" to="/users/view">Users</RouterLink>
+              <RouterLink class="nav-link" active-class="active-link" to="/users/view" v-if="userId = 'Admin'">Users
+              </RouterLink>
             </li>
             <li class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/residents/view">Residents</RouterLink>
@@ -52,7 +54,7 @@ const userId = store.state.userState[0].userID;
 
           </ul>
           <ul class="navbar-nav ms-auto">
-            <li v-if="userId === '111'" class="nav-item">
+            <li v-if="userID === '111'" class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/login">Log In</RouterLink>
             </li>
             <li v-else class="nav-item">
