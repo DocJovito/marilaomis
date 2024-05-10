@@ -31,9 +31,11 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router'; // Import the useRouter function from Vue Router
 
 const email = ref('');
 const password = ref('');
+const router = useRouter(); // Initialize the router object
 
 const currentuser = ref([]);
 
@@ -48,14 +50,18 @@ function login() {
         .then(response => {
             currentuser.value = response.data;
 
-            //maki store kay store.js
-            localStorage.setItem('token', response.data.token);
+            console.log("Response Data:", response.data);
 
-            if (userData.user && userData.user.length === 1) {
+            // Save user data in local storage
+            localStorage.setItem('token', currentuser.value.token);
+            localStorage.setItem('name', currentuser.value.user.name);
+            localStorage.setItem('usertype', currentuser.value.user.usertype);
+
+            if (currentuser.value.token) {
                 alert("Log in successful");
-                router.push('/residents/view'); // Redirect to the About page upon successful login
+                router.push('/residents/view'); // Redirect to the residents view upon successful login
             } else {
-                alert("Invalid email or password asdf");
+                alert("Invalid email or password");
             }
         })
         .catch(error => {
@@ -63,5 +69,6 @@ function login() {
             alert("Error logging in");
         });
 }
-  </script>
+</script>
+
   

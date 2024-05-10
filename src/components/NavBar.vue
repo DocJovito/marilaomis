@@ -1,13 +1,3 @@
-<script setup>
-import { RouterLink } from 'vue-router'
-import { useStore } from 'vuex';
-
-const store = useStore();
-const userId = store.state.userState[0].userID;
-
-</script>
-
-
 <template>
   <div>
     <nav class="navbar navbar-expand-lg bg-greenish">
@@ -65,6 +55,9 @@ const store = useStore();
 
 // Check if user is logged in
 const isLoggedIn = store.state.isAuthenticated;
+
+// Get user ID
+const userId = store.state.userState[0].userID;
 </script>
 
 <style scoped>
