@@ -3,8 +3,7 @@ import { RouterLink } from 'vue-router'
 import { useStore } from 'vuex';
 
 const store = useStore();
-const userID = store.state.userState[0].userID;
-const userLevel = store.state.userState[0].userLevel;
+const userId = store.state.userState[0].userID;
 
 </script>
 
@@ -13,64 +12,60 @@ const userLevel = store.state.userState[0].userLevel;
   <div>
     <nav class="navbar navbar-expand-lg bg-greenish">
       <div class="container-fluid">
-        <!-- <img src="../assets/images/greenmarilao.png" alt="MIS" width="30" height="24"> -->
-        <img src="../assets/images/greenmarilao.png" alt="MIS" width="75" class="mx-2">
+        <!-- Navbar brand and toggle button -->
         <a class="navbar-brand" href="#">Marilao MIS</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
           aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+        <!-- Navbar links -->
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
           <ul class="navbar-nav">
-            <li class="nav-item active">
+            <li class="nav-item">
               <RouterLink to="/" active-class="active-link" class="nav-link">Home</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" active-class="active-link" to="/about">About</RouterLink>
+              <RouterLink to="/about" active-class="active-link" class="nav-link">About</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" active-class="active-link" to="/users/view"
-                v-if="userLevel === 'Admin' || userLevel === 'Municipal Staff'">Users</RouterLink>
+              <RouterLink class="nav-link" active-class="active-link" to="/users/view">Users</RouterLink>
             </li>
 
             <li class="nav-item">
-              <RouterLink class="nav-link" active-class="active-link" to="/residents/view">Residents</RouterLink>
+              <RouterLink to="/residents/view" active-class="active-link" class="nav-link">Residents</RouterLink>
             </li>
-            <!-- <li class="nav-item">
-              <RouterLink class="nav-link" active-class="active-link" to="/scanner">Scanner</RouterLink>
-            </li> -->
             <li class="nav-item">
-              <RouterLink class="nav-link" active-class="active-link" to="/programs/view">Programs</RouterLink>
+              <RouterLink to="/programs/view" active-class="active-link" class="nav-link">Programs</RouterLink>
             </li>
-            <!-- <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"
-                aria-expanded="false">
-                Dropdown link
-              </a>
-              <ul class="dropdown-menu">
-                <li><a class="dropdown-item" href="#">Action</a></li>
-                <li><a class="dropdown-item" href="#">Another action</a></li>
-                <li><a class="dropdown-item" href="#">Something else here</a></li>
-              </ul>
-            </li> -->
-
+            <!-- Add Log In link -->
+            <li v-if="!isLoggedIn" class="nav-item">
+              <RouterLink to="/login" active-class="active-link" class="nav-link">Log In</RouterLink>
+            </li>
           </ul>
+          <!-- Right-aligned navbar links -->
           <ul class="navbar-nav ms-auto">
-            <li v-if="userID === '111'" class="nav-item">
+            <li v-if="userId === '111'" class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/login">Log In</RouterLink>
             </li>
             <li v-else class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/logout">Log Out</RouterLink>
             </li>
           </ul>
-
-
         </div>
       </div>
     </nav>
   </div>
 </template>
 
+<script setup>
+import { RouterLink } from 'vue-router'
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+// Check if user is logged in
+const isLoggedIn = store.state.isAuthenticated;
+</script>
 
 <style scoped>
 .bg-greenish {
