@@ -1,13 +1,3 @@
-<script setup>
-import { RouterLink } from 'vue-router'
-import { useStore } from 'vuex';
-
-const store = useStore();
-const userId = store.state.userState[0].userID;
-
-</script>
-
-
 <template>
   <div>
     <nav class="navbar navbar-expand-lg bg-greenish">
@@ -61,10 +51,18 @@ const userId = store.state.userState[0].userID;
 import { RouterLink } from 'vue-router'
 import { useStore } from 'vuex';
 
+//jovy
 const store = useStore();
+const userId = store.state.userState[0].userID;
+
 
 // Check if user is logged in
 const isLoggedIn = store.state.isAuthenticated;
+
+
+
+
+
 </script>
 
 <style scoped>
