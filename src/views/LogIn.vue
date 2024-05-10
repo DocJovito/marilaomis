@@ -26,18 +26,18 @@
         </div>
       </div>
     </div>
-  </template>
-  
-  <script setup>
-  import { ref } from 'vue';
-  import axios from 'axios';
-  import { useRouter } from 'vue-router';
-  
-  const email = ref('');
-  const password = ref('');
-  const router = useRouter();
-  
-  function login() {
+</template>
+
+<script setup>
+import { ref } from 'vue';
+import axios from 'axios';
+
+const email = ref('');
+const password = ref('');
+
+const currentuser = ref([]);
+
+function login() {
     const data = {
         action: 'login',
         email: email.value,
@@ -46,8 +46,10 @@
 
     axios.post('https://rjprint10.com/marilaomis/backend/loginapi.php', data)
         .then(response => {
-            const userData = response.data;
-            localStorage.setItem('token', userData.token);
+            currentuser.value = response.data;
+
+            //maki store kay store.js
+            localStorage.setItem('token', response.data.token);
 
             if (userData.user && userData.user.length === 1) {
                 alert("Log in successful");

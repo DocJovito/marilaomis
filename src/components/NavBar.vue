@@ -1,3 +1,13 @@
+<script setup>
+import { RouterLink } from 'vue-router'
+import { useStore } from 'vuex';
+
+const store = useStore();
+const userId = store.state.userState[0].userID;
+
+</script>
+
+
 <template>
   <div>
     <nav class="navbar navbar-expand-lg bg-greenish">
@@ -18,8 +28,9 @@
               <RouterLink to="/about" active-class="active-link" class="nav-link">About</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink to="/users/view" active-class="active-link" class="nav-link">Users</RouterLink>
+              <RouterLink class="nav-link" active-class="active-link" to="/users/view">Users</RouterLink>
             </li>
+
             <li class="nav-item">
               <RouterLink to="/residents/view" active-class="active-link" class="nav-link">Residents</RouterLink>
             </li>
@@ -33,8 +44,11 @@
           </ul>
           <!-- Right-aligned navbar links -->
           <ul class="navbar-nav ms-auto">
-            <li v-if="isLoggedIn" class="nav-item">
-              <RouterLink to="/logout" active-class="active-link" class="nav-link">Log Out</RouterLink>
+            <li v-if="userId === '111'" class="nav-item">
+              <RouterLink class="nav-link" active-class="active-link" to="/login">Log In</RouterLink>
+            </li>
+            <li v-else class="nav-item">
+              <RouterLink class="nav-link" active-class="active-link" to="/logout">Log Out</RouterLink>
             </li>
           </ul>
         </div>
