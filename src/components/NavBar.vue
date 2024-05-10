@@ -58,11 +58,6 @@ const userId = store.state.userState[0].userID;
 
 // Check if user is logged in
 const isLoggedIn = store.state.isAuthenticated;
-
-
-
-
-
 </script>
 
 <style scoped>
