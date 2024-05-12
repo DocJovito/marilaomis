@@ -11,17 +11,17 @@ header('Content-Type: application/json');
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Retrieve all records
     if ($_GET['action'] === 'get_all') {
-        $stmt = $conn->prepare("SELECT * FROM tblperson");
+        $stmt = $conn->prepare("SELECT * FROM tblperson ORDER BY residentid desc");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($rows);
     }
 
     // Retrieve a single record by ID
-    if ($_GET['action'] === 'get_by_id' && isset($_GET['id'])) {
-        $id = $_GET['id'];
-        $stmt = $conn->prepare("SELECT * FROM tblperson WHERE id = ?");
-        $stmt->execute([$id]);
+    if ($_GET['action'] === 'get_by_id' && isset($_GET['residentid'])) {
+        $residentid = $_GET['residentid'];
+        $stmt = $conn->prepare("SELECT * FROM tblperson WHERE residentid = ?");
+        $stmt->execute([$residentid]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         echo json_encode($row);
     }
@@ -44,18 +44,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Create a new record
     if ($data['action'] === 'create') {
         try {
-            $residentid = $data['residentid'];
+
             $precinctid = $data['precinctid'];
             $lastname = $data['lastname'];
             $firstname = $data['firstname'];
             $middlename = $data['middlename'];
             $addressline1 = $data['addressline1'];
-            $baranggay = $data['baranggay'];
+            $barangay = $data['barangay'];
             $bday = $data['bday'];
 
-            $stmt = $conn->prepare("INSERT INTO tblperson (residentid, precinctid, lastname, firstname, middlename, addressline1, baranggay, bday) 
-                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$residentid, $precinctid, $lastname, $firstname, $middlename, $addressline1, $baranggay, $bday]);
+            $stmt = $conn->prepare("INSERT INTO tblperson (precinctid, lastname, firstname, middlename, addressline1, barangay, bday) 
+                                    VALUES (?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$precinctid, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday]);
 
             echo json_encode(array("message" => "Record created successfully"));
         } catch (PDOException $e) {
@@ -63,22 +63,66 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($data['action'] === 'update') {
         try {
-            $id = $data['id'];
             $residentid = $data['residentid'];
             $precinctid = $data['precinctid'];
             $lastname = $data['lastname'];
             $firstname = $data['firstname'];
             $middlename = $data['middlename'];
             $addressline1 = $data['addressline1'];
-            $baranggay = $data['baranggay'];
+            $barangay = $data['barangay'];
             $bday = $data['bday'];
 
-            $stmt = $conn->prepare("UPDATE tblperson SET residentid=?, precinctid=?, lastname=?, firstname=?, middlename=?, addressline1=?, baranggay=?, bday=? WHERE id=?");
-            $stmt->execute([$residentid, $precinctid, $lastname, $firstname, $middlename, $addressline1, $baranggay, $bday, $id]);
+            $stmt = $conn->prepare("UPDATE tblperson SET precinctid=?, lastname=?, firstname=?, middlename=?, addressline1=?, barangay=?, bday=? WHERE residentid=?");
+            $stmt->execute([$precinctid, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday, $residentid]);
 
             echo json_encode(array("message" => "Record updated successfully"));
         } catch (PDOException $e) {
             echo json_encode(array("error" => "Error updating record: " . $e->getMessage()));
+        }
+    } else if ($data['action'] === 'import' && isset($data['records']) && is_array($data['records'])) {
+        try {
+
+            $stmt = $conn->prepare("INSERT INTO tblperson (precinctid, lastname, firstname, middlename, addressline1, barangay, bday) 
+            VALUES (?, ?, ?, ?, ?, ?, ?)");
+
+            foreach ($data['records'] as $record) {
+                $precinctid = $record[0];  // Assuming the first column is precinctid
+                $lastname = $record[1];    // Assuming the second column is lastname
+                $firstname = $record[2];   // Assuming the third column is firstname
+                $middlename = $record[3];  // Assuming the fourth column is middlename
+                $addressline1 = $record[4]; // Assuming the fifth column is addressline1
+                $barangay = $record[5];    // Assuming the sixth column is barangay
+                $bday = $record[6];        // Assuming the seventh column is bday
+
+                $stmt->execute([$precinctid, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday]);
+            }
+
+            echo json_encode(array("success" => true, "message" => "Records imported successfully"));
+        } catch (PDOException $e) {
+            echo json_encode(array("successaaa" => false, "error" => "Error importing records: " . $e->getMessage()));
+        }
+    } else if ($data['action'] === 'import2' && isset($data['records']) && is_array($data['records'])) {
+        try {
+
+            $stmt = $conn->prepare("INSERT INTO tblperson (residentid,precinctid, lastname, firstname, middlename, addressline1, barangay, bday) 
+            VALUES (?, ?, ?, ?, ?, ?, ?,?)");
+
+            foreach ($data['records'] as $record) {
+                $residentid = $record[0];  // Assuming the first column is precinctid
+                $precinctid = $record[1];  // Assuming the first column is precinctid
+                $lastname = $record[2];    // Assuming the second column is lastname
+                $firstname = $record[3];   // Assuming the third column is firstname
+                $middlename = $record[4];  // Assuming the fourth column is middlename
+                $addressline1 = $record[5]; // Assuming the fifth column is addressline1
+                $barangay = $record[6];    // Assuming the sixth column is barangay
+                $bday = $record[7];        // Assuming the seventh column is bday
+
+                $stmt->execute([$resdientid, $precinctid, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday]);
+            }
+
+            echo json_encode(array("success" => true, "message" => "Records imported successfully"));
+        } catch (PDOException $e) {
+            echo json_encode(array("successaaa" => false, "error" => "Error importing records: " . $e->getMessage()));
         }
     } else {
         echo json_encode(array("error" => "Invalid action"));

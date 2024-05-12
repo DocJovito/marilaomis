@@ -1,7 +1,8 @@
 <template>
   <main>
     <div class="container">
-      <ImageUpload />
+
+      <br>
 
       <div class="jumbotron text-center">
         <h1 class="display-4">Marilao Municipality MIS</h1>

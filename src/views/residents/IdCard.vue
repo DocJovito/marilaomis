@@ -3,23 +3,29 @@
 
         <div class="row">
             <div class="card"
-                style="width:408px; height:224px; background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20210824/pngtree-yellow-green-background-stock-images-wallpaper-image_769660.jpg');">
+                style="width:350px; height:220px; background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20210824/pngtree-yellow-green-background-stock-images-wallpaper-image_769660.jpg');">
                 <div class="card-body">
                     <div class="row">
+                        <div class="col-3">
+                            <img src="@/assets/images/greenmarilao.png" alt="MIS" style="width:100%; height:100%;">
+                        </div>
+                        <div class="col-8">
+                            <h5 style="display: inline-block; vertical-align: top;">Marilao Resident ID</h5>
+                        </div>
+                    </div>
+                    <div class="row">
                         <!-- QR Code Section -->
-                        <div class="col-4">
+                        <div class="col-5">
                             <div id="qr">
-                                <img class="card-img-top" src="@/assets/images/greenmarilao.png" alt="MIS">
+
                                 <div v-if="residentID" class="mt-2">
                                     <qrcode-vue :value="residentID" style="width: 120px; height: 120px;" />
                                 </div>
                             </div>
                         </div>
-
                         <!-- Data Section -->
-                        <div class="col-8">
+                        <div class="col-7">
                             <div id="data">
-                                <h5>Marilao Resident ID</h5>
                                 <p>residentID: {{ residentID }}</p>
                                 <p>precinctID: {{ precinctID }}</p>
                                 <p>lastName: {{ lastName }}</p>
@@ -37,19 +43,19 @@
 
 
 
-            <div class="card" style="width:408px; height:224px;">
+            <div class="card" style="width:350px; height:220px;">
                 <!-- <img class="card-img-top" src="@/assets/images/greenmarilao.png" alt="MIS"> -->
                 <div class="card-body">
                     <h5 style="text-align: center;">ID Back</h5>
                     <ul>
-                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
-                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
-                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
-                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
-                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
-                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
-                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
-                        <li>Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias?</li>
+                        <li>Lorem ipsum dolor sit amet consectetur</li>
+                        <li>Lorem ipsum dolor sit amet consectetur</li>
+                        <li>Lorem ipsum dolor sit amet consectetur</li>
+                        <li>Lorem ipsum dolor sit amet consectetur</li>
+                        <li>Lorem ipsum dolor sit amet consectetur</li>
+                        <li>Lorem ipsum dolor sit amet consectetur</li>
+                        <li>Lorem ipsum dolor sit amet consectetur</li>
+                        <li>Lorem ipsum dolor sit amet consectetur</li>
                     </ul>
                     <p style="text-align: center;" class="mt-4">Signature</p>
                 </div>

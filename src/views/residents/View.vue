@@ -46,20 +46,24 @@
             </table>
         </div>
 
+
         <nav aria-label="Pagination" class="d-flex justify-content-center">
             <ul class="pagination">
                 <li class="page-item" :class="{ disabled: currentPage === 1 }">
-                    <button class="page-link" @click="currentPage -= 1">Previous</button>
+                    <button class="page-link" @click="currentPage = 1">First Page</button>
                 </li>
-                <li class="page-item" v-for="pageNumber in totalPages" :key="pageNumber"
-                    :class="{ active: pageNumber === currentPage }">
-                    <button class="page-link" @click="currentPage = pageNumber">{{ pageNumber }}</button>
+                <li class="page-item" :class="{ disabled: currentPage === 1 }">
+                    <button class="page-link" @click="currentPage -= 1">Previous</button>
                 </li>
                 <li class="page-item" :class="{ disabled: currentPage === totalPages }">
                     <button class="page-link" @click="currentPage += 1">Next</button>
                 </li>
+                <li class="page-item" :class="{ disabled: currentPage === totalPages }">
+                    <button class="page-link" @click="currentPage = totalPages">Last Page</button>
+                </li>
             </ul>
         </nav>
+
 
         <button class="btn btn-success" @click="exportexcel">Export to Excel</button>
         <button class="btn btn-danger" @click="readexcel">Import From Excel</button>
@@ -95,15 +99,11 @@ const selectResident = (resident) => {
     console.log(resident);
 };
 
-// onMounted(() => {
-//   fetch('http://localhost:3000/residents')
-//     // fetch('http://localhost:8080/marilaomis/backend/personapi.php?action=get_all')
-//     .then((res) => res.json())
-//     .then((json) => (residents.value = json))
-//     .catch((err) => console.log(err.message));
-// });
-
 onMounted(() => {
+    fetchData();
+});
+
+function fetchData() {
     axios.get('https://rjprint10.com/marilaomis/backend/personapi.php?action=get_all')
         .then((response) => {
             residents.value = response.data;
@@ -111,7 +111,7 @@ onMounted(() => {
         .catch((error) => {
             console.error('Error fetching data:', error);
         });
-});
+}
 
 //delete
 function deleterec(targetid) {
@@ -135,14 +135,14 @@ function deleterec(targetid) {
 
 function exportexcel() {
     const data = residents.value.map(resident => ({
-        'Resident ID': resident.residentid,
-        'Precinct ID': resident.precinctid,
-        'Last Name': resident.lastname,
-        'First Name': resident.firstname,
-        'Middle Name': resident.middlename,
-        'Address': resident.addressline1,
-        'Barangay': resident.barangay,
-        'Birthday': resident.bday
+        'residentid': resident.residentid,
+        'precintid': resident.precinctid,
+        'lastname': resident.lastname,
+        'firstname': resident.firstname,
+        'middlename': resident.middlename,
+        'addressline1': resident.addressline1,
+        'barangay': resident.barangay,
+        'bday': resident.bday
     }));
 
     const ws = XLSX.utils.json_to_sheet(data);
@@ -178,10 +178,33 @@ function handleFile(event) {
         const workbook = XLSX.read(data, { type: 'array' });
         const sheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[sheetName];
-        const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+        const excelData = XLSX.utils.sheet_to_json(worksheet, { header: 1, range: 'B2:' + worksheet['!ref'].split(':')[1] });
+        // const excelData = XLSX.utils.sheet_to_json(worksheet);
+
+        //test
         console.log('Excel data:', excelData);
+
+        //axios here
+        importExcel(excelData);
+
     };
     reader.readAsArrayBuffer(file);
+}
+
+
+function importExcel(excelData) {
+    axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', {
+        action: 'import',
+        records: excelData,
+    })
+        .then(response => {
+            // console.log('Import successful:', response.data.message);
+            fetchData();
+        })
+        .catch(error => {
+            console.error('Error importing CSV:', error);
+        });
+
 }
 
 
