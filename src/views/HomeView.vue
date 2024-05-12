@@ -1,6 +1,8 @@
 <template>
   <main>
     <div class="container">
+      <ImageUpload />
+
       <div class="jumbotron text-center">
         <h1 class="display-4">Marilao Municipality MIS</h1>
         <p class="lead">Welcome to the Marilao Municipality Management Information System.</p>
