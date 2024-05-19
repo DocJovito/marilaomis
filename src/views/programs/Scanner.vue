@@ -20,6 +20,10 @@ import jsQR from 'jsqr';
 import { useRoute } from 'vue-router'
 import axios from 'axios';
 
+import { useStore } from 'vuex';
+const store = useStore();
+const userId = store.state.userState[0].userID;
+
 //program variables
 const programid = ref("");
 const programname = ref("");

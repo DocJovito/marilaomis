@@ -69,6 +69,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (PDOException $e) {
             echo json_encode(array("error" => "Error updating program: " . $e->getMessage()));
         }
+    } else if ($data['action'] === 'get_programs') {
+        try {
+            $barangayscope = $data['barangayscope'];
+            // Check if barangayscope is "All"
+            if ($barangayscope === 'All') {
+                $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0");
+                $stmt->execute();
+            } else {
+                $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0 AND barangayscope LIKE ?");
+                $stmt->execute(["%{$barangayscope}%"]);
+            }
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode($rows);
+        } catch (PDOException $e) {
+            echo json_encode(array("error" => "Error updating user: " . $e->getMessage()));
+        }
     } else {
         echo json_encode(array("error" => "Invalid action"));
     }

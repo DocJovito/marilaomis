@@ -79,6 +79,11 @@ import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 
+import { useStore } from 'vuex';
+const store = useStore();
+const address = store.state.userState[0].address;
+
+
 const programs = ref([]);
 const pageSize = 5;
 const currentPage = ref(1);
@@ -95,7 +100,11 @@ onMounted(() => {
 });
 
 const fetchPrograms = () => {
-    axios.get('https://rjprint10.com/marilaomis/backend/programapi.php?action=get_all')
+    const data = {
+        action: 'get_programs',
+        barangayscope: address
+    }
+    axios.post('https://rjprint10.com/marilaomis/backend/programapi.php', data)
         .then((response) => {
             programs.value = response.data;
         })

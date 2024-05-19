@@ -19,14 +19,14 @@
                             <div id="qr">
 
                                 <div v-if="residentID" class="mt-2">
-                                    <qrcode-vue :value="residentID" style="width: 120px; height: 120px;" />
+                                    <qrcode-vue :value="hResidentID" style="width: 120px; height: 120px;" />
                                 </div>
                             </div>
                         </div>
                         <!-- Data Section -->
                         <div class="col-7">
                             <div id="data">
-                                <p>residentID: {{ residentID }}</p>
+                                <p>Resident Number: {{ residentID }}</p>
                                 <p>precinctID: {{ precinctID }}</p>
                                 <p>lastName: {{ lastName }}</p>
                                 <p>firstName: {{ firstName }}</p>
@@ -91,6 +91,8 @@ const address = ref('');
 const barangay = ref('');
 const birthday = ref('');
 
+const hResidentID = ref('');
+
 //use route to get target id from params
 const route = useRoute();
 residentID.value = route.params.residentid;
@@ -109,6 +111,8 @@ onMounted(() => {
             address.value = residents.value.addressline1;
             barangay.value = residents.value.barangay;
             birthday.value = residents.value.bday;
+
+            hResidentID.value = myhash(residents.value.residentid);
         })
         .catch((error) => {
             console.error('Error fetching data:', error);
@@ -128,6 +132,16 @@ function printID() {
 //     window.print();
 //     document.body.innerHTML = originalContents;
 // }
+
+function myhash(text) {
+    let base64Encoded = btoa(text).slice(0, 14);
+    while (base64Encoded.length < 14) {
+        base64Encoded += '=';
+    }
+    return base64Encoded;
+}
+
+
 
 </script>
 

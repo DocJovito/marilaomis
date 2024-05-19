@@ -14,7 +14,7 @@ const router = createRouter({
       path: "/about",
       name: "about",
       component: () => import("@/views/AboutView.vue"),
-      meta: { requiresAuth: true } // Indicate that this route requires authentication
+      meta: { requiresAuth: true }, // Indicate that this route requires authentication
     },
     {
       path: "/residents/view",
@@ -99,7 +99,7 @@ router.beforeEach((to, from, next) => {
     // Check if the user is authenticated
     if (!store.state.isAuthenticated) {
       // If not authenticated, redirect to login page
-      next('/login');
+      next("/login");
     } else {
       // If authenticated, proceed to the requested route
       next();
