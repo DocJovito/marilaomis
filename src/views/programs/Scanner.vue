@@ -155,7 +155,7 @@ const toggleCamera = async () => {
                     });
 
                     if (code) {
-                        scannedOutput.value = code.data;
+                        scannedOutput.value = unHash(code.data);
                     }
 
                     if (cameraActive.value) {
@@ -210,5 +210,18 @@ function getProgram() {
         .catch(error => {
             console.error('Error fetching program data:', error);
         });
+}
+
+
+function unHash(hashed) {
+    // Remove any padding before decoding
+    let unpaddedHash = hashed.replace(/=+$/, '');
+    // Decode from Base64
+    try {
+        return atob(unpaddedHash);
+    } catch (e) {
+        console.error('Error decoding from Base64:', e);
+        return '';
+    }
 }
 </script>
