@@ -22,7 +22,6 @@
                 Users
               </RouterLink>
             </li>
-
             <li class="nav-item">
               <RouterLink v-if="userLevel === 'Admin' || userLevel === 'Municipal Staff'" to="/residents/view"
                 active-class="active-link" class="nav-link">Residents</RouterLink>
@@ -56,9 +55,11 @@ import { useStore } from 'vuex';
 
 //jovy
 const store = useStore();
-const userId = store.state.userState[0].userID;
-const userLevel = store.state.userState[0].userLevel;
-
+// const userId = store.state.userState[0].userID;
+// const userLevel = store.state.userState[0].userLevel;
+const userId = localStorage.getItem('userid');
+const userLevel = localStorage.getItem('usertype');
+const userName = localStorage.getItem('name');
 
 // Check if user is logged in
 const isLoggedIn = store.state.isAuthenticated;

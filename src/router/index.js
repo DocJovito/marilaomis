@@ -9,6 +9,7 @@ const router = createRouter({
       path: "/",
       name: "home",
       component: HomeView,
+      meta: { requiresAuth: true },
     },
     {
       path: "/about",
@@ -60,6 +61,7 @@ const router = createRouter({
       path: "/programs/view",
       name: "programview",
       component: () => import("@/views/programs/View.vue"),
+      meta: { requiresAuth: true },
     },
     {
       path: "/programs/create",
@@ -95,9 +97,11 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from, next) => {
+  const token = localStorage.getItem('token');
+
   if (to.meta.requiresAuth) {
-    // Check if the user is authenticated
-    if (!store.state.isAuthenticated) {
+    // Check if the user is authenticated (i.e., token exists)
+    if (!token) {
       // If not authenticated, redirect to login page
       next("/login");
     } else {
