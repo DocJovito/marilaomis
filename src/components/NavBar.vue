@@ -36,6 +36,7 @@
           </ul>
           <!-- Right-aligned navbar links -->
           <ul class="navbar-nav ms-auto">
+            <li class="nav-link">Welcome User : {{ userName }}</li>
             <li v-if="userId === '111'" class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/login">Log In</RouterLink>
             </li>
@@ -55,11 +56,9 @@ import { useStore } from 'vuex';
 
 //jovy
 const store = useStore();
-// const userId = store.state.userState[0].userID;
-// const userLevel = store.state.userState[0].userLevel;
-const userId = localStorage.getItem('userid');
-const userLevel = localStorage.getItem('usertype');
-const userName = localStorage.getItem('name');
+const userId = store.state.userState[0].userID;
+const userLevel = store.state.userState[0].userLevel;
+const userName = store.state.userState[0].name;
 
 // Check if user is logged in
 const isLoggedIn = store.state.isAuthenticated;
