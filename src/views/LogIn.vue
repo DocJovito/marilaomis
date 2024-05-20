@@ -43,7 +43,9 @@ function login() {
   const data = {
     action: 'login',
     email: email.value,
-    password: password.value
+    password: password.value,
+    userid: "0",
+    address: "address"
   };
 
   axios.post('https://rjprint10.com/marilaomis/backend/loginapi.php', data)
@@ -56,6 +58,9 @@ function login() {
       localStorage.setItem('token', currentuser.value.token);
       localStorage.setItem('name', currentuser.value.user.name);
       localStorage.setItem('usertype', currentuser.value.user.usertype);
+      localStorage.setItem('email', currentuser.value.user.email);
+      localStorage.setItem('userid', currentuser.value.user.userid);
+      localStorage.setItem('address', currentuser.value.user.address);
 
       if (currentuser.value.token) {
         alert("Log in successful");

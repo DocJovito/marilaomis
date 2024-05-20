@@ -13,3 +13,26 @@ try {
     echo 'Connection failed: ' . $e->getMessage();
     die();
 }
+
+function authenticateUser($email, $password)
+{
+    global $conn;
+
+    $stmt = $conn->prepare("SELECT * FROM tbluser WHERE email = ? AND password = ?");
+    $stmt->execute([$email, $password]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    // Check if a user was found
+    if ($user) {
+        // Return the user's data, including name and usertype
+        return array(
+            "name" => $user['name'],
+            "email" => $user['email'],
+            "usertype" => $user['usertype']
+            // Add more fields as needed
+        );
+    } else {
+        // Return false if no user was found
+        return false;
+    }
+}
