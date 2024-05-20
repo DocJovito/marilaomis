@@ -21,6 +21,7 @@ const router = createRouter({
       path: "/residents/view",
       name: "view",
       component: () => import("@/views/residents/View.vue"),
+      meta: { requiresAuth: true },
     },
     {
       path: "/residents/create",
@@ -46,6 +47,7 @@ const router = createRouter({
       path: "/users/view",
       name: "userview",
       component: () => import("@/views/users/View.vue"),
+      meta: { requiresAuth: true },
     },
     {
       path: "/users/create",
