@@ -62,7 +62,7 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 const residents = ref([]);
 
@@ -80,6 +80,9 @@ const birthday = ref('');
 const route = useRoute();
 residentid.value = route.params.residentid;
 console.log(route.params.residentid);
+
+// Define router object
+const router = useRouter();
 
 onMounted(() => {
     axios.get(`https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_id&residentid=` + residentid.value)
@@ -116,6 +119,7 @@ const UpdateRecord = () => {
     axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', newRecord)
         .then(response => {
             console.log('Record saved successfully:', response.data);
+            router.push('/residents/view');
         })
         .catch(error => {
             console.error('Error saving record:', error);

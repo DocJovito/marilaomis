@@ -68,9 +68,6 @@
         <button class="btn btn-success" @click="exportexcel">Export to Excel</button>
         <button class="btn btn-danger" @click="readexcel">Import From Excel</button>
     </div>
-
-
-
 </template>
 
 <script setup>
@@ -78,6 +75,7 @@ import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
+import { useStore } from 'vuex';
 
 const targetid = ref('');
 const targetRecord = ref('');
@@ -87,6 +85,9 @@ const residents = ref([]);
 const pageSize = 5;
 const currentPage = ref(1);
 
+const store = useStore();
+const address = computed(() => store.state.user.address);
+
 const paginatedResidents = computed(() => {
     const startIndex = (currentPage.value - 1) * pageSize;
     return residents.value.slice(startIndex, startIndex + pageSize);
@@ -95,23 +96,25 @@ const paginatedResidents = computed(() => {
 const totalPages = computed(() => Math.ceil(residents.value.length / pageSize));
 
 //select
-const selectResident = (resident) => {
-    console.log(resident);
-};
-
-onMounted(() => {
-    fetchData();
-});
-
-function fetchData() {
-    axios.get('https://rjprint10.com/marilaomis/backend/personapi.php?action=get_all')
+const fetchResident = () => {
+    const data = {
+        action: 'get_resident',
+        barangayscope: address.value,
+    };
+    // console.log('Value of address.value:', address.value); // Log the value of address.value
+    // console.log('Fetching residents for barangayscope:', data.barangayscope); 
+    axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', data)
         .then((response) => {
             residents.value = response.data;
         })
         .catch((error) => {
             console.error('Error fetching data:', error);
         });
-}
+};
+
+onMounted(() => {
+    fetchResident();
+});
 
 //delete
 function deleterec(targetid) {

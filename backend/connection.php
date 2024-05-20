@@ -28,7 +28,9 @@ function authenticateUser($email, $password)
         return array(
             "name" => $user['name'],
             "email" => $user['email'],
-            "usertype" => $user['usertype']
+            "usertype" => $user['usertype'],
+            "userid" => $user['userid'],
+            "address" => $user['address']
             // Add more fields as needed
         );
     } else {
