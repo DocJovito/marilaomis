@@ -29,15 +29,11 @@
             <li class="nav-item">
               <RouterLink to="/programs/view" active-class="active-link" class="nav-link">Programs</RouterLink>
             </li>
-            <!-- Add Log In link -->
-            <li v-if="!isLoggedIn" class="nav-item">
-              <RouterLink to="/login" active-class="active-link" class="nav-link">Log In</RouterLink>
-            </li>
           </ul>
           <!-- Right-aligned navbar links -->
           <ul class="navbar-nav ms-auto">
             <li class="nav-link">Welcome User : {{ userName }}</li>
-            <li v-if="userId === '111'" class="nav-item">
+            <li v-if="userId < 1" class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/login">Log In</RouterLink>
             </li>
             <li v-else class="nav-item">
