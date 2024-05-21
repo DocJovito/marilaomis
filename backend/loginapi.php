@@ -25,10 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Send success response with token and user data
                 $userData = array(
                     "name" => $user['name'],
-                    "usertype" => $user['usertype']
+                    "email" => $user['email'],
+                    "usertype" => $user['usertype'],
+                    "userid" => $user['userid'],
+                    "address" => $user['address']
                 );
                 echo json_encode(array("token" => $token, "user" => $userData));
-                error_log("Received email: $email, Password: $password, password Correct, Name: {$user['name']}, Usertype: {$user['usertype']}");
+                error_log("Received email: $email, Password: $password, password Correct, Name: {$user['name']}, Usertype: {$user['usertype']}, userid: {$user['userid']}, address: {$user['address']}");
             } else {
                 // Authentication failed
                 echo json_encode(array("error" => "Invalid email or password"));

@@ -1,7 +1,8 @@
 <template>
-    <div>
-      <h1>Log Out Success</h1>
-      <p>Logged out as {{ userName }}</p>
+    <div class="not-authorized">
+      <h1>Not Authorized</h1>
+      <p>You do not have permission to access this page.</p>
+      <RouterLink to="/views/LogIn.vue">LogIn</RouterLink>
     </div>
   </template>
   
@@ -15,8 +16,6 @@
   const userName = computed(() => store.state.user.name);
   
   onMounted(() => {
-    store.dispatch('logOut');
-  
     localStorage.removeItem('token');
     localStorage.removeItem('userid');
     localStorage.removeItem('email');
@@ -29,8 +28,15 @@
   
     // Use setTimeout to ensure the state is updated before navigating
     setTimeout(() => {
-      router.push('/login');
+      router.push('/not-authorized');
     }, 0);
   });
   </script>
+  
+  <style scoped>
+  .logout-success {
+    text-align: center;
+    margin-top: 50px;
+  }
+  </style>
   

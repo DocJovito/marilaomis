@@ -11,24 +11,15 @@
         <input type="text" class="form-control" id="description" v-model="newProgram.description" required>
       </div>
       <div class="mb-3">
-        <label for="barangayScope" class="form-label">Barangay Scope</label>
-        <div class="dropdown">
-          <button class="btn btn-success dropdown-toggle" type="button" id="barangayDropdown" data-bs-toggle="dropdown"
-            aria-expanded="false">
-            Select
-          </button>
-          <ul class="dropdown-menu" aria-labelledby="barangayDropdown">
-            <li v-for="barangay in barangays" :key="barangay">
+        <div class="form-group">
+          <label for="barangayScope">Barangay Scope:</label><br>
+          <div class="row">
+            <div class="col-md-3" v-for="barangay in barangays" :key="barangay">
               <label>
-                <input type="checkbox" :value="barangay" v-model="selectedBarangays">
-                {{ barangay }}
+                <input type="checkbox" :value="barangay" v-model="selectedBarangays"> {{ barangay }}
               </label>
-            </li>
-          </ul>
-        </div>
-        <label for="selectedBarangays" class="form-label">Selected Barangays:</label>
-        <div id="selectedBarangays">
-          {{ selectedBarangays.join(', ') }}
+            </div>
+          </div>
         </div>
       </div>
       <div class="mb-3">
@@ -37,18 +28,15 @@
       </div>
       <div class="mb-3">
         <label for="isActive" class="form-label">Is Active</label>
-        <select class="form-select" id="isActive" v-model="newProgram.isactive" required>
-          <option value="1">Yes</option>
-          <option value="0">No</option>
-        </select>
+        <input type="text" class="form-control" id="isActive" :value= "isActiveValue" disabled>
       </div>
       <div class="mb-3">
         <label for="createdBy" class="form-label">Created By</label>
-        <input type="text" class="form-control" id="createdBy" v-model="newProgram.createdby" required>
+        <input type="text" class="form-control" id="createdBy" :value= userName disabled>
       </div>
       <div class="mb-3">
         <label for="createdAt" class="form-label">Created At</label>
-        <input type="date" class="form-control" id="createdAt" v-model="newProgram.createdat" required>
+        <input type="date" class="form-control" id="createdAt" v-model="newProgram.createdat" disabled>
       </div>
       <button type="submit" class="btn btn-primary">Create Program</button>
     </form>
@@ -56,14 +44,25 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
 import axios from 'axios';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
 
-//jovy
+const isActiveValue = "Yes"; // it is for isActive
+
+// Function to get current date in YYYY-MM-DD format
+function getCurrentDate() {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
 const store = useStore();
-const userId = store.state.userState[0].userID;
+const userId = computed(() => store.state.user.id);
+const userName = computed(() => store.state.user.name);
 
 const selectedBarangays = ref([]);
 const barangays = [
@@ -89,15 +88,18 @@ const newProgram = ref({
   programname: '',
   description: '',
   barangayscope: '',
-  eventDate: '',
-  isactive: '',
-  createdby: userId,
-  createdat: ''
+  eventDate: getCurrentDate(),
+  isactive: '1',  // wala na
+  createdby: '',
+  createdat: getCurrentDate()  // wala na
 });
 
 const router = useRouter();
 
 const createProgram = () => {
+  // Ensure userId.value is used to capture the current userId value
+  newProgram.value.createdby = userId.value;
+
   const programData = {
     action: 'create',
     ...newProgram.value,

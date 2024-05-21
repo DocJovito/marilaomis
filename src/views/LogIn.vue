@@ -31,47 +31,51 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router'; // Import the useRouter function from Vue Router
+import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 
 const email = ref('');
 const password = ref('');
-const router = useRouter(); // Initialize the router object
+const router = useRouter();
+const store = useStore();
 
-const currentuser = ref([]);
-
-function login() {
+const login = () => {
   const data = {
     action: 'login',
     email: email.value,
-    password: password.value,
-    userid: "0",
-    address: "address"
+    password: password.value
   };
 
   axios.post('https://rjprint10.com/marilaomis/backend/loginapi.php', data)
     .then(response => {
-      currentuser.value = response.data;
-
-      console.log("Response Data:", response.data);
+      const user = response.data.user;
+      store.dispatch('logIn', {
+        id: user.userid,
+        email: user.email,
+        userType: user.usertype,
+        name: user.name,
+        address: user.address,
+        token: response.data.token
+      });
 
       // Save user data in local storage
-      localStorage.setItem('token', currentuser.value.token);
-      localStorage.setItem('name', currentuser.value.user.name);
-      localStorage.setItem('usertype', currentuser.value.user.usertype);
-      localStorage.setItem('email', currentuser.value.user.email);
-      localStorage.setItem('userid', currentuser.value.user.userid);
-      localStorage.setItem('address', currentuser.value.user.address);
+      localStorage.setItem('token', response.data.token);
+      localStorage.setItem('userid', user.userid);
+      localStorage.setItem('email', user.email);
+      localStorage.setItem('usertype', user.usertype);
+      localStorage.setItem('name', user.name);
+      localStorage.setItem('address', user.address);
 
-      if (currentuser.value.token) {
-        alert("Log in successful");
-        router.push('/'); // Redirect to the residents view upon successful login
+      if (response.data.token) {
+        alert('Log in successful');
+        router.push('/');
       } else {
-        alert("Invalid email or password");
+        alert('Invalid email or password');
       }
     })
     .catch(error => {
       console.error(error);
-      alert("Error logging in");
+      alert('Error logging in');
     });
-}
+};
 </script>

@@ -19,7 +19,7 @@
           <select id="usertype" class="form-control" v-model="usertype">
             <option value="Admin">Admin</option>
             <option value="Municipal Staff">Municipal Staff</option>
-            <option value="Area Leader">Mother Leader</option>
+            <option value="Area Leader">Area Leader</option>
             <!-- Add more options as needed -->
           </select>
         </div>
