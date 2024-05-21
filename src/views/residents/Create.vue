@@ -84,10 +84,10 @@ const saveRecord = () => {
     const newRecord = {
         action: 'create',
         precinctid: precinctID.value,
-        lastname: lastName.value,
-        firstname: firstName.value,
+        lastname: myHash(lastName.value),
+        firstname: myHash(firstName.value),
         middlename: middleName.value,
-        addressline1: address.value,
+        addressline1: myHash(address.value),
         barangay: barangay.value,
         bday: birthday.value
     };
@@ -107,6 +107,22 @@ const saveRecord = () => {
 const closeModal = () => {
 
 };
+
+
+function myHash(text) {
+    let base64Encoded = btoa(text);
+    return base64Encoded;
+}
+
+function unHash(hashed) {
+    try {
+        return atob(hashed);
+    } catch (e) {
+        console.error('Error decoding from Base64:', e);
+        return '';
+    }
+}
+
 </script>
 
 <style>

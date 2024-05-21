@@ -24,10 +24,10 @@
                         <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
                         <td>{{ resident.residentid }}</td>
                         <td>{{ resident.precinctid }}</td>
-                        <td>{{ resident.lastname }}</td>
-                        <td>{{ resident.firstname }}</td>
+                        <td>{{ unHash(resident.lastname) }}</td>
+                        <td>{{ unHash(resident.firstname) }}</td>
                         <td>{{ resident.middlename }}</td>
-                        <td>{{ resident.addressline1 }}</td>
+                        <td>{{ unHash(resident.addressline1) }}</td>
                         <td>{{ resident.barangay }}</td>
                         <td>{{ resident.bday }}</td>
                         <td>
@@ -207,6 +207,20 @@ function importExcel(excelData) {
 
 }
 
+
+function myHash($text) {
+    $base64Encoded = base64_encode($text);
+    return $base64Encoded;
+}
+
+function unHash(hashed) {
+    try {
+        return atob(hashed);
+    } catch (e) {
+        console.error('Error decoding from Base64:', e);
+        return '';
+    }
+}
 
 </script>
 

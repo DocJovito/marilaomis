@@ -87,10 +87,10 @@ onMounted(() => {
             residents.value = response.data;
             residentid.value = residents.value.residentid;
             precinctID.value = residents.value.precinctid;
-            lastName.value = residents.value.lastname;
-            firstName.value = residents.value.firstname;
+            lastName.value = unHash(residents.value.lastname);
+            firstName.value = unHash(residents.value.firstname);
             middleName.value = residents.value.middlename;
-            address.value = residents.value.addressline1;
+            address.value = unHash(residents.value.addressline1);
             barangay.value = residents.value.barangay;
             birthday.value = residents.value.bday;
         })
@@ -104,10 +104,10 @@ const UpdateRecord = () => {
         action: 'update',
         residentid: residentid.value,
         precinctid: precinctID.value,
-        lastname: lastName.value,
-        firstname: firstName.value,
+        lastname: myHash(lastName.value),
+        firstname: myHash(firstName.value),
         middlename: middleName.value,
-        addressline1: address.value,
+        addressline1: myHash(address.value),
         barangay: barangay.value,
         bday: birthday.value,
 
@@ -124,6 +124,20 @@ const UpdateRecord = () => {
 
 function loadSelect() {
 
+}
+
+function myHash(text) {
+    let base64Encoded = btoa(text);
+    return base64Encoded;
+}
+
+function unHash(hashed) {
+    try {
+        return atob(hashed);
+    } catch (e) {
+        console.error('Error decoding from Base64:', e);
+        return '';
+    }
 }
 </script>
 

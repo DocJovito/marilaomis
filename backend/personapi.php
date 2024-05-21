@@ -7,6 +7,15 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE");
 header("Access-Control-Allow-Headers: Content-Type");
 header('Content-Type: application/json');
 
+function myHash($text)
+{
+    $base64Encoded = substr(base64_encode($text), 0, 14);
+    while (strlen($base64Encoded) < 14) {
+        $base64Encoded .= '=';
+    }
+    return $base64Encoded;
+}
+
 // Handle GET requests
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Retrieve all records
@@ -87,10 +96,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             foreach ($data['records'] as $record) {
                 $precinctid = $record[0];  // Assuming the first column is precinctid
-                $lastname = $record[1];    // Assuming the second column is lastname
-                $firstname = $record[2];   // Assuming the third column is firstname
+                $lastname = myHash($record[1]);    // Apply myHash to lastname
+                $firstname = myHash($record[2]);   // Apply myHash to firstname
                 $middlename = $record[3];  // Assuming the fourth column is middlename
-                $addressline1 = $record[4]; // Assuming the fifth column is addressline1
+                $addressline1 = myHash($record[4]); // Apply myHash to addressline1
                 $barangay = $record[5];    // Assuming the sixth column is barangay
                 $bday = $record[6];        // Assuming the seventh column is bday
 
@@ -101,28 +110,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (PDOException $e) {
             echo json_encode(array("successaaa" => false, "error" => "Error importing records: " . $e->getMessage()));
         }
-    } else if ($data['action'] === 'import2' && isset($data['records']) && is_array($data['records'])) {
+    } elseif ($data['action'] === 'get_resident') {
         try {
-
-            $stmt = $conn->prepare("INSERT INTO tblperson (residentid,precinctid, lastname, firstname, middlename, addressline1, barangay, bday) 
-            VALUES (?, ?, ?, ?, ?, ?, ?,?)");
-
-            foreach ($data['records'] as $record) {
-                $residentid = $record[0];  // Assuming the first column is precinctid
-                $precinctid = $record[1];  // Assuming the first column is precinctid
-                $lastname = $record[2];    // Assuming the second column is lastname
-                $firstname = $record[3];   // Assuming the third column is firstname
-                $middlename = $record[4];  // Assuming the fourth column is middlename
-                $addressline1 = $record[5]; // Assuming the fifth column is addressline1
-                $barangay = $record[6];    // Assuming the sixth column is barangay
-                $bday = $record[7];        // Assuming the seventh column is bday
-
-                $stmt->execute([$resdientid, $precinctid, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday]);
+            $barangayscope = $data['barangayscope'];
+            error_log('Fetching residents for barangayscope: ' . $barangayscope);
+            // Check if barangayscope is "All"
+            if ($barangayscope === 'All') {
+                $stmt = $conn->prepare("SELECT * FROM tblperson ORDER BY barangay");
+                $stmt->execute();
+            } else {
+                $stmt = $conn->prepare("SELECT * FROM tblperson WHERE barangay LIKE ?");
+                $stmt->execute(["%{$barangayscope}%"]);
             }
-
-            echo json_encode(array("success" => true, "message" => "Records imported successfully"));
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode($rows);
         } catch (PDOException $e) {
-            echo json_encode(array("successaaa" => false, "error" => "Error importing records: " . $e->getMessage()));
+            echo json_encode(array("error" => "Error fetching residents: " . $e->getMessage()));
         }
     } else {
         echo json_encode(array("error" => "Invalid action"));
