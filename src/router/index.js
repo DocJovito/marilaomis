@@ -125,10 +125,12 @@ router.beforeEach((to, from, next) => {
       next('/login');
     } else if (userType === 'Admin') {
       next(); // Admin can access all routes
-    } else if (userType === 'Municipal Staff' && !to.meta.restrictedTo.includes('Municipal Staff')) {
-      next('/not-authorized'); // Redirect if Municipal Staff tries to access restricted routes
-    } else if (userType === 'Area Leader' && !to.meta.restrictedTo.includes('Area Leader')) {
-      next('/not-authorized'); // Redirect if Area Leader tries to access restricted routes
+    } else if (to.meta.restrictedTo && !to.meta.restrictedTo.includes(userType)) {
+      next('/not-authorized');
+      // } else if (userType === 'Municipal Staff' && !to.meta.restrictedTo.includes('Municipal Staff')) {
+      //   next('/not-authorized'); // Redirect if Municipal Staff tries to access restricted routes
+      // } else if (userType === 'Area Leader' && !to.meta.restrictedTo.includes('Area Leader')) {
+      //   next('/not-authorized'); // Redirect if Area Leader tries to access restricted routes
     } else {
       next(); // Proceed if user has access to the route
     }
