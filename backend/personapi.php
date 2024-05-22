@@ -9,12 +9,16 @@ header('Content-Type: application/json');
 
 function myHash($text)
 {
-    $base64Encoded = substr(base64_encode($text), 0, 14);
-    while (strlen($base64Encoded) < 14) {
-        $base64Encoded .= '=';
-    }
+    $base64Encoded = base64_encode($text);
     return $base64Encoded;
 }
+
+function unHash($encodedText)
+{
+    $decodedText = base64_decode($encodedText);
+    return $decodedText;
+}
+
 
 // Handle GET requests
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
@@ -88,6 +92,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (PDOException $e) {
             echo json_encode(array("error" => "Error updating record: " . $e->getMessage()));
         }
+    } elseif ($data['action'] === 'delete') {
+        try {
+            $residentid = $data['residentid'];
+
+            $stmt = $conn->prepare("UPDATE tblperson SET isdeleted=1 WHERE residentid=?");
+            $stmt->execute([$residentid]);
+
+            echo json_encode(array("message" => "Record updated successfully"));
+        } catch (PDOException $e) {
+            echo json_encode(array("error" => "Error updating record: " . $e->getMessage()));
+        }
     } else if ($data['action'] === 'import' && isset($data['records']) && is_array($data['records'])) {
         try {
 
@@ -116,10 +131,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             error_log('Fetching residents for barangayscope: ' . $barangayscope);
             // Check if barangayscope is "All"
             if ($barangayscope === 'All') {
-                $stmt = $conn->prepare("SELECT * FROM tblperson ORDER BY barangay");
+                $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = false ORDER BY residentid desc");
                 $stmt->execute();
             } else {
-                $stmt = $conn->prepare("SELECT * FROM tblperson WHERE barangay LIKE ?");
+                $stmt = $conn->prepare("SELECT * FROM tblperson WHERE barangay LIKE ? ");
                 $stmt->execute(["%{$barangayscope}%"]);
             }
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);

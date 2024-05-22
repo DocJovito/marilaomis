@@ -28,11 +28,11 @@
       </div>
       <div class="mb-3">
         <label for="isActive" class="form-label">Is Active</label>
-        <input type="text" class="form-control" id="isActive" :value= "isActiveValue" disabled>
+        <input type="text" class="form-control" id="isActive" :value="isActiveValue" disabled>
       </div>
       <div class="mb-3">
         <label for="createdBy" class="form-label">Created By</label>
-        <input type="text" class="form-control" id="createdBy" :value= userName disabled>
+        <input type="text" class="form-control" id="createdBy" :value=userName disabled>
       </div>
       <div class="mb-3">
         <label for="createdAt" class="form-label">Created At</label>

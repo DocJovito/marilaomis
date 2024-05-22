@@ -3,6 +3,7 @@
         <p>Resident Management</p>
         <RouterLink to="/residents/create" class="btn btn-success ">Add Resident</RouterLink>
 
+
         <div class="table-responsive">
             <table class="table table-hover ">
                 <thead>
@@ -38,7 +39,8 @@
                             <RouterLink :to="'/residents/' + resident.residentid + '/idcard'" class="btn btn-primary">
                                 Print
                             </RouterLink>
-                            <RouterLink to="/" class="btn btn-danger" @:click="deleterec(resident.residentid)">Delete
+                            <RouterLink to="/residents/view" class="btn btn-danger"
+                                @:click="deleterec(resident.residentid)">Delete
                             </RouterLink>
                         </td>
                     </tr>
@@ -101,8 +103,6 @@ const fetchResident = () => {
         action: 'get_resident',
         barangayscope: address.value,
     };
-    // console.log('Value of address.value:', address.value); // Log the value of address.value
-    // console.log('Fetching residents for barangayscope:', data.barangayscope); 
     axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', data)
         .then((response) => {
             residents.value = response.data;
@@ -119,15 +119,15 @@ onMounted(() => {
 //delete
 function deleterec(targetid) {
     if (confirm("Are you sure you want to delete this data?")) {
-        const targetRecord = {
+        const data = {
             action: 'delete',
-            residentid: targetid
+            residentid: targetid,
         };
-        axios.delete(`https://rjprint10.com/marilaomis/backend/personapi.php`, { data: targetRecord })
+        axios.post(`https://rjprint10.com/marilaomis/backend/personapi.php`, data)
             .then(response => {
                 console.log('Record Delete Successfully:', response.data);
                 alert("Record Deleted");
-
+                fetchResident();
             })
             .catch(error => {
                 console.error('Error deleting record:', error);
@@ -140,10 +140,10 @@ function exportexcel() {
     const data = residents.value.map(resident => ({
         'residentid': resident.residentid,
         'precintid': resident.precinctid,
-        'lastname': resident.lastname,
-        'firstname': resident.firstname,
+        'lastname': unHash(resident.lastname),
+        'firstname': unHash(resident.firstname),
         'middlename': resident.middlename,
-        'addressline1': resident.addressline1,
+        'addressline1': unHash(resident.addressline1),
         'barangay': resident.barangay,
         'bday': resident.bday
     }));
@@ -202,7 +202,7 @@ function importExcel(excelData) {
     })
         .then(response => {
             // console.log('Import successful:', response.data.message);
-            fetchData();
+            fetchResident();
         })
         .catch(error => {
             console.error('Error importing CSV:', error);

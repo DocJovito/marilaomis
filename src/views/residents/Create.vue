@@ -70,6 +70,9 @@
 <script setup>
 import { ref } from 'vue';
 import axios from 'axios';
+import { useRouter } from 'vue-router';
+
+const router = useRouter();
 
 const residentID = ref('');
 const precinctID = ref('');
@@ -98,6 +101,7 @@ const saveRecord = () => {
         .then(response => {
             console.log('Record saved successfully:', response.data);
             closeModal();
+            router.push('/residents/view');
         })
         .catch(error => {
             console.error('Error saving record:', error);
