@@ -27,7 +27,7 @@
                         <div class="col-7">
                             <div id="data">
                                 <p>Resident Number: {{ residentID }}</p>
-                                <p>precinctID: {{ precinctID }}</p>
+                                <p>precintID: {{ precintID }}</p>
                                 <p>lastName: {{ lastName }}</p>
                                 <p>firstName: {{ firstName }}</p>
                                 <p>middleName: {{ middleName }}</p>
@@ -83,7 +83,7 @@ const residents = ref([]);
 
 const id = ref('');
 const residentID = ref('');
-const precinctID = ref('');
+const precintID = ref('');
 const lastName = ref('');
 const firstName = ref('');
 const middleName = ref('');
@@ -104,7 +104,7 @@ onMounted(() => {
             residents.value = response.data;
             id.value = residents.value.id;
             residentID.value = residents.value.residentid;
-            precinctID.value = residents.value.precinctid;
+            precintID.value = residents.value.precintid;
             lastName.value = residents.value.lastname;
             firstName.value = residents.value.firstname;
             middleName.value = residents.value.middlename;

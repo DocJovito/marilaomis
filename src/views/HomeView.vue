@@ -3,7 +3,6 @@
     <div class="container">
 
 
-
       <br>
 
       <div class="jumbotron text-center">
@@ -62,6 +61,8 @@ import { ref } from 'vue';
 import TestComp from '@/components/TestComp.vue';
 import QrScanner from '@/components/QrScanner.vue';
 import TestStore from '@/components/TestStore.vue';
+import TestEncrypt from '@/components/TestEncrypt.vue';
+
 
 const inputValue = ref('');
 

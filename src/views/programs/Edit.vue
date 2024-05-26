@@ -3,39 +3,49 @@
     <div class="card">
       <div class="card-header">
         <h4>Edit Program</h4>
+
       </div>
       <div class="card-body">
-        <div class="form-group">
-          <label for="programName">Program Name:</label><br>
-          <input type="text" id="programName" class="form-control" v-model="program.programname">
-        </div>
-        <div class="form-group">
-          <label for="description">Description:</label><br>
-          <textarea id="description" class="form-control" rows="3" v-model="program.description"></textarea>
-        </div>
-        <div class="form-group">
-          <label for="barangayScope">Barangay Scope:</label><br>
-          <div class="row">
-            <div class="col-md-3" v-for="barangay in barangays" :key="barangay">
-              <label>
-                <input type="checkbox" :value="barangay" v-model="selectedBarangays"> {{ barangay }}
-              </label>
+        <form @submit.prevent="updateProgram">
+          <div class="form-group">
+            <label for="programName">Program Name:</label><br>
+            <input type="text" id="programName" class="form-control" v-model="program.programname" required>
+          </div>
+          <div class="form-group">
+            <label for="description">Description:</label><br>
+            <textarea id="description" class="form-control" rows="3" v-model="program.description" required></textarea>
+          </div>
+          <div class="form-group">
+            <label for="barangayScope">Barangay Scope:</label><br>
+            <div class="row">
+              <div class="col-md-3" v-for="barangay in barangays" :key="barangay" required>
+                <label>
+                  <input type="checkbox" :value="barangay" v-model="selectedBarangays"> {{ barangay }}
+                </label>
+              </div>
             </div>
           </div>
-        </div>
-        <div class="form-group">
-          <label for="eventDate">Event Date:</label><br>
-          <input type="date" id="eventDate" class="form-control" v-model="program.eventDate">
-        </div>
-        <div class="form-group">
-          <label for="isActive">Is Active:</label><br>
-          <input type="checkbox" id="isActive" class="form-check-input" v-model="program.isactive" true-value="1"
-            false-value="0">
-        </div>
+          <div class="mb-3">
+            <label for="budgetPerHead" class="form-label">Budget Per Head</label>
+            <input type="number" class="form-control" id="budgetPerHead" v-model="program.budgetperhead" required>
+          </div>
+          <div class="form-group">
+            <label for="eventDate">Event Date:</label><br>
+            <input type="date" id="eventDate" class="form-control" v-model="program.eventDate" required>
+          </div>
+          <div class="form-group">
+            <label for="isActive">Is Active:</label><br>
+            <input type="checkbox" id="isActive" class="form-check-input" v-model="program.isactive" true-value="1"
+              false-value="0" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Update Program</button>
+        </form>
       </div>
+
     </div>
-    <button type="button" class="btn btn-primary mt-3" @click="updateProgram">Update Program</button>
+
   </div>
+
 </template>
 
 <script setup>
@@ -48,6 +58,7 @@ const program = ref({
   programname: '',
   description: '',
   barangayscope: '',
+  budgetperhead: '',
   eventDate: '',
   isactive: false,
 });
@@ -69,20 +80,21 @@ onMounted(() => {
     });
 });
 
-const updateProgram = () => {
+function updateProgram() {
   const updatedProgram = {
     action: 'update',
     id: id.value,
     programname: program.value.programname,
     description: program.value.description,
     barangayscope: selectedBarangays.value.join(', '), // Concatenate selected barangays
+    budgetperhead: program.value.budgetperhead,
     eventDate: program.value.eventDate,
     isactive: program.value.isactive,
   };
 
   axios.post('https://rjprint10.com/marilaomis/backend/programapi.php', updatedProgram)
     .then(response => {
-      console.log('Program updated successfully:', response.data);
+      // console.log('Program updated successfully:', response.data);
       alert('Program updated successfully');
       router.push('/programs/view'); // Redirect to programs list after successful update
     })
@@ -90,7 +102,7 @@ const updateProgram = () => {
       console.error('Error updating program:', error);
       alert('Failed to update program. Please try again.');
     });
-};
+}
 
 // List of barangays
 const barangays = [

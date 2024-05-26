@@ -23,6 +23,11 @@
         </div>
       </div>
       <div class="mb-3">
+        <label for="budgetPerHead" class="form-label">Budget Per Head</label>
+        <input type="number" class="form-control" id="budgetPerHead" v-model="newProgram.budgetPerHead" required>
+      </div>
+
+      <div class="mb-3">
         <label for="eventDate" class="form-label">Event Date</label>
         <input type="date" class="form-control" id="eventDate" v-model="newProgram.eventDate" required>
       </div>
@@ -88,6 +93,7 @@ const newProgram = ref({
   programname: '',
   description: '',
   barangayscope: '',
+  budgetPerHead: '',
   eventDate: getCurrentDate(),
   isactive: '1',  // wala na
   createdby: '',

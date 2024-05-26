@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $description = $data['description'];
             $barangayscope = $data['barangayscope'];
             $eventDate = $data['eventDate'];
-            $isactive = $data['isactive'];
+            $isactive = 1;  // palaging 1  active
             $createdby = $data['createdby'];
             $createdat = date('Y-m-d'); // Assuming current date for createdat field
             $isdeleted = 0; // Assuming newly created program is not deleted
@@ -74,10 +74,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $barangayscope = $data['barangayscope'];
             // Check if barangayscope is "All"
             if ($barangayscope === 'All') {
-                $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0");
+                $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0 ORDER BY programid desc");
                 $stmt->execute();
             } else {
-                $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0 AND barangayscope LIKE ?");
+                $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0 AND barangayscope LIKE ? ORDER BY programid desc");
                 $stmt->execute(["%{$barangayscope}%"]);
             }
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);

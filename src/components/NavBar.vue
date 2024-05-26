@@ -21,20 +21,23 @@
               </RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink v-if="userLevel === 'Admin' || userLevel === 'Municipal Staff' || userLevel === 'Area Leader'" to="/residents/view"
-                active-class="active-link" class="nav-link">Residents</RouterLink>
+              <RouterLink v-if="userLevel === 'Admin' || userLevel === 'Municipal Staff' || userLevel === 'Area Leader'"
+                to="/residents/view" active-class="active-link" class="nav-link">Residents</RouterLink>
             </li>
             <li class="nav-item">
               <RouterLink to="/programs/view" active-class="active-link" class="nav-link">Programs</RouterLink>
-            </li>           
-          </ul>          
-          <ul class="navbar-nav ms-auto"> 
-            <li class="nav-link"> {{ userName }}</li>             
-            <li v-if="!isLoggedIn" class="nav-item">             
+            </li>
+            <li class="nav-item">
+              <RouterLink to="/programs/view" active-class="active-link" class="nav-link">Reports</RouterLink>
+            </li>
+          </ul>
+          <ul class="navbar-nav ms-auto">
+            <li class="nav-link"> {{ userName }}</li>
+            <li v-if="!isLoggedIn" class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/login">Log In</RouterLink>
             </li>
-            <li v-else class="nav-item">         
-              <RouterLink class="nav-link" active-class="active-link" to="/logout">Log Out</RouterLink>              
+            <li v-else class="nav-item">
+              <RouterLink class="nav-link" active-class="active-link" to="/logout">Log Out</RouterLink>
             </li>
           </ul>
         </div>

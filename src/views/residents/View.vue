@@ -3,6 +3,17 @@
         <p>Resident Management</p>
         <RouterLink to="/residents/create" class="btn btn-success ">Add Resident</RouterLink>
 
+        <div class="form-group">
+            <div class="row">
+                <div class="col-9">
+                    <input type="text" id="search" class="form-control" v-model="searchKey"
+                        placeholder="Search by Complete Surname Only">
+                </div>
+                <div class="col-3">
+                    <button class="btn btn-primary" @click="fetchResident">Search</button>
+                </div>
+            </div>
+        </div>
 
         <div class="table-responsive">
             <table class="table table-hover ">
@@ -10,7 +21,7 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">Resident ID</th>
-                        <th scope="col">Precinct ID</th>
+                        <th scope="col">Precint ID</th>
                         <th scope="col">Last Name</th>
                         <th scope="col">First Name</th>
                         <th scope="col">Middle Name</th>
@@ -21,10 +32,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr v-for="(resident, index) in paginatedResidents" :key="resident.residentid">
+                    <tr v-for="( resident, index ) in  paginatedResidents " :key="resident.residentid">
                         <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
                         <td>{{ resident.residentid }}</td>
-                        <td>{{ resident.precinctid }}</td>
+                        <td>{{ resident.precintid }}</td>
                         <td>{{ unHash(resident.lastname) }}</td>
                         <td>{{ unHash(resident.firstname) }}</td>
                         <td>{{ resident.middlename }}</td>
@@ -66,7 +77,7 @@
             </ul>
         </nav>
 
-
+        <button class="btn btn-primary" @click="downloadTemplate">Download Template</button>
         <button class="btn btn-success" @click="exportexcel">Export to Excel</button>
         <button class="btn btn-danger" @click="readexcel">Import From Excel</button>
     </div>
@@ -79,9 +90,8 @@ import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { useStore } from 'vuex';
 
-const targetid = ref('');
-const targetRecord = ref('');
-const exportrecords = ref([]);
+
+const searchKey = ref('');
 
 const residents = ref([]);
 const pageSize = 5;
@@ -97,15 +107,16 @@ const paginatedResidents = computed(() => {
 
 const totalPages = computed(() => Math.ceil(residents.value.length / pageSize));
 
-//select
+
 const fetchResident = () => {
     const data = {
-        action: 'get_resident',
-        barangayscope: address.value,
+        action: 'search_resident',
+        lastname: searchKey.value,
     };
     axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', data)
         .then((response) => {
             residents.value = response.data;
+            // console.log(data);
         })
         .catch((error) => {
             console.error('Error fetching data:', error);
@@ -125,7 +136,7 @@ function deleterec(targetid) {
         };
         axios.post(`https://rjprint10.com/marilaomis/backend/personapi.php`, data)
             .then(response => {
-                console.log('Record Delete Successfully:', response.data);
+                // console.log('Record Delete Successfully:', response.data);
                 alert("Record Deleted");
                 fetchResident();
             })
@@ -139,7 +150,7 @@ function deleterec(targetid) {
 function exportexcel() {
     const data = residents.value.map(resident => ({
         'residentid': resident.residentid,
-        'precintid': resident.precinctid,
+        'precintid': resident.precintid,
         'lastname': unHash(resident.lastname),
         'firstname': unHash(resident.firstname),
         'middlename': resident.middlename,
@@ -164,6 +175,40 @@ function exportexcel() {
     saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'residents.xlsx');
 }
 
+function downloadTemplate() {
+    // Define the headers for the Excel template
+    const headers = [
+        'leave this column blank',
+        'precintid',
+        'lastname',
+        'firstname',
+        'middlename',
+        'addressline1',
+        'barangay',
+        'bday'
+    ];
+
+    // Create a blank worksheet with headers only
+    const ws = XLSX.utils.aoa_to_sheet([headers]);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, 'Residents');
+
+    // Write the workbook to a binary string
+    const wbout = XLSX.write(wb, { bookType: 'xlsx', type: 'binary' });
+
+    // Function to convert binary string to array buffer
+    function s2ab(s) {
+        const buf = new ArrayBuffer(s.length);
+        const view = new Uint8Array(buf);
+        for (let i = 0; i < s.length; i++) view[i] = s.charCodeAt(i) & 0xff;
+        return buf;
+    }
+
+    // Trigger download of the Excel file
+    saveAs(new Blob([s2ab(wbout)], { type: 'application/octet-stream' }), 'residents_template.xlsx');
+}
+
+
 
 function readexcel() {
     const input = document.createElement('input');
@@ -185,7 +230,7 @@ function handleFile(event) {
         // const excelData = XLSX.utils.sheet_to_json(worksheet);
 
         //test
-        console.log('Excel data:', excelData);
+        // console.log('Excel data:', excelData);
 
         //axios here
         importExcel(excelData);
