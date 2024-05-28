@@ -63,11 +63,11 @@ const login = () => {
   .then(response => { 
     // Remove leading whitespace and characters '//'
     const responseData = JSON.parse(response.data.trim().replace(/^\/\/\s*/, ''));
-    
+  
     if (responseData.success === true) {
       otpSent.value = true;
       // alert('OTP sent to your email. Please check your email and enter the OTP.');
-      alert(`OTP sent to your email. Please check your email and enter the OTP: ${responseData.otp}`);
+      alert(`OTP sent to your email. Please check your email and enter the OTP: ${responseData.otp}`); // remove this OTP after success in Email
     } else {
       alert(responseData.error || 'Invalid email or password');
     }
