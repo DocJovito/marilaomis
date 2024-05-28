@@ -45,7 +45,6 @@
   
   <script setup>
   import { ref } from 'vue';
-  import { useStore } from 'vuex';
   import axios from 'axios';
   
   const currentPassword = ref('');
@@ -53,9 +52,7 @@
   const confirmPassword = ref('');
   const otp = ref('');
   const otpSent = ref(false);
-  
-  const store = useStore();
-  const useremail = ref('');
+  const useremail = ref(''); // Set this to the logged-in user's email
   
   const sendOTP = () => {
     // Check if the current password is correct
@@ -111,4 +108,3 @@
       });
   };
   </script>
-  
