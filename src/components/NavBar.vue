@@ -28,11 +28,14 @@
               <RouterLink to="/programs/view" active-class="active-link" class="nav-link">Programs</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink to="/programs/view" active-class="active-link" class="nav-link">Reports</RouterLink>
+              <RouterLink to="/reports/view" active-class="active-link" class="nav-link">Reports</RouterLink>
             </li>
           </ul>
           <ul class="navbar-nav ms-auto">
             <li class="nav-link"> {{ userName }}</li>
+            <li v-if="isLoggedIn && userLevel !== 'Admin'" class="nav-item">
+              <RouterLink to="/users/profile" active-class="active-link" class="nav-link">Profile</RouterLink>
+            </li>
             <li v-if="!isLoggedIn" class="nav-item">
               <RouterLink class="nav-link" active-class="active-link" to="/login">Log In</RouterLink>
             </li>

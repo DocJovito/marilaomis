@@ -95,6 +95,12 @@ const routes = [
     meta: { requiresAuth: true },
   },
   {
+    path: '/users/profile',
+    name: 'profile',
+    component: () => import('@/views/users/Profile.vue'),
+    meta: { requiresAuth: true, restrictedTo: ['Admin', 'Municipal Staff', 'Area Leader'] },
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('@/views/LogIn.vue'),
