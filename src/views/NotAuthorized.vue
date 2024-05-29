@@ -2,7 +2,7 @@
     <div class="not-authorized">
       <h1>Not Authorized</h1>
       <p>You do not have permission to access this page.</p>
-      <RouterLink to="/views/LogIn.vue">LogIn</RouterLink>
+      <RouterLink to="/LogIn">LogIn</RouterLink>
     </div>
   </template>
   

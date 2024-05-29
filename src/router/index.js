@@ -126,24 +126,24 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem('token');
   const userType = store.state.user.userType; // Assuming userType is stored in Vuex
 
+  console.log('Navigating to:', to.path);
+  console.log('Token:', token);
+  console.log('User Type:', userType);
+
   if (to.meta.requiresAuth) {
     if (!token) {
+      console.log('No token, redirecting to /login');
       next('/login');
-    } else if (userType === 'Admin') {
-      next(); // Admin can access all routes
     } else if (to.meta.restrictedTo && !to.meta.restrictedTo.includes(userType)) {
+      console.log(`User type ${userType} is not authorized for this route, redirecting to /not-authorized`);
       next('/not-authorized');
-      // } else if (userType === 'Municipal Staff' && !to.meta.restrictedTo.includes('Municipal Staff')) {
-      //   next('/not-authorized'); // Redirect if Municipal Staff tries to access restricted routes
-      // } else if (userType === 'Area Leader' && !to.meta.restrictedTo.includes('Area Leader')) {
-      //   next('/not-authorized'); // Redirect if Area Leader tries to access restricted routes
     } else {
-      next(); // Proceed if user has access to the route
+      console.log('User is authorized, proceeding to the route');
+      next();
     }
   } else {
     next(); // Proceed to non-restricted routes
   }
 });
-
 
 export default router;
