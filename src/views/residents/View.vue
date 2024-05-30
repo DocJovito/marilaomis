@@ -38,7 +38,7 @@
                         <td>{{ resident.precintid }}</td>
                         <td>{{ unHash(resident.lastname) }}</td>
                         <td>{{ unHash(resident.firstname) }}</td>
-                        <td>{{ resident.middlename }}</td>
+                        <td>{{ unHash(resident.middlename) }}</td>
                         <td>{{ unHash(resident.addressline1) }}</td>
                         <td>{{ resident.barangay }}</td>
                         <td>{{ resident.bday }}</td>
@@ -153,7 +153,7 @@ function exportexcel() {
         'precintid': resident.precintid,
         'lastname': unHash(resident.lastname),
         'firstname': unHash(resident.firstname),
-        'middlename': resident.middlename,
+        'middlename': unHash(resident.middlename),
         'addressline1': unHash(resident.addressline1),
         'barangay': resident.barangay,
         'bday': resident.bday

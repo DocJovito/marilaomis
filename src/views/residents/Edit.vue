@@ -93,7 +93,7 @@ onMounted(() => {
             precintID.value = residents.value.precintid;
             lastName.value = unHash(residents.value.lastname);
             firstName.value = unHash(residents.value.firstname);
-            middleName.value = residents.value.middlename;
+            middleName.value = unHash(residents.value.middlename);
             address.value = unHash(residents.value.addressline1);
             barangay.value = residents.value.barangay;
             birthday.value = residents.value.bday;
@@ -110,7 +110,7 @@ const UpdateRecord = () => {
         precintid: precintID.value,
         lastname: myHash(lastName.value),
         firstname: myHash(firstName.value),
-        middlename: middleName.value,
+        middlename: myHash(middleName.value),
         addressline1: myHash(address.value),
         barangay: barangay.value,
         bday: birthday.value,

@@ -129,7 +129,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $lll = $data['lastname'];
             $lastname = myHash($lll);
-            $stmt = $conn->prepare("SELECT * FROM tblperson WHERE lastname like ? ORDER BY residentid desc ");
+            $stmt = $conn->prepare("SELECT * FROM tblperson WHERE lastname like ? AND isdeleted = 0 ORDER BY residentid desc ");
             $stmt->execute(["%{$lastname}%"]);
             //   $stmt->execute([$lastname]);
 

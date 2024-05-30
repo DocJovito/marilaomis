@@ -28,10 +28,10 @@
                             <div id="data">
                                 <p>Resident Number: {{ residentID }}</p>
                                 <p>precintID: {{ precintID }}</p>
-                                <p>lastName: {{ lastName }}</p>
-                                <p>firstName: {{ firstName }}</p>
-                                <p>middleName: {{ middleName }}</p>
-                                <p>address: {{ address }}</p>
+                                <p>lastName: {{ unHash(lastName) }}</p>
+                                <p>firstName: {{ unHash(firstName) }}</p>
+                                <p>middleName: {{ unHash(middleName) }}</p>
+                                <p>address: {{ unHash(address) }}</p>
                                 <p>barangay: {{ barangay }}</p>
                                 <p>birthday: {{ birthday }}</p>
                             </div>
@@ -141,7 +141,14 @@ function myhash(text) {
     return base64Encoded;
 }
 
-
+function unHash(hashed) {
+    try {
+        return atob(hashed);
+    } catch (e) {
+        console.error('Error decoding from Base64:', e);
+        return '';
+    }
+}
 
 </script>
 

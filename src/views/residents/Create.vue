@@ -93,7 +93,7 @@ function saveRecord() {
         precintid: precintID.value,
         lastname: myHash(lastName.value),
         firstname: myHash(firstName.value),
-        middlename: middleName.value,
+        middlename: myHash(middleName.value),
         addressline1: myHash(address.value),
         barangay: barangay.value,
         bday: birthday.value

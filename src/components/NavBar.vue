@@ -21,6 +21,11 @@
               </RouterLink>
             </li>
             <li class="nav-item">
+              <RouterLink v-if="userLevel === 'Admin'" class="nav-link" active-class="active-link" to="/funds/view">
+                Fundings
+              </RouterLink>
+            </li>
+            <li class="nav-item">
               <RouterLink v-if="userLevel === 'Admin' || userLevel === 'Municipal Staff' || userLevel === 'Area Leader'"
                 to="/residents/view" active-class="active-link" class="nav-link">Residents</RouterLink>
             </li>
