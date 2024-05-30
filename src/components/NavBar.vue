@@ -32,9 +32,9 @@
             <li class="nav-item">
               <RouterLink to="/programs/view" active-class="active-link" class="nav-link">Programs</RouterLink>
             </li>
-            <li class="nav-item">
+            <!-- <li class="nav-item">
               <RouterLink to="/reports/view" active-class="active-link" class="nav-link">Reports</RouterLink>
-            </li>
+            </li> -->
           </ul>
           <ul class="navbar-nav ms-auto">
             <li class="nav-link"> {{ userName }}</li>

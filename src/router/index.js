@@ -128,6 +128,12 @@ const routes = [
     },
   },
   {
+    path: "/forgotpassword",
+    name: "forgotpassword",
+    component: () => import("@/views/Forgotpassword.vue"),
+    // meta: { requiresAuth: true, restrictedTo: ['Admin', 'Municipal Staff', 'Area Leader'] },
+  },
+  {
     path: "/login",
     name: "login",
     component: () => import("@/views/LogIn.vue"),
@@ -180,6 +186,10 @@ router.beforeEach((to, from, next) => {
   const token = localStorage.getItem("token");
   const userType = store.state.user.userType; // Assuming userType is stored in Vuex
 
+  // console.log('Navigating to:', to.path);
+  // console.log('Token:', token);
+  // console.log('User Type:', userType);
+
   if (to.meta.requiresAuth) {
     if (!token) {
       next("/login");
@@ -195,7 +205,7 @@ router.beforeEach((to, from, next) => {
       // } else if (userType === 'Area Leader' && !to.meta.restrictedTo.includes('Area Leader')) {
       //   next('/not-authorized'); // Redirect if Area Leader tries to access restricted routes
     } else {
-      next(); // Proceed if user has access to the route
+      next();
     }
   } else {
     next(); // Proceed to non-restricted routes

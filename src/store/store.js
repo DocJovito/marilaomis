@@ -1,4 +1,5 @@
 import { createStore } from 'vuex';
+import createPersistedState from 'vuex-persistedstate';
 
 const store = createStore({
   state: {
@@ -8,9 +9,9 @@ const store = createStore({
       userType: null,
       name: null,
       address: null,
-      token: null
+      token: null,
     },
-    isAuthenticated: false
+    isAuthenticated: false,
   },
   mutations: {
     setUser(state, userData) {
@@ -24,13 +25,13 @@ const store = createStore({
         userType: null,
         name: null,
         address: null,
-        token: null
+        token: null,
       };
       state.isAuthenticated = false;
     },
     setUserType(state, userType) {
       state.user.userType = userType;
-    }
+    },
   },
   actions: {
     logIn({ commit }, userData) {
@@ -41,11 +42,12 @@ const store = createStore({
     },
     setUserType({ commit }, userType) {
       commit('setUserType', userType);
-    }
+    },
   },
   getters: {
-    userType: state => state.user.userType
-  }
+    userType: (state) => state.user.userType,
+  },
+  plugins: [createPersistedState()],
 });
 
 export default store;

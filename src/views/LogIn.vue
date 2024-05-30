@@ -15,6 +15,7 @@
               <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" class="form-control" id="password" name="password" v-model="password" required>
+                <a href="#" @click.prevent="forgotPassword" class="d-block mt-2">Forgot Password?</a>
               </div>
               <br>
               <div class="form-group text-center">
@@ -120,5 +121,10 @@ const verifyOtp = () => {
         alert('Error verifying OTP');
     });
 
+};
+
+
+const forgotPassword = () => {
+  router.push('/forgotpassword');
 };
 </script>
