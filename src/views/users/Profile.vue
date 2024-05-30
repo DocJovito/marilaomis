@@ -10,7 +10,8 @@
             <form @submit.prevent="sendOTP">
               <div class="form-group">
                 <label for="currentPassword">Current Password</label>
-                <input type="password" class="form-control" id="currentPassword" name="currentPassword" v-model="currentPassword" required>
+                <input type="password" class="form-control" id="currentPassword" name="currentPassword"
+                  v-model="currentPassword" required>
               </div>
               <br>
               <div class="form-group text-center">
@@ -25,11 +26,13 @@
               </div>
               <div class="form-group">
                 <label for="newPassword">New Password</label>
-                <input type="password" class="form-control" id="newPassword" name="newPassword" v-model="newPassword" required>
+                <input type="password" class="form-control" id="newPassword" name="newPassword" v-model="newPassword"
+                  required>
               </div>
               <div class="form-group">
                 <label for="confirmPassword">Confirm Password</label>
-                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" v-model="confirmPassword" required>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword"
+                  v-model="confirmPassword" required>
               </div>
               <br>
               <div class="form-group text-center">
@@ -114,7 +117,7 @@ const changePassword = () => {
   axios.post('https://rjprint10.com/marilaomis/backend/change_password.php', data)
     .then(response => {
       if (response.data.success) {
-        alert('Password changed successfully');       
+        alert('Password changed successfully');
         router.push('/');
       } else {
         alert(response.data.error || 'Failed to change password');

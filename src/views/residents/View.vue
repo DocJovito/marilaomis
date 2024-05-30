@@ -43,7 +43,6 @@
                         <td>{{ resident.barangay }}</td>
                         <td>{{ resident.bday }}</td>
                         <td>
-                            <!-- <button @click="selectResident(resident)">Select</button> -->
                             <RouterLink :to="'/residents/' + resident.residentid + '/edit'" class="btn btn-success">
                                 Edit
                             </RouterLink>
