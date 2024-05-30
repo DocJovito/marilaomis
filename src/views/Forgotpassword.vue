@@ -42,9 +42,13 @@
   <script>
   import { ref } from 'vue';
   import axios from 'axios';
+  import { useRouter } from 'vue-router';
   
+
+
   export default {
     setup() {
+      const router = useRouter();
       const email = ref('');
       const otp = ref('');
       const newPassword = ref('');
@@ -58,7 +62,9 @@
   
         axios.post('https://rjprint10.com/marilaomis/backend/forgotpassword.php', { email: email.value })
           .then(response => {
-            if (response.data.success) {
+            const responseData = JSON.parse(response.data.trim().replace(/^\/\/\s*/, ''));
+  
+          if (responseData.success === true) {
               alert('An OTP has been sent to your email. Please check your inbox.');
               otpSent.value = true;
             } else {
@@ -79,16 +85,17 @@
   
         axios.post('https://rjprint10.com/marilaomis/backend/resetpassword.php', { otp: otp.value, newPassword: newPassword.value })
           .then(response => {
+
             if (response.data.success) {
-              alert('Password reset successfully. You can now log in with your new password.');
-              // Redirect to login page or perform any other action
+              alert('Password reset successfully. You can now log in with your new password.');    
+              router.push('\login');
             } else {
               alert(response.data.error || 'Failed to reset password. Please try again later.');
             }
           })
           .catch(error => {
             console.error(error);
-            alert('An error occurred. Please try again later.');
+            alert('An error occurred. Please try again later. abc');
           });
       };
   
