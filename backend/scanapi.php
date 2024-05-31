@@ -21,15 +21,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $residentid = $data['residentid'];
             $barangay = $data['barangay'];
             $createdby = $data['createdby'];
+            $budgetperhead = $data['budgetperhead'];
 
+            $stmt = $conn->prepare("INSERT INTO tblscan (id,programid, residentid, barangay, createdby,createdat, budgetperhead) 
+                                    VALUES (?,?, ?, ?, ?, NOW(), ?)");
+            $stmt->execute([$id, $programid, $residentid, $barangay, $createdby, $budgetperhead]);
 
-            $stmt = $conn->prepare("INSERT INTO tblscan (id,programid, residentid, barangay, createdby,createdat) 
-                                    VALUES (?,?, ?, ?, ?, NOW())");
-            $stmt->execute([$id, $programid, $residentid, $barangay, $createdby]);
-
-            echo json_encode(array("message" => "Record created successfully"));
+            echo json_encode(array("Scan Success"));
         } catch (PDOException $e) {
-            echo json_encode(array("error" => "Error creating record: " . $e->getMessage()));
+            echo json_encode(array("Already Scanned"));
+            // echo json_encode(array("error" => "Error creating record: " . $e->getMessage()));
         }
     } else if ($data['action'] === 'getscan') {
         try {

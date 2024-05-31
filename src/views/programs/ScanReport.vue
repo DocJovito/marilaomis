@@ -38,9 +38,9 @@
                         <td>{{ scanResult.id }}</td>
                         <td>{{ scanResult.programid }}</td>
                         <td>{{ scanResult.residentid }}</td>
-                        <td>{{ scanResult.lastname }}, {{ scanResult.firstname }}</td>
+                        <td>{{ unHash(scanResult.lastname) }}, {{ unHash(scanResult.firstname) }}</td>
                         <td>{{ scanResult.barangay }}</td>
-                        <td>{{ scanResult.addressline1 }}</td>
+                        <td>{{ unHash(scanResult.addressline1) }}</td>
                         <td>{{ scanResult.createdby }}</td>
                         <td>{{ scanResult.createdat }}</td>
                     </tr>
@@ -99,4 +99,19 @@ watch([searchQuery, selectedBarangay], () => {
 onMounted(() => {
     fetchData();
 });
+
+
+function myHash($text) {
+    $base64Encoded = base64_encode($text);
+    return $base64Encoded;
+}
+
+function unHash(hashed) {
+    try {
+        return atob(hashed);
+    } catch (e) {
+        console.error('Error decoding from Base64:', e);
+        return '';
+    }
+}
 </script>
