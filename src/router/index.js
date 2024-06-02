@@ -175,6 +175,33 @@ const routes = [
       restrictedTo: ["Admin", "Municipal Staff"],
     },
   },
+  {
+    path: "/reports/residents",
+    name: "rptresidents",
+    component: () => import("@/views/reports/Residents.vue"),
+    meta: {
+      requiresAuth: true,
+      restrictedTo: ["Admin", "Municipal Staff"],
+    },
+  },
+  {
+    path: "/reports/programs",
+    name: "rptprograms",
+    component: () => import("@/views/reports/Programs.vue"),
+    meta: {
+      requiresAuth: true,
+      restrictedTo: ["Admin", "Municipal Staff"],
+    },
+  },
+  {
+    path: "/reports/funds",
+    name: "rptfunds",
+    component: () => import("@/views/reports/Funds.vue"),
+    meta: {
+      requiresAuth: true,
+      restrictedTo: ["Admin", "Municipal Staff"],
+    },
+  },
 ];
 
 const router = createRouter({

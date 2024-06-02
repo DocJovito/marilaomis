@@ -32,9 +32,24 @@
             <li class="nav-item">
               <RouterLink to="/programs/view" active-class="active-link" class="nav-link">Programs</RouterLink>
             </li>
-            <!-- <li class="nav-item">
-              <RouterLink to="/reports/view" active-class="active-link" class="nav-link">Reports</RouterLink>
-            </li> -->
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Reports
+              </a>
+              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                <li class="nav-item">
+                  <RouterLink to="/reports/residents" active-class="active-link" class="nav-link">Residents</RouterLink>
+                </li>
+                <li class="nav-item">
+                  <RouterLink to="/reports/programs" active-class="active-link" class="nav-link">Programs</RouterLink>
+                </li>
+                <li class="nav-item">
+                  <RouterLink to="/reports/funds" active-class="active-link" class="nav-link">Funds</RouterLink>
+                </li>
+              </ul>
+            </li>
+
           </ul>
           <ul class="navbar-nav ms-auto">
             <li class="nav-link"> {{ userName }}</li>
