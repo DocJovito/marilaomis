@@ -1,44 +1,51 @@
 <template>
     <div class="container mt-4">
-
-        <div class="card">
-            <div class="card-header">
-                <h4>Add Funding</h4>
-            </div>
-            <div class="card-body">
-                <form @submit.prevent="saveRecord">
-
-                    <div class="form-group">
-                        <label for="budgetfor">budgetfor:</label><br>
-                        <input type="text" id="budgetfor" class="form-control" v-model="newFunding.budgetfor" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="amount">amount:</label><br>
-                        <input type="text" id="amount" class="form-control" v-model="newFunding.amount" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="userid">userid:</label><br>
-                        <input type="text" id="userid" class="form-control" v-model="newFunding.userid">
-                    </div>
-                    <button type="submit" class="btn btn-primary ">Save</button>
-                </form>
-            </div>
+      <h4>Allocate Fund</h4>
+      <form @submit.prevent="allocateFund">
+        <div class="mb-3">
+          <label for="budgetfor" class="form-label">Budget For</label>
+          <select class="form-control" id="budgetfor" v-model="newFunding.budgetfor" required>
+            <option value="">Select a Program</option>
+            <option v-for="program in programs" :key="program.programname" :value="program.programname">
+              {{ program.programname }}
+            </option>
+          </select>
         </div>
-
-
-
+        <div class="mb-3">
+          <label for="amount" class="form-label">Amount</label>
+          <input type="number" class="form-control" id="amount" v-model="newFunding.amount" required>
+        </div>
+        <div class="mb-3">
+          <label for="userid" class="form-label">User</label>
+          <select class="form-control" id="userid" v-model="newFunding.userid" required>
+            <option value="">Select a User</option>
+            <option v-for="user in users" :key="user.userid" :value="user.userid">
+              {{ user.name }} ({{ user.email }})
+            </option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Allocate</button>
+        <RouterLink to="/funds/view" class="btn btn-secondary ml-2">Cancel</RouterLink>
+      </form>
     </div>
-
-</template>
-
-<script setup>
-import { ref } from 'vue';
-import axios from 'axios';
-import { useRouter } from 'vue-router';
-
-const router = useRouter();
-
-const newFunding = ref({
+  </template>
+  
+  <script setup>
+  import { ref, onMounted, computed } from 'vue';
+  import axios from 'axios';
+  import { useRouter } from 'vue-router';
+  import { useStore } from 'vuex';
+  
+  const store = useStore();
+  const userId = computed(() => store.state.user.id);
+  const router = useRouter();
+  
+  function getCurrentDate() {
+    const date = new Date();
+    return date.toISOString().slice(0, 19).replace('T', ' ');
+  }
+  
+  const newFunding = ref({
     budgetfor: '',
     amount: '',
     userid: '',
@@ -46,49 +53,73 @@ const newFunding = ref({
     createdat: getCurrentDate(),
     editedby: '',
     editedat: '',
-    isdeleted: getCurrentDate(),
-    deletedby: getCurrentDate(),
-});
-
-function saveRecord() {
-    const newFunding = {
-        action: 'create',
-        budgetfor: newFunding.budgetfor.value,
-        amount: newFunding.amount.value,
-        userid: newFunding.userid.value,
-    };
-
-    axios.post('https://rjprint10.com/marilaomis/backend/fundapi.php', newFunding)
-        .then(response => {
-            console.log('Record saved successfully:', response.data);
-            closeModal();
-            router.push('/funds/view');
-        })
-        .catch(error => {
-            console.error('Error saving record:', error);
-        });
-}
-
-const closeModal = () => {
-    // Implement close modal logic if needed
-};
-
-function myHash(text) {
-    let base64Encoded = btoa(text);
-    return base64Encoded;
-}
-
-function unHash(hashed) {
+    isdeleted: 0,
+    deletedby: ''
+  });
+  
+  const programs = ref([]);
+  const users = ref([]);
+  
+  const fetchPrograms = async () => {
     try {
-        return atob(hashed);
-    } catch (e) {
-        console.error('Error decoding from Base64:', e);
-        return '';
+      const response = await axios.get('https://rjprint10.com/marilaomis/backend/fundapi.php?action=get_programs');
+      programs.value = response.data;
+    } catch (error) {
+      console.error('Error fetching programs:', error);
     }
-}
-
-</script>
-
-<style>
-/* Your CSS styles here */
-</style>
+  };
+  
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get('https://rjprint10.com/marilaomis/backend/fundapi.php?action=get_users');
+      users.value = response.data;
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+  
+  onMounted(() => {
+    fetchPrograms();
+    fetchUsers();
+  });
+  
+  const allocateFund = () => {
+    // Validation
+    if (!newFunding.value.budgetfor) {
+      alert("Please select a program.");
+      return;
+    }
+  
+    if (!newFunding.value.amount || isNaN(newFunding.value.amount) || newFunding.value.amount <= 0) {
+      alert("Please enter a valid amount.");
+      return;
+    }
+  
+    if (!newFunding.value.userid) {
+      alert("Please select a user.");
+      return;
+    }
+  
+    // Set the createdby field to the current user's ID
+    newFunding.value.createdby = userId.value;
+  
+    const data = {
+      action: 'create',
+      ...newFunding.value
+    };
+  
+    axios.post('https://rjprint10.com/marilaomis/backend/fundapi.php', data)
+      .then(response => {
+        console.log(response.data);
+        router.push('/funds/view');  // Redirect to funds listing page after successful allocation
+      })
+      .catch(error => {
+        console.error('Error allocating fund:', error);
+      });
+  };
+  </script>
+  
+  <style scoped>
+  /* Add your custom styles here */
+  </style>
+  
