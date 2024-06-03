@@ -88,7 +88,7 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 
-const pageSize = 5;
+const pageSize = 10;
 const currentPage = ref(1);
 
 const searchKey = ref('');

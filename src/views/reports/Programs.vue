@@ -4,9 +4,7 @@
         <p>Total Number of Programs: {{ arrayCount }}</p>
 
         <!-- filters -->
-        <!-- if voter -->
-        <!-- by barangay -->
-        <!-- drop down/ all -->
+        <!-- by barangay --> <!-- drop down/ all -->
         <!-- Date start and end -->
 
 
@@ -85,7 +83,7 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 
-const pageSize = 5;
+const pageSize = 10;
 const currentPage = ref(1);
 
 const searchKey = ref('');

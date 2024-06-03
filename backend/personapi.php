@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
             echo json_encode(array("success" => true, "message" => "Records imported successfully"));
         } catch (PDOException $e) {
-            echo json_encode(array("successaaa" => false, "error" => "Error importing records: " . $e->getMessage()));
+            echo json_encode(array("success" => false, "error" => "Error importing records: " . $e->getMessage()));
         }
     } elseif ($data['action'] === 'search_resident') {
         try {
@@ -133,6 +133,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $stmt->execute(["%{$lastname}%"]);
             //   $stmt->execute([$lastname]);
 
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode($rows);
+        } catch (PDOException $e) {
+            echo json_encode(array("error" => "Error fetching residents: " . $e->getMessage()));
+        }
+    } elseif ($data['action'] === 'search_residents') {
+        try {
+            $isvoter = $data['isvoter'];
+            $barangay = $data['barangay'];
+
+            if ($barangay == 'All' && $isvoter == 'All') {
+                $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = 0 ORDER BY residentid DESC;");
+                $stmt->execute();
+            } else if ($isvoter == 'All') {
+                $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = 0 AND barangay = ? ORDER BY residentid DESC;");
+                $stmt->execute([$barangay]);
+            } else if ($barangay == 'All') {
+                if ($isvoter == 'true') {
+                    $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = 0 AND precintid !='' ORDER BY residentid DESC;");
+                    $stmt->execute();
+                } else {
+                    $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = 0 AND precintid ='' ORDER BY residentid DESC;");
+                    $stmt->execute();
+                }
+            } else {
+                if ($isvoter == 'true') {
+                    $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = 0 AND precintid !='' AND barangay = ? ORDER BY residentid DESC;");
+                    $stmt->execute([$barangay]);
+                } else {
+                    $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = 0 AND precintid ='' AND barangay = ? ORDER BY residentid DESC;");
+                    $stmt->execute([$barangay]);
+                }
+            }
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($rows);
         } catch (PDOException $e) {

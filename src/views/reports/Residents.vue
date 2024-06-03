@@ -9,17 +9,42 @@
         <!-- drop down/ all -->
 
 
-             <div class="form-group">
-            <div class="row">
-                <div class="col-9">
-                    <input type="text" id="search" class="form-control" v-model="searchKey"
-                        placeholder="Search by Complete Surname Only">
-                </div>
-                <div class="col-3">
-                    <button class="btn btn-primary" @click="fetchData">Search</button>
-                </div>
+
+        <form @submit.prevent="fetchData">
+            <div class="form-group">
+                <label for="isvoter">isvoter:</label><br>
+                <select id="isvoter" class="form-control" v-model="isvoter">
+                    <option value="All">All</option>
+                    <option value="true">true</option>
+                    <option value="false">false</option>
+                </select>
             </div>
-        </div>
+            <div class="form-group">
+                <label for="barangay">Barangay:</label><br>
+                <select id="barangay" class="form-control" v-model="barangay">
+                    <option value="">Select Barangay</option>
+                    <option value="All">All</option>
+                    <option value="Abangan Norte">Abangan Norte</option>
+                    <option value="Abangan Sur">Abangan Sur</option>
+                    <option value="Ibayo">Ibayo</option>
+                    <option value="Lambakin">Lambakin</option>
+                    <option value="Lias">Lias</option>
+                    <option value="Loma de Gato">Loma de Gato</option>
+                    <option value="Nagbalon">Nagbalon</option>
+                    <option value="Patubig">Patubig</option>
+                    <option value="Poblacion 1st">Poblacion 1st</option>
+                    <option value="Poblacion 2nd">Poblacion 2nd</option>
+                    <option value="Prenza 1st">Prenza 1st</option>
+                    <option value="Prenza 2nd">Prenza 2nd</option>
+                    <option value="Santa Rosa 1st">Santa Rosa 1st</option>
+                    <option value="Santa Rosa 2nd">Santa Rosa 2nd</option>
+                    <option value="Saog">Saog</option>
+                    <option value="Tabing-ilog">Tabing-ilog</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+
 
         <div class="table-responsive">
             <table class="table table-hover ">
@@ -80,10 +105,12 @@ import { useStore } from 'vuex';
 
 const store = useStore();
 
-const pageSize = 5;
+const pageSize = 10;
 const currentPage = ref(1);
 
-const searchKey = ref('');
+//search related
+const isvoter = ref('All');
+const barangay = ref('All');
 
 const arrayData = ref([]);
 const arrayCount = ref('0');
@@ -96,18 +123,21 @@ const paginatedArrayData = computed(() => {
 const totalPages = computed(() => Math.ceil(arrayData.value.length / pageSize));
 
 
-function fetchData(){
+function fetchData() {
     const data = {
-        action: 'search_resident',
-        lastname: searchKey.value,
+        action: 'search_residents',
+        isvoter: isvoter.value,
+        barangay: barangay.value,
     };
     axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', data)
         .then((response) => {
             arrayData.value = response.data;
             arrayCount.value = arrayData.value.length;
+
         })
         .catch((error) => {
             console.error('Error fetching data:', error);
+
         });
 };
 
