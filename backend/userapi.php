@@ -68,19 +68,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (PDOException $e) {
             echo json_encode(array("error" => "Error updating user: " . $e->getMessage()));
         }
-    } 
-    elseif ($data['action'] === 'login') {
+    } elseif ($data['action'] === 'login') {
         try {
             $email = $data['email'];
             $password = $data['password'];
             $stmt = $conn->prepare("SELECT * FROM tbluser WHERE email = ? AND password = ? AND isdeleted = 0");
             $stmt->execute([$email, $password]);
-        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-        echo json_encode($rows);
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode($rows);
         } catch (PDOException $e) {
             echo json_encode(array("error" => "Error updating user: " . $e->getMessage()));
         }
-    }else {
+    } else {
         echo json_encode(array("error" => "Invalid action"));
     }
 }
@@ -108,4 +107,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 
 // Close database connection
 $conn = null;
-?>

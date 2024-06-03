@@ -1,4 +1,6 @@
 <?php
+// session_start(); // Start the session
+
 include 'connection.php'; // Include the database connection
 include 'email_utils.php'; // Include the email utility functions
 
@@ -21,6 +23,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $user = authenticateUser($email, $password);
             if ($user) {
+                // Set session variables upon successful login
+                // $_SESSION['email'] = $email;
+                // $_SESSION['userid'] = $user['userid']; // Assuming userid is retrieved from the database
+
                 // Generate OTP
                 $otp = rand(100000, 999999);
 
@@ -33,7 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 // Respond with success and prompt for OTP
                 //echo json_encode(array("success" => true));
                 echo json_encode(array("success" => true, "otp" => $otp));
-                error_log("OTP sent to email: $email");
+                // error_log("OTP sent to email: $email");
             } else {
                 // Authentication failed
                 echo json_encode(array("error" => "Invalid email or password"));
@@ -70,7 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     "address" => $user['address']
                 );
                 echo json_encode(array("success" => true, "token" => $token, "user" => $userData));
-                error_log("OTP verified for email: $email");
+                // error_log("OTP verified for email: $email");
             } else {
                 // OTP verification failed
                 echo json_encode(array("error" => "Invalid OTP"));
