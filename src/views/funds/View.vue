@@ -58,7 +58,11 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
 import axios from 'axios';
-import { RouterLink } from 'vue-router';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const store = useStore();
+const userId = computed(() => store.state.user.id);
 
 const funds = ref([]);
 const pageSize = 5;
@@ -96,10 +100,23 @@ const changePage = (pageNumber) => {
     }
 };
 
-function deleterec(id){
-id = id;
-return id;
-}
+const deleterec = (fundid) => {
+  if (confirm('Are you sure you want to delete this record?')) {
+    const data = {
+      action: 'delete',
+      fundid: fundid,
+      deletedby: userId.value // Sending the current user's ID as deletedby
+    };
+    axios.post('https://rjprint10.com/marilaomis/backend/fundapi.php', data)
+      .then(response => {
+        console.log(response.data);
+        fetchFunds(); // Refresh the funds list after deletion
+      })
+      .catch(error => {
+        console.error('Error deleting fund:', error);
+      });
+  }
+};
 
 </script>
 
