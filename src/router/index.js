@@ -23,6 +23,15 @@ const routes = [
     },
   },
   {
+    path: "/dashboard",
+    name: "dashboard",
+    component: () => import("@/views/Dashboard.vue"),
+    meta: {
+      requiresAuth: true,
+      restrictedTo: ["Admin", "Municipal Staff", "Area Leader"],
+    },
+  },
+  {
     path: "/residents/view",
     name: "view",
     component: () => import("@/views/residents/View.vue"),

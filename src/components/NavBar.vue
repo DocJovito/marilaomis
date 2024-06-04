@@ -13,6 +13,9 @@
               <RouterLink to="/" active-class="active-link" class="nav-link">Home</RouterLink>
             </li>
             <li class="nav-item">
+              <RouterLink to="/dashboard" active-class="active-link" class="nav-link">Dashboard</RouterLink>
+            </li>
+            <li class="nav-item">
               <RouterLink to="/about" active-class="active-link" class="nav-link">About</RouterLink>
             </li>
             <li class="nav-item">
