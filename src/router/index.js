@@ -167,7 +167,7 @@ const routes = [
     },
   },
   {
-    path: "/funds/:id/edit",
+    path: "/funds/:fundid/edit",
     name: "fundedit",
     component: () => import("@/views/funds/Edit.vue"),
     meta: {

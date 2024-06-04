@@ -100,13 +100,13 @@
   
   const updateFund = () => {
     // Validation
-    if (!fund.value.budgetfor) {
-      alert("Please select a program.");
+    if (!fund.value.amount || isNaN(fund.value.amount) || fund.value.amount <= 0) {
+      alert("Please enter a valid amount.");
       return;
     }
   
-    if (!fund.value.amount || isNaN(fund.value.amount) || fund.value.amount <= 0) {
-      alert("Please enter a valid amount.");
+    if (!fund.value.budgetfor) {
+      alert("Please select a program.");
       return;
     }
   
