@@ -1,60 +1,88 @@
 <template>
     <div class="container mt-4">
       <h2 style="color: lightgreen;">Dashboard</h2>
-      
+  
       <!-- Summary Statistics -->
       <div class="row mb-4">
-        <div class="col-sm-3">
-          <div class="stat-card bg-light">
-            <h3>Total Funds Allocated</h3>
-            <p>{{ summary?.totalFundsAllocated }}</p>
+        <div class="col-lg-3 col-md-6">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h5 class="card-title">Total Funds Allocated</h5>
+              <p class="card-text">{{ summary?.totalFundsAllocated }}</p>
+            </div>
           </div>
         </div>
-        <div class="col-sm-3">
-          <div class="stat-card bg-light">
-            <h3>Total Funds Available</h3>
-            <p>{{ summary?.totalFundsAvailable }}</p>
+        <div class="col-lg-3 col-md-6">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h5 class="card-title">Total Funds Available</h5>
+              <p class="card-text">{{ summary?.totalFundsAvailable }}</p>
+            </div>
           </div>
         </div>
-        <div class="col-sm-3">
-          <div class="stat-card bg-light">
-            <h3>Active Programs</h3>
-            <p>{{ summary?.activePrograms }}</p>
+        <div class="col-lg-3 col-md-6">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h5 class="card-title">Active Programs</h5>
+              <p class="card-text">{{ summary?.activePrograms }}</p>
+            </div>
           </div>
         </div>
-        <div class="col-sm-3">
-          <div class="stat-card bg-light">
-            <h3>Users</h3>
-            <p>{{ summary?.users }}</p>
+        <div class="col-lg-3 col-md-6">
+          <div class="card bg-light">
+            <div class="card-body">
+              <h5 class="card-title">Total Users</h5>
+              <p class="card-text">{{ summary?.users }}</p>
+            </div>
           </div>
         </div>
       </div>
-      
-      <!-- Recent Activity -->
+  
+      <!-- Charts -->
       <div class="row mb-4">
-        <div class="col-sm-6">
-          <h4>Recent Fund Allocations</h4>
-          <table class="table table-hover">
-            <!-- Table structure for recent fund allocations -->
-          </table>
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Fund Allocation by Program</h5>
+              <canvas id="allocationByProgramChart"></canvas>
+            </div>
+          </div>
         </div>
-        <div class="col-sm-6">
-          <h4>Recent Edits</h4>
-          <table class="table table-hover">
-            <!-- Table structure for recent edits -->
-          </table>
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Fund Allocation Over Time</h5>
+              <canvas id="allocationOverTimeChart"></canvas>
+            </div>
+          </div>
         </div>
       </div>
-      
-      <!-- Charts (using Chart.js) -->
+  
+      <!-- Recent Activity -->
       <div class="row">
-        <div class="col-sm-6">
-          <h4>Fund Allocation by Program</h4>
-          <canvas id="allocationByProgramChart"></canvas>
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Recent Fund Allocations</h5>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <!-- Table structure for recent fund allocations -->
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="col-sm-6">
-          <h4>Fund Allocation Over Time</h4>
-          <canvas id="allocationOverTimeChart"></canvas>
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title">Recent Edits</h5>
+              <div class="table-responsive">
+                <table class="table table-hover">
+                  <!-- Table structure for recent edits -->
+                </table>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -68,40 +96,32 @@
   const summary = ref(null);
   
   const fetchData = async () => {
-      try {
-          const response = await axios.get('https://rjprint10.com/marilaomis/backend/dashboard.php');
-          const data = response.data;
+    try {
+      const response = await axios.get('https://rjprint10.com/marilaomis/backend/dashboard.php');
+      const data = response.data;
   
-          summary.value = data.summary;
+      summary.value = data.summary;
   
-          if (data.charts) {
-              renderCharts(data.charts);
-          }
-      } catch (error) {
-          console.error('Error fetching dashboard data:', error);
+      if (data.charts) {
+        renderCharts(data.charts);
       }
+    } catch (error) {
+      console.error('Error fetching dashboard data:', error);
+    }
   };
   
   const renderCharts = (chartData) => {
-      // Render charts
+    // Render charts
   };
   
   onMounted(() => {
-      fetchData();
+    fetchData();
   });
   </script>
   
   <style scoped>
-  .stat-card {
-    background: lightgreen;
-    border-radius: 5px;
-    padding: 20px;
-    text-align: center;
+  .card {
     margin-bottom: 20px;
-  }
-  
-  .bg-light {
-    background-color: #f8f9fa;
   }
   </style>
   
