@@ -89,8 +89,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($data['action'] === 'search_program') {
         try {
-            $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0 ORDER BY programid desc");
-            $stmt->execute();
+            $datestart = $data['datestart'];
+            $dateend = $data['dateend'];
+            $barangay = $data['barangay'];
+            $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0 AND createdat BETWEEN ? AND ? AND barangay like ? ORDER BY programid desc");
+            $stmt->execute([$datestart, $dateend, "%{$barangay}%"]);
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($rows);
         } catch (PDOException $e) {

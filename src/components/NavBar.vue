@@ -50,6 +50,12 @@
                 <li class="nav-item">
                   <RouterLink to="/reports/funds" active-class="active-link" class="nav-link">Funds</RouterLink>
                 </li>
+                <li class="nav-item">
+                  <RouterLink to="/reports/scans" active-class="active-link" class="nav-link">Scans</RouterLink>
+                </li>
+                <li class="nav-item">
+                  <RouterLink to="/reports/users" active-class="active-link" class="nav-link">Users</RouterLink>
+                </li>
               </ul>
             </li>
 

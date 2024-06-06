@@ -1,26 +1,24 @@
 <template>
     <div class="container mt-4">
-        <h1>Program Report</h1>
-        <p>Total Number of Programs: {{ arrayCount }}</p>
+        <h1>Scans Report</h1>
+        <p>Total Number of residents: {{ arrayCount }}</p>
 
         <!-- filters -->
-        <!-- by barangay --> <!-- drop down/ all -->
-        <!-- Date start and end -->
+        <!-- if voter -->
+        <!-- by barangay -->
+        <!-- drop down/ all -->
 
 
 
         <form @submit.prevent="fetchData">
-            <div>
-                <div class="form-group">
-                    <label for="dateStart">Start Date:</label><br>
-                    <input type="date" id="dateStart" v-model="dateStart" class="form-control" required>
-                </div>
-                <div class="form-group">
-                    <label for="dateEnd">End Date:</label><br>
-                    <input type="date" id="dateEnd" v-model="dateEnd" class="form-control" required>
-                </div>
+            <div class="form-group">
+                <label for="isvoter">isvoter:</label><br>
+                <select id="isvoter" class="form-control" v-model="isvoter">
+                    <option value="All">All</option>
+                    <option value="true">true</option>
+                    <option value="false">false</option>
+                </select>
             </div>
-
             <div class="form-group">
                 <label for="barangay">Barangay:</label><br>
                 <select id="barangay" class="form-control" v-model="barangay">
@@ -47,36 +45,33 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
+
         <div class="table-responsive">
             <table class="table table-hover ">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">programid</th>
-                        <th scope="col">programname</th>
-                        <th scope="col">description</th>
-                        <th scope="col">barangayscope</th>
-                        <th scope="col">eventDate</th>
-                        <th scope="col">isactive</th>
-                        <th scope="col">createdby</th>
-                        <th scope="col">createdat</th>
-                        <th scope="col">isdeleted</th>
-                        <th scope="col">budgetperhead</th>
+                        <th scope="col">Resident ID</th>
+                        <th scope="col">Precint ID</th>
+                        <th scope="col">Last Name</th>
+                        <th scope="col">First Name</th>
+                        <th scope="col">Middle Name</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Barangay</th>
+                        <th scope="col">Birthday</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="( Data, index ) in  paginatedArrayData " :key="Data.residentid">
                         <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
-                        <td>{{ Data.programid }}</td>
-                        <td>{{ Data.programname }}</td>
-                        <td>{{ Data.description }}</td>
-                        <td>{{ Data.barangayscope }}</td>
-                        <td>{{ Data.eventDate }}</td>
-                        <td>{{ Data.isactive }}</td>
-                        <td>{{ Data.createdby }}</td>
-                        <td>{{ Data.createdat }}</td>
-                        <td>{{ Data.isdeleted }}</td>
-                        <td>{{ Data.budgetperhead }}</td>
+                        <td>{{ Data.residentid }}</td>
+                        <td>{{ Data.precintid }}</td>
+                        <td>{{ unHash(Data.lastname) }}</td>
+                        <td>{{ unHash(Data.firstname) }}</td>
+                        <td>{{ unHash(Data.middlename) }}</td>
+                        <td>{{ unHash(Data.addressline1) }}</td>
+                        <td>{{ Data.barangay }}</td>
+                        <td>{{ Data.bday }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -113,12 +108,8 @@ const store = useStore();
 const pageSize = 10;
 const currentPage = ref(1);
 
-//search var
-const searchKey = ref('');
-const startDate = new Date('1/2/2024').toISOString().split('T')[0];
-const today = new Date().toISOString().split('T')[0];
-const dateStart = ref(startDate);
-const dateEnd = ref(today);
+//search related
+const isvoter = ref('All');
 const barangay = ref('All');
 
 const arrayData = ref([]);
@@ -134,19 +125,19 @@ const totalPages = computed(() => Math.ceil(arrayData.value.length / pageSize));
 
 function fetchData() {
     const data = {
-        action: 'search_program',
-        datestart: dateStart.value,
-        dateend: dateEnd.value,
+        action: 'search_residents',
+        isvoter: isvoter.value,
         barangay: barangay.value,
-
     };
-    axios.post('https://rjprint10.com/marilaomis/backend/programapi.php', data)
+    axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', data)
         .then((response) => {
             arrayData.value = response.data;
             arrayCount.value = arrayData.value.length;
+
         })
         .catch((error) => {
             console.error('Error fetching data:', error);
+
         });
 };
 

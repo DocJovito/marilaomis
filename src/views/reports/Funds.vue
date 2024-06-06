@@ -2,28 +2,31 @@
     <div class="container mt-4">
         <h1>Funding Report</h1>
         <p>Total Number of Funds Allocate Data: {{ arrayCount }}</p>
-        <p>Total Number of Amount of Funds Allocated: {{ totalFund }}</p>
-        <p>Total Number of Remaining Funds: {{ arrayCount }}</p>
+        <p>Total Number of Amount of Funds Allocated: Php{{ formatNumber(totalFund) }}</p>
 
-
-        <!-- filters -->
-        <!-- if voter -->
-        <!-- by barangay -->
-        <!-- drop down/ all -->
         <!-- Date start and end -->
+        <!-- name instead of id -->
+        <!-- format numeric to money -->
+        <!-- total scan from programs -->
+
+        <!-- by user id -->
+        <!-- by date -->
 
 
-        <div class="form-group">
-            <div class="row">
-                <div class="col-9">
-                    <input type="text" id="search" class="form-control" v-model="searchKey"
-                        placeholder="Search by Complete Surname Only">
+        <form @submit.prevent="fetchData">
+            <div>
+                <div class="form-group">
+                    <label for="dateStart">Start Date:</label><br>
+                    <input type="date" id="dateStart" v-model="dateStart" class="form-control" required>
                 </div>
-                <div class="col-3">
-                    <button class="btn btn-primary" @click="fetchData">Search</button>
+                <div class="form-group">
+                    <label for="dateEnd">End Date:</label><br>
+                    <input type="date" id="dateEnd" v-model="dateEnd" class="form-control" required>
                 </div>
             </div>
-        </div>
+
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
 
         <div class="table-responsive">
             <table class="table table-hover ">
@@ -91,7 +94,12 @@ const store = useStore();
 const pageSize = 10;
 const currentPage = ref(1);
 
+//search related
 const searchKey = ref('');
+const startDate = new Date('1/2/2024').toISOString().split('T')[0];
+const today = new Date().toISOString().split('T')[0];
+const dateStart = ref(startDate);
+const dateEnd = ref(today);
 
 const arrayData = ref([]);
 const arrayCount = ref(0);
@@ -104,15 +112,26 @@ const paginatedArrayData = computed(() => {
 
 const totalPages = computed(() => Math.ceil(arrayData.value.length / pageSize));
 
+function formatNumber(value) {
+    if (value === null || value === undefined) return '';
+    return value.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+}
+
 
 function fetchData() {
     const data = {
         action: 'search_funds',
+        datestart: dateStart.value,
+        dateend: dateEnd.value,
     };
     axios.post('https://rjprint10.com/marilaomis/backend/fundapi.php', data)
         .then((response) => {
             arrayData.value = response.data;
             arrayCount.value = arrayData.value.length;
+            totalFund.value = 0;
             for (let index = 0; index < arrayData.value.length; index++) {
                 if (arrayData.value[index].hasOwnProperty('amount')) {
                     totalFund.value += parseFloat(arrayData.value[index].amount);

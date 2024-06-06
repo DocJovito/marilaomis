@@ -211,6 +211,24 @@ const routes = [
       restrictedTo: ["Admin", "Municipal Staff"],
     },
   },
+  {
+    path: "/reports/scans",
+    name: "rptscans",
+    component: () => import("@/views/reports/Scans.vue"),
+    meta: {
+      requiresAuth: true,
+      restrictedTo: ["Admin", "Municipal Staff"],
+    },
+  },
+  {
+    path: "/reports/users",
+    name: "rptusers",
+    component: () => import("@/views/reports/Users.vue"),
+    meta: {
+      requiresAuth: true,
+      restrictedTo: ["Admin", "Municipal Staff"],
+    },
+  },
 ];
 
 const router = createRouter({
