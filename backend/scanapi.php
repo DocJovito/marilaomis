@@ -58,6 +58,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (PDOException $e) {
             echo json_encode(array("error" => "Error fetching records: " . $e->getMessage()));
         }
+    } elseif ($data['action'] === 'search_program') {
+        try {
+            $datestart = $data['datestart'];
+            $dateend = $data['dateend'];
+            $barangay = $data['barangay'];
+
+            if ($barangay == 'All') {
+                $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0 AND createdat BETWEEN ? AND ? ORDER BY programid desc");
+                $stmt->execute([$datestart, $dateend]);
+            } else {
+                $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0 AND createdat BETWEEN ? AND ? AND barangayscope like ? ORDER BY programid desc");
+                $stmt->execute([$datestart, $dateend, "%{$barangay}%"]);
+            }
+
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode($rows);
+        } catch (PDOException $e) {
+            echo json_encode(array("error" => "Error updating program: " . $e->getMessage()));
+        }
     }
 }
 
