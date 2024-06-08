@@ -2,14 +2,7 @@
     <div class="container mt-4">
         <h1>Scans Report</h1>
         <p>Total Number of Scanned ID: {{ arrayCount }}</p>
-        <p>Total Amount distributed: {{ totalFund }}</p>
-
-
-        <!-- filters -->
-        <!-- if voter -->
-        <!-- by barangay -->
-        <!-- drop down/ all -->
-
+        <p>Total Amount distributed: Php{{ formatNumber(totalFund) }}</p>
 
 
         <form @submit.prevent="fetchData">
@@ -217,6 +210,14 @@ function unHash(hashed) {
         console.error('Error decoding from Base64:', e);
         return '';
     }
+}
+
+function formatNumber(value) {
+    if (value === null || value === undefined) return '';
+    return value.toLocaleString('en-US', {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
 }
 
 </script>

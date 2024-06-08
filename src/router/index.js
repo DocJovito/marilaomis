@@ -220,15 +220,6 @@ const routes = [
       restrictedTo: ["Admin", "Municipal Staff"],
     },
   },
-  {
-    path: "/reports/users",
-    name: "rptusers",
-    component: () => import("@/views/reports/Users.vue"),
-    meta: {
-      requiresAuth: true,
-      restrictedTo: ["Admin", "Municipal Staff"],
-    },
-  },
 ];
 
 const router = createRouter({
