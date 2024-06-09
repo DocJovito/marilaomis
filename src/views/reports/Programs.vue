@@ -140,7 +140,7 @@ function fetchData() {
         barangay: barangay.value,
 
     };
-    axios.post('https://rjprint10.com/marilaomis/backend/programapi.php', data)
+    axios.post('https://marilaomis.com/marilaomis/backend/programapi.php', data)
         .then((response) => {
             arrayData.value = response.data;
             arrayCount.value = arrayData.value.length;

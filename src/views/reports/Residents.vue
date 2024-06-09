@@ -129,7 +129,7 @@ function fetchData() {
         isvoter: isvoter.value,
         barangay: barangay.value,
     };
-    axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', data)
+    axios.post('https://marilaomis.com/marilaomis/backend/personapi.php', data)
         .then((response) => {
             arrayData.value = response.data;
             arrayCount.value = arrayData.value.length;

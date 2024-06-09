@@ -112,7 +112,7 @@ const fetchResident = () => {
         action: 'search_resident',
         lastname: searchKey.value,
     };
-    axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', data)
+    axios.post('https://marilaomis.com/marilaomis/backend/personapi.php', data)
         .then((response) => {
             residents.value = response.data;
             // console.log(data);
@@ -133,7 +133,7 @@ function deleterec(targetid) {
             action: 'delete',
             residentid: targetid,
         };
-        axios.post(`https://rjprint10.com/marilaomis/backend/personapi.php`, data)
+        axios.post(`https://marilaomis.com/marilaomis/backend/personapi.php`, data)
             .then(response => {
                 // console.log('Record Delete Successfully:', response.data);
                 alert("Record Deleted");
@@ -240,7 +240,7 @@ function handleFile(event) {
 
 
 function importExcel(excelData) {
-    axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', {
+    axios.post('https://marilaomis.com/marilaomis/backend/personapi.php', {
         action: 'import',
         records: excelData,
     })

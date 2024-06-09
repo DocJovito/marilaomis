@@ -117,7 +117,7 @@ const fetchPrograms = () => {
     action: 'get_programs',
     barangayscope: address.value,
   };
-  axios.post('https://rjprint10.com/marilaomis/backend/programapi.php', data)
+  axios.post('https://marilaomis.com/marilaomis/backend/programapi.php', data)
     .then((response) => {
       programs.value = response.data;
     })
@@ -132,7 +132,7 @@ const deleteProgram = (programId) => {
       action: 'delete',
       id: programId,
     };
-    axios.delete('https://rjprint10.com/marilaomis/backend/programapi.php', { data: targetRecord })
+    axios.delete('https://marilaomis.com/marilaomis/backend/programapi.php', { data: targetRecord })
       .then(() => {
         programs.value = programs.value.filter(program => program.programid !== programId);
         console.log('Program deleted successfully');

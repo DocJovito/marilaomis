@@ -21,15 +21,14 @@
                     <tr v-for="(fund, index) in paginatedFunds" :key="funds.fundid">
                         <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
                         <td>{{ fund.fundid }}</td>
-                        <td>{{ fund.budgetfor }}</td>         
+                        <td>{{ fund.budgetfor }}</td>
                         <td>{{ fund.amount }}</td>
-                        <td>{{ fund.userid }}</td>   
+                        <td>{{ fund.userid }}</td>
                         <td>
                             <RouterLink :to="'/funds/' + fund.fundid + '/edit'" class="btn btn-success">
                                 Edit
                             </RouterLink>
-                            <RouterLink to="/funds/view" class="btn btn-danger"
-                                @:click="deleterec(fund.fundid)">Delete
+                            <RouterLink to="/funds/view" class="btn btn-danger" @:click="deleterec(fund.fundid)">Delete
                             </RouterLink>
 
                         </td>
@@ -83,7 +82,7 @@ const fetchFunds = () => {
     const data = {
         action: 'fetch_funds',
     };
-    axios.post('https://rjprint10.com/marilaomis/backend/fundapi.php', data)
+    axios.post('https://marilaomis.com/marilaomis/backend/fundapi.php', data)
         .then((response) => {
             funds.value = response.data;
         })
@@ -101,21 +100,21 @@ const changePage = (pageNumber) => {
 };
 
 const deleterec = (fundid) => {
-  if (confirm('Are you sure you want to delete this record?')) {
-    const data = {
-      action: 'delete',
-      fundid: fundid,
-      deletedby: userId.value // Sending the current user's ID as deletedby
-    };
-    axios.post('https://rjprint10.com/marilaomis/backend/fundapi.php', data)
-      .then(response => {
-        console.log(response.data);
-        fetchFunds(); // Refresh the funds list after deletion
-      })
-      .catch(error => {
-        console.error('Error deleting fund:', error);
-      });
-  }
+    if (confirm('Are you sure you want to delete this record?')) {
+        const data = {
+            action: 'delete',
+            fundid: fundid,
+            deletedby: userId.value // Sending the current user's ID as deletedby
+        };
+        axios.post('https://marilaomis.com/marilaomis/backend/fundapi.php', data)
+            .then(response => {
+                console.log(response.data);
+                fetchFunds(); // Refresh the funds list after deletion
+            })
+            .catch(error => {
+                console.error('Error deleting fund:', error);
+            });
+    }
 };
 
 </script>
@@ -124,7 +123,5 @@ const deleterec = (fundid) => {
 
 
 <style scoped>
-
-
 /* Add your custom styles here */
 </style>

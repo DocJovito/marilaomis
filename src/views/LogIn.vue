@@ -58,25 +58,25 @@ const login = () => {
     action: 'login',
     email: email.value,
     password: password.value
-  };  
+  };
 
-  axios.post('https://rjprint10.com/marilaomis/backend/loginapi.php', data)
-  .then(response => { 
-    // Remove leading whitespace and characters '//'
-    const responseData = JSON.parse(response.data.trim().replace(/^\/\/\s*/, ''));
-  
-    if (responseData.success === true) {
-      otpSent.value = true;
-      // alert('OTP sent to your email. Please check your email and enter the OTP.');
-      alert(`OTP sent to your email. Please check your email and enter the OTP: ${responseData.otp}`); // remove this OTP after success in Email
-    } else {
-      alert(responseData.error || 'Invalid email or password');
-    }
-  })
-  .catch(error => {
-    console.error(error);
-    alert('Error logging in');
-  });
+  axios.post('https://marilaomis.com/marilaomis/backend/loginapi.php', data)
+    .then(response => {
+      // Remove leading whitespace and characters '//'
+      const responseData = JSON.parse(response.data.trim().replace(/^\/\/\s*/, ''));
+
+      if (responseData.success === true) {
+        otpSent.value = true;
+        // alert('OTP sent to your email. Please check your email and enter the OTP.');
+        alert(`OTP sent to your email. Please check your email and enter the OTP: ${responseData.otp}`); // remove this OTP after success in Email
+      } else {
+        alert(responseData.error || 'Invalid email or password');
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      alert('Error logging in');
+    });
 
 };
 
@@ -87,38 +87,38 @@ const verifyOtp = () => {
     otp: otp.value
   };
 
-  axios.post('https://rjprint10.com/marilaomis/backend/loginapi.php', data)
+  axios.post('https://marilaomis.com/marilaomis/backend/loginapi.php', data)
     .then(response => {
-        const responseData = JSON.parse(response.data.trim().replace(/^\/\/\s*/, ''));
-        
-        if (responseData.success === true) {
-            const user = responseData.user; // Access user data from responseData
-            store.dispatch('logIn', {
-                id: user.userid,
-                email: user.email,
-                userType: user.usertype,
-                name: user.name,
-                address: user.address,
-                token: responseData.token // Access token from responseData
-            });
+      const responseData = JSON.parse(response.data.trim().replace(/^\/\/\s*/, ''));
 
-            // Save user data in local storage
-            localStorage.setItem('token', responseData.token);
-            localStorage.setItem('userid', user.userid);
-            localStorage.setItem('email', user.email);
-            localStorage.setItem('usertype', user.usertype);
-            localStorage.setItem('name', user.name);
-            localStorage.setItem('address', user.address);
+      if (responseData.success === true) {
+        const user = responseData.user; // Access user data from responseData
+        store.dispatch('logIn', {
+          id: user.userid,
+          email: user.email,
+          userType: user.usertype,
+          name: user.name,
+          address: user.address,
+          token: responseData.token // Access token from responseData
+        });
 
-            alert('OTP verified successfully. Log in successful');
-            router.push('/');
-        } else {
-            alert(responseData.error || 'Invalid OTP');
-        }
+        // Save user data in local storage
+        localStorage.setItem('token', responseData.token);
+        localStorage.setItem('userid', user.userid);
+        localStorage.setItem('email', user.email);
+        localStorage.setItem('usertype', user.usertype);
+        localStorage.setItem('name', user.name);
+        localStorage.setItem('address', user.address);
+
+        alert('OTP verified successfully. Log in successful');
+        router.push('/');
+      } else {
+        alert(responseData.error || 'Invalid OTP');
+      }
     })
     .catch(error => {
-        console.error(error);
-        alert('Error verifying OTP');
+      console.error(error);
+      alert('Error verifying OTP');
     });
 
 };

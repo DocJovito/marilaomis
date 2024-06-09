@@ -153,7 +153,7 @@ function fetchData() {
         programid: programID.value,
         userid: userID.value,
     };
-    axios.post('https://rjprint10.com/marilaomis/backend/scanapi.php', data)
+    axios.post('https://marilaomis.com/marilaomis/backend/scanapi.php', data)
         .then((response) => {
             arrayData.value = response.data;
             arrayCount.value = arrayData.value.length;
@@ -181,7 +181,7 @@ const users = ref([]);
 
 const fetchPrograms = async () => {
     try {
-        const response = await axios.get('https://rjprint10.com/marilaomis/backend/programapi.php?action=get_programs');
+        const response = await axios.get('https://marilaomis.com/marilaomis/backend/programapi.php?action=get_programs');
         programs.value = response.data;
     } catch (error) {
         console.error('Error fetching programs:', error);
@@ -190,7 +190,7 @@ const fetchPrograms = async () => {
 
 const fetchUsers = async () => {
     try {
-        const response = await axios.get('https://rjprint10.com/marilaomis/backend/userapi.php?action=get_users');
+        const response = await axios.get('https://marilaomis.com/marilaomis/backend/userapi.php?action=get_users');
         users.value = response.data;
     } catch (error) {
         console.error('Error fetching users:', error);

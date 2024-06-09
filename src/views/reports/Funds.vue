@@ -127,7 +127,7 @@ function fetchData() {
         datestart: dateStart.value,
         dateend: dateEnd.value,
     };
-    axios.post('https://rjprint10.com/marilaomis/backend/fundapi.php', data)
+    axios.post('https://marilaomis.com/marilaomis/backend/fundapi.php', data)
         .then((response) => {
             arrayData.value = response.data;
             arrayCount.value = arrayData.value.length;

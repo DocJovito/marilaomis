@@ -99,7 +99,7 @@ residentID.value = route.params.residentid;
 console.log(route.params.residentid);
 
 onMounted(() => {
-    axios.get(`https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_id&residentid=` + residentID.value)
+    axios.get(`https://marilaomis.com/marilaomis/backend/personapi.php?action=get_by_id&residentid=` + residentID.value)
         .then((response) => {
             residents.value = response.data;
             id.value = residents.value.id;

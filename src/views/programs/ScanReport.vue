@@ -80,7 +80,7 @@ const fetchData = () => {
         barangay: selectedBarangay.value,
         programid: programid.value,
     };
-    axios.post('https://rjprint10.com/marilaomis/backend/scanapi.php', qryData)
+    axios.post('https://marilaomis.com/marilaomis/backend/scanapi.php', qryData)
         .then((response) => {
             scanResults.value = response.data;
         })

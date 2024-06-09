@@ -83,7 +83,7 @@ async function insertScan() {
   };
 
   try {
-    const response = await axios.post('https://rjprint10.com/marilaomis/backend/scanapi.php', newRecord);
+    const response = await axios.post('https://marilaomis.com/marilaomis/backend/scanapi.php', newRecord);
     // console.log('Record saved successfully:', response.data);
     alert(response.data + " \nResident Name:" + unHash(lastName.value));
   } catch (error) {
@@ -94,7 +94,7 @@ async function insertScan() {
 
 async function getResident() {
   try {
-    const response = await axios.get(`https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_id&residentid=${scannedOutput.value}`);
+    const response = await axios.get(`https://marilaomis.com/marilaomis/backend/personapi.php?action=get_by_id&residentid=${scannedOutput.value}`);
     if (response.data) {
       const residentData = response.data;
       residents.value = [residentData];
@@ -185,7 +185,7 @@ onBeforeUnmount(() => {
 
 async function getProgram() {
   try {
-    const response = await axios.get(`https://rjprint10.com/marilaomis/backend/programapi.php?action=get_by_id&id=${route.params.programid}`);
+    const response = await axios.get(`https://marilaomis.com/marilaomis/backend/programapi.php?action=get_by_id&id=${route.params.programid}`);
     if (response.data) {
       const programData = response.data;
       program.value = programData;

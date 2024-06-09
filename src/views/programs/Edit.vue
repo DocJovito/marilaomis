@@ -70,7 +70,7 @@ id.value = route.params.id;
 const router = useRouter();
 
 onMounted(() => {
-  axios.get(`https://rjprint10.com/marilaomis/backend/programapi.php?action=get_by_id&id=${id.value}`)
+  axios.get(`https://marilaomis.com/marilaomis/backend/programapi.php?action=get_by_id&id=${id.value}`)
     .then(response => {
       program.value = response.data;
       selectedBarangays.value = program.value.barangayscope.split(',').map(b => b.trim());
@@ -92,7 +92,7 @@ function updateProgram() {
     isactive: program.value.isactive,
   };
 
-  axios.post('https://rjprint10.com/marilaomis/backend/programapi.php', updatedProgram)
+  axios.post('https://marilaomis.com/marilaomis/backend/programapi.php', updatedProgram)
     .then(response => {
       // console.log('Program updated successfully:', response.data);
       alert('Program updated successfully');

@@ -86,7 +86,7 @@ console.log(route.params.residentid);
 const router = useRouter();
 
 onMounted(() => {
-    axios.get(`https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_id&residentid=` + residentid.value)
+    axios.get(`https://marilaomis.com/marilaomis/backend/personapi.php?action=get_by_id&residentid=` + residentid.value)
         .then((response) => {
             residents.value = response.data;
             residentid.value = residents.value.residentid;
@@ -117,7 +117,7 @@ const UpdateRecord = () => {
 
     };
 
-    axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', newRecord)
+    axios.post('https://marilaomis.com/marilaomis/backend/personapi.php', newRecord)
         .then(response => {
             console.log('Record saved successfully:', response.data);
             router.push('/residents/view');

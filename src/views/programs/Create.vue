@@ -112,7 +112,7 @@ const createProgram = () => {
     barangayscope: selectedBarangays.value.join(', ') // Concatenate selected barangays
   };
 
-  axios.post('https://rjprint10.com/marilaomis/backend/programapi.php', programData)
+  axios.post('https://marilaomis.com/marilaomis/backend/programapi.php', programData)
     .then(response => {
       console.log('Program created successfully:', response.data);
       alert("Program Created");

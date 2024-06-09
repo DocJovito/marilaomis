@@ -99,7 +99,7 @@ function saveRecord() {
         bday: birthday.value
     };
 
-    axios.post('https://rjprint10.com/marilaomis/backend/personapi.php', newRecord)
+    axios.post('https://marilaomis.com/marilaomis/backend/personapi.php', newRecord)
         .then(response => {
             console.log('Record saved successfully:', response.data);
             closeModal();
