@@ -33,31 +33,31 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">fundid</th>
-                        <th scope="col">budgetfor</th>
-                        <th scope="col">amount</th>
-                        <th scope="col">userid</th>
+                        <!-- <th scope="col">fundid</th> -->
+                        <th scope="col">Project Name</th>
+                        <th scope="col">Amount Allocated</th>
+                        <th scope="col">Distributed to User</th>
                         <th scope="col">createdby</th>
                         <th scope="col">createdat</th>
                         <th scope="col">editedby</th>
                         <th scope="col">editedat</th>
-                        <th scope="col">isdeleted</th>
-                        <th scope="col">deletedby</th>
+                        <!-- <th scope="col">isdeleted</th> -->
+                        <!-- <th scope="col">deletedby</th> -->
                     </tr>
                 </thead>
                 <tbody>
                     <tr v-for="( Data, index ) in  paginatedArrayData " :key="Data.residentid">
                         <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
-                        <td>{{ Data.fundid }}</td>
+                        <!-- <td>{{ Data.fundid }}</td> -->
                         <td>{{ Data.budgetfor }}</td>
-                        <td>{{ Data.amount }}</td>
+                        <td>{{ formatNumber(Data.amount) }}</td>
                         <td>{{ Data.userid }}</td>
                         <td>{{ Data.createdby }}</td>
                         <td>{{ Data.createdat }}</td>
                         <td>{{ Data.editedby }}</td>
                         <td>{{ Data.editedat }}</td>
-                        <td>{{ Data.isdeleted }}</td>
-                        <td>{{ Data.deletedby }}</td>
+                        <!-- <td>{{ Data.isdeleted }}</td> -->
+                        <!-- <td>{{ Data.deletedby }}</td> -->
                     </tr>
                 </tbody>
             </table>

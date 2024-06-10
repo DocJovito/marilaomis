@@ -66,13 +66,13 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">id</th>
-                        <th scope="col">programid </th>
-                        <th scope="col">residentid </th>
-                        <th scope="col">barangay </th>
-                        <th scope="col">createdby </th>
-                        <th scope="col">createdat</th>
-                        <th scope="col">budgetperhead</th>
+                        <th scope="col">ID</th>
+                        <th scope="col">Program Name </th>
+                        <th scope="col">Resident Name </th>
+                        <th scope="col">Barangay </th>
+                        <th scope="col">Scanned By </th>
+                        <th scope="col">Scan Date</th>
+                        <th scope="col">Budget</th>
 
                     </tr>
                 </thead>
@@ -81,7 +81,7 @@
                         <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
                         <td>{{ Data.id }}</td>
                         <td>{{ Data.programid }}</td>
-                        <td>{{ Data.residentid }}</td>
+                        <td>{{ unHash(Data.residentid) }}</td>
                         <td>{{ Data.barangay }}</td>
                         <td>{{ Data.createdby }}</td>
                         <td>{{ Data.createdat }}</td>

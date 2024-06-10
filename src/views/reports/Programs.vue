@@ -52,16 +52,16 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">programid</th>
-                        <th scope="col">programname</th>
-                        <th scope="col">description</th>
-                        <th scope="col">barangayscope</th>
-                        <th scope="col">eventDate</th>
+                        <th scope="col">Program ID</th>
+                        <th scope="col">Program Name</th>
+                        <th scope="col">Description</th>
+                        <th scope="col">Barangay Scope</th>
+                        <th scope="col">Event Date</th>
                         <th scope="col">isactive</th>
-                        <th scope="col">createdby</th>
-                        <th scope="col">createdat</th>
-                        <th scope="col">isdeleted</th>
-                        <th scope="col">budgetperhead</th>
+                        <th scope="col">Created By</th>
+                        <th scope="col">Date Created</th>
+                        <!-- <th scope="col">isdeleted</th> -->
+                        <th scope="col">Budget Per Head</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -75,7 +75,7 @@
                         <td>{{ Data.isactive }}</td>
                         <td>{{ Data.createdby }}</td>
                         <td>{{ Data.createdat }}</td>
-                        <td>{{ Data.isdeleted }}</td>
+                        <!-- <td>{{ Data.isdeleted }}</td> -->
                         <td>{{ Data.budgetperhead }}</td>
                     </tr>
                 </tbody>
