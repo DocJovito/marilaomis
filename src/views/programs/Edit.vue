@@ -30,6 +30,13 @@
             <input type="number" class="form-control" id="budgetPerHead" v-model="program.budgetperhead" required>
           </div>
           <div class="form-group">
+            <label for="ismember">Is Member:</label><br>
+            <select id="ismember" class="form-control" v-model="program.ismember" required>
+              <option value="1">True</option>
+              <option value="0">False</option>
+            </select>
+          </div>
+          <div class="form-group">
             <label for="eventDate">Event Date:</label><br>
             <input type="date" id="eventDate" class="form-control" v-model="program.eventDate" required>
           </div>
@@ -59,6 +66,7 @@ const program = ref({
   description: '',
   barangayscope: '',
   budgetperhead: '',
+  ismember: '',
   eventDate: '',
   isactive: false,
 });
@@ -88,14 +96,15 @@ function updateProgram() {
     description: program.value.description,
     barangayscope: selectedBarangays.value.join(', '), // Concatenate selected barangays
     budgetperhead: program.value.budgetperhead,
+    ismember: program.value.ismember,
     eventDate: program.value.eventDate,
     isactive: program.value.isactive,
   };
 
   axios.post('https://marilaomis.com/marilaomis/backend/programapi.php', updatedProgram)
     .then(response => {
-      // console.log('Program updated successfully:', response.data);
-      alert('Program updated successfully');
+      console.log('Program updated successfully:', response.data);
+      // alert('Program updated successfully');
       router.push('/programs/view'); // Redirect to programs list after successful update
     })
     .catch(error => {

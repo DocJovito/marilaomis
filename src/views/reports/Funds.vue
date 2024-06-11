@@ -37,10 +37,10 @@
                         <th scope="col">Project Name</th>
                         <th scope="col">Amount Allocated</th>
                         <th scope="col">Distributed to User</th>
-                        <th scope="col">createdby</th>
-                        <th scope="col">createdat</th>
-                        <th scope="col">editedby</th>
-                        <th scope="col">editedat</th>
+                        <th scope="col">Allocated By</th>
+                        <th scope="col">Allocate Date</th>
+                        <th scope="col">Edited By</th>
+                        <th scope="col">Edit Date</th>
                         <!-- <th scope="col">isdeleted</th> -->
                         <!-- <th scope="col">deletedby</th> -->
                     </tr>

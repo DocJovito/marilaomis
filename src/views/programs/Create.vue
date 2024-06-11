@@ -26,7 +26,13 @@
         <label for="budgetPerHead" class="form-label">Budget Per Head</label>
         <input type="number" class="form-control" id="budgetPerHead" v-model="newProgram.budgetPerHead" required>
       </div>
-
+      <div class="form-group">
+        <label for="ismember">Is Member:</label><br>
+        <select id="ismember" class="form-control" v-model="newProgram.ismember" required>
+          <option value="1">True</option>
+          <option value="0">False</option>
+        </select>
+      </div>
       <div class="mb-3">
         <label for="eventDate" class="form-label">Event Date</label>
         <input type="date" class="form-control" id="eventDate" v-model="newProgram.eventDate" required>
@@ -94,6 +100,7 @@ const newProgram = ref({
   description: '',
   barangayscope: '',
   budgetPerHead: '',
+  ismember: '',
   eventDate: getCurrentDate(),
   isactive: '1',  // wala na
   createdby: '',

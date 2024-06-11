@@ -17,6 +17,13 @@
                             placeholder="Leave blank if not yet a registered voter">
                     </div>
                     <div class="form-group">
+                        <label for="isMember">Is Member:</label><br>
+                        <select id="isMember" class="form-control" v-model="isMember" required>
+                            <option value="1">True</option>
+                            <option value="0">False</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="lastName">Last Name:</label><br>
                         <input type="text" id="lastName" class="form-control" v-model="lastName" required>
                     </div>
@@ -77,6 +84,7 @@ import { useRouter } from 'vue-router';
 const router = useRouter();
 
 const precintID = ref('');
+const isMember = ref('');
 const lastName = ref('');
 const firstName = ref('');
 const middleName = ref('');
@@ -91,6 +99,7 @@ function saveRecord() {
     const newRecord = {
         action: 'create',
         precintid: precintID.value,
+        ismember: isMember.value,
         lastname: myHash(lastName.value),
         firstname: myHash(firstName.value),
         middlename: myHash(middleName.value),

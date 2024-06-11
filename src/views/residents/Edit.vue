@@ -12,6 +12,13 @@
                         <input type="text" id="precintID" class="form-control" v-model="precintID">
                     </div>
                     <div class="form-group">
+                        <label for="isMember">Is Member:</label><br>
+                        <select id="isMember" class="form-control" v-model="isMember" required>
+                            <option value="1">True</option>
+                            <option value="0">False</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label for="lastName">Last Name:</label><br>
                         <input type="text" id="lastName" class="form-control" v-model="lastName" required>
                     </div>
@@ -70,6 +77,7 @@ const residents = ref([]);
 
 const residentid = ref('');
 const precintID = ref('');
+const isMember = ref('');
 const lastName = ref('');
 const firstName = ref('');
 const middleName = ref('');
@@ -91,6 +99,7 @@ onMounted(() => {
             residents.value = response.data;
             residentid.value = residents.value.residentid;
             precintID.value = residents.value.precintid;
+            isMember.value = residents.value.ismember;
             lastName.value = unHash(residents.value.lastname);
             firstName.value = unHash(residents.value.firstname);
             middleName.value = unHash(residents.value.middlename);
@@ -108,6 +117,7 @@ const UpdateRecord = () => {
         action: 'update',
         residentid: residentid.value,
         precintid: precintID.value,
+        ismember: isMember.value,
         lastname: myHash(lastName.value),
         firstname: myHash(firstName.value),
         middlename: myHash(middleName.value),

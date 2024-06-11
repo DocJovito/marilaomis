@@ -16,6 +16,7 @@
             <!-- <th scope="col">Description</th> -->
             <th scope="col">Barangay Scope</th>
             <th scope="col">budgetperhead</th>
+            <th scope="col">ismember</th>
             <th scope="col">Event Date</th>
             <!-- <th scope="col">Is Active</th>
             <th scope="col">Created By</th>
@@ -31,6 +32,7 @@
             <!-- <td>{{ program.description }}</td> -->
             <td>{{ program.barangayscope }}</td>
             <td>{{ program.budgetperhead }}</td>
+            <td>{{ program.ismember }}</td>
             <td>{{ program.eventDate }}</td>
             <!-- <td>{{ program.isactive }}</td>
             <td>{{ program.createdby }}</td>

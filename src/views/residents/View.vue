@@ -22,9 +22,10 @@
                         <th scope="col">#</th>
                         <th scope="col">Resident ID</th>
                         <th scope="col">Precint ID</th>
+                        <th scope="col">is member</th>
                         <th scope="col">Last Name</th>
                         <th scope="col">First Name</th>
-                        <th scope="col">Middle Name</th>
+                        <!-- <th scope="col">Middle Name</th> -->
                         <th scope="col">Address</th>
                         <th scope="col">Barangay</th>
                         <th scope="col">Birthday</th>
@@ -36,9 +37,10 @@
                         <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
                         <td>{{ resident.residentid }}</td>
                         <td>{{ resident.precintid }}</td>
+                        <td>{{ resident.ismember }}</td>
                         <td>{{ unHash(resident.lastname) }}</td>
                         <td>{{ unHash(resident.firstname) }}</td>
-                        <td>{{ unHash(resident.middlename) }}</td>
+                        <!-- <td>{{ unHash(resident.middlename) }}</td> -->
                         <td>{{ unHash(resident.addressline1) }}</td>
                         <td>{{ resident.barangay }}</td>
                         <td>{{ resident.bday }}</td>
