@@ -3,17 +3,18 @@
         <h1>Resident Report</h1>
         <p>Total Number of residents: {{ arrayCount }}</p>
 
-        <!-- filters -->
-        <!-- if voter -->
-        <!-- by barangay -->
-        <!-- drop down/ all -->
-
-
-
         <form @submit.prevent="fetchData">
             <div class="form-group">
                 <label for="isvoter">isvoter:</label><br>
                 <select id="isvoter" class="form-control" v-model="isvoter">
+                    <option value="All">All</option>
+                    <option value="true">true</option>
+                    <option value="false">false</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ismember">ismember:</label><br>
+                <select id="ismember" class="form-control" v-model="ismember">
                     <option value="All">All</option>
                     <option value="true">true</option>
                     <option value="false">false</option>
@@ -53,6 +54,7 @@
                         <th scope="col">#</th>
                         <th scope="col">Resident ID</th>
                         <th scope="col">Precint ID</th>
+                        <th scope="col">Member</th>
                         <th scope="col">Last Name</th>
                         <th scope="col">First Name</th>
                         <th scope="col">Middle Name</th>
@@ -66,6 +68,8 @@
                         <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
                         <td>{{ Data.residentid }}</td>
                         <td>{{ Data.precintid }}</td>
+                        <td v-if="Data.ismember == 1">Yes</td>
+                        <td v-else>No</td>
                         <td>{{ unHash(Data.lastname) }}</td>
                         <td>{{ unHash(Data.firstname) }}</td>
                         <td>{{ unHash(Data.middlename) }}</td>
@@ -110,6 +114,7 @@ const currentPage = ref(1);
 
 //search related
 const isvoter = ref('All');
+const ismember = ref('All');
 const barangay = ref('All');
 
 const arrayData = ref([]);
@@ -127,6 +132,7 @@ function fetchData() {
     const data = {
         action: 'search_residents',
         isvoter: isvoter.value,
+        ismember: ismember.value,
         barangay: barangay.value,
     };
     axios.post('https://marilaomis.com/marilaomis/backend/personapi.php', data)

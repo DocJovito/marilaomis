@@ -3,8 +3,8 @@
     <!-- <h3>Program ID: {{ programid }}</h3> -->
     <h3>Program Name: {{ programname }}</h3>
     <h3>Program Budget per Head: {{ program.budgetperhead }}</h3>
-    <h3 v-if="ismember">Formembers only: Yes</h3>
-    <h3 v-else>Formembers only:: No</h3>
+    <h3 v-if="ismember">For members only: Yes</h3>
+    <h3 v-else>For members only:: No</h3>
 
     <button @click="toggleCamera">{{ cameraActive ? 'Close Camera' : 'Open Camera' }}</button>
     <button @click="switchCameraSource">Switch Camera Source</button>

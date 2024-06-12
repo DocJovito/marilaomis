@@ -20,7 +20,14 @@
                     <input type="date" id="dateEnd" v-model="dateEnd" class="form-control" required>
                 </div>
             </div>
-
+            <div class="form-group">
+                <label for="isMember">Is Member:</label><br>
+                <select id="isMember" class="form-control" v-model="isMember" required>
+                    <option value="All">All</option>
+                    <option value="1">True</option>
+                    <option value="0">False</option>
+                </select>
+            </div>
             <div class="form-group">
                 <label for="barangay">Barangay:</label><br>
                 <select id="barangay" class="form-control" v-model="barangay">
@@ -55,6 +62,7 @@
                         <th scope="col">Program ID</th>
                         <th scope="col">Program Name</th>
                         <th scope="col">Description</th>
+                        <th scope="col">For Members</th>
                         <th scope="col">Barangay Scope</th>
                         <th scope="col">Event Date</th>
                         <th scope="col">isactive</th>
@@ -70,6 +78,9 @@
                         <td>{{ Data.programid }}</td>
                         <td>{{ Data.programname }}</td>
                         <td>{{ Data.description }}</td>
+                        <!-- <td>{{ Data.ismember }}</td> -->
+                        <td v-if="Data.ismember">Yes</td>
+                        <td v-else>No</td>
                         <td>{{ Data.barangayscope }}</td>
                         <td>{{ Data.eventDate }}</td>
                         <td>{{ Data.isactive }}</td>
@@ -120,6 +131,7 @@ const today = new Date().toISOString().split('T')[0];
 const dateStart = ref(startDate);
 const dateEnd = ref(today);
 const barangay = ref('All');
+const isMember = ref('All');
 
 const arrayData = ref([]);
 const arrayCount = ref('0');
@@ -138,6 +150,7 @@ function fetchData() {
         datestart: dateStart.value,
         dateend: dateEnd.value,
         barangay: barangay.value,
+        ismember: isMember.value,
 
     };
     axios.post('https://marilaomis.com/marilaomis/backend/programapi.php', data)
