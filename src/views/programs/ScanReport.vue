@@ -1,20 +1,20 @@
 <template>
     <div class="container">
         <h1>Scan Reports</h1>
-        <h1>Program ID: {{ programid }}</h1>
-        <h1>Program Name: {{ programname }}</h1>
+        <h2>Program ID: {{ programid }}</h2>
+        <h2>Program Name: {{ programname }}</h2>
 
-        <h1>Total Scanned: {{ scanResults.length }}</h1>
+        <h2>Total Scanned: {{ scanResults.length }}</h2>
+        <h2>Total Amount Distributed: {{ totalFund }}</h2>
 
-        <p>search</p>
+        <!-- <p>search</p>
         <input type="text" v-model="searchQuery" placeholder="Enter Last Name or ID" class="form-control">
         <select v-model="selectedBarangay" class="form-control">
             <option value="">All</option>
             <option value="Barangay A">Barangay A</option>
             <option value="Barangay B">Barangay B</option>
             <option value="Barangay C">Barangay C</option>
-            <!-- Add more barangay options as needed -->
-        </select>
+        </select> -->
 
 
         <div class="table-responsive">
@@ -28,6 +28,7 @@
                         <th scope="col">Resident Name</th>
                         <th scope="col">Barangay</th>
                         <th scope="col">Address</th>
+                        <th scope="col">Amount</th>
                         <th scope="col">Scanned By</th>
                         <th scope="col">Scan Date</th>
                     </tr>
@@ -41,6 +42,7 @@
                         <td>{{ unHash(scanResult.lastname) }}, {{ unHash(scanResult.firstname) }}</td>
                         <td>{{ scanResult.barangay }}</td>
                         <td>{{ unHash(scanResult.addressline1) }}</td>
+                        <td>{{ scanResult.budgetperhead }}</td>
                         <td>{{ scanResult.createdby }}</td>
                         <td>{{ scanResult.createdat }}</td>
                     </tr>
@@ -70,6 +72,7 @@ programid.value = route.params.programid;
 programname.value = route.params.programname;
 
 const scanResults = ref([]);
+const totalFund = ref();
 
 // Fetch data function
 const fetchData = () => {
@@ -83,6 +86,12 @@ const fetchData = () => {
     axios.post('https://marilaomis.com/marilaomis/backend/scanapi.php', qryData)
         .then((response) => {
             scanResults.value = response.data;
+            totalFund.value = 0;
+            for (let index = 0; index < scanResults.value.length; index++) {
+                if (scanResults.value[index].hasOwnProperty('budgetperhead')) {
+                    totalFund.value += parseFloat(scanResults.value[index].budgetperhead);
+                }
+            }
         })
         .catch((error) => {
             console.error('Error fetching data:', error);

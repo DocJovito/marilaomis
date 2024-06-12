@@ -1,14 +1,17 @@
 <template>
   <div class="container">
-    <h1>Program ID: {{ programid }}</h1>
-    <h1>Program Name: {{ programname }}</h1>
-    <h1>Program Budget per Head: {{ program.budgetperhead }}</h1>
+    <!-- <h3>Program ID: {{ programid }}</h3> -->
+    <h3>Program Name: {{ programname }}</h3>
+    <h3>Program Budget per Head: {{ program.budgetperhead }}</h3>
+    <h3 v-if="ismember">Formembers only: Yes</h3>
+    <h3 v-else>Formembers only:: No</h3>
 
     <button @click="toggleCamera">{{ cameraActive ? 'Close Camera' : 'Open Camera' }}</button>
     <button @click="switchCameraSource">Switch Camera Source</button>
     <br>
-    <label>Scanned output</label>
-    <p style="font-weight: bolder; font-size: 48px;">{{ scannedOutput }}</p>
+    <!-- <label>Scanned output</label> -->
+    <!-- <p style="font-weight: bolder; font-size: 48px;">{{ scannedOutput }}</p> -->
+    <p style="font-weight: bolder; font-size: 48px;">{{ messageResult }}</p>
     <div id="vidsize"></div>
   </div>
 </template>
@@ -23,6 +26,9 @@ import { useStore } from 'vuex';
 const store = useStore();
 const userId = computed(() => store.state.user.id); // Correct use of computed
 
+//output variable
+const messageResult = ref('Scan QR');
+
 // Program variables
 const programid = ref('');
 const programname = ref('');
@@ -30,6 +36,7 @@ const budgetperhead = ref('');
 const route = useRoute();
 programid.value = route.params.programid || '';
 programname.value = route.params.programname || '';
+const pismember = ref('');
 
 // Resident variables
 const residents = ref([]);
@@ -41,6 +48,7 @@ const middleName = ref('');
 const address = ref('');
 const barangay = ref('');
 const birthday = ref('');
+const ismember = ref('');
 
 // Program scope
 const program = ref([]);
@@ -59,9 +67,11 @@ watch(scannedOutput, async (newValue) => {
     try {
       await getResident();
       if (residents.value.length === 0) {
-        alert('No Record Found.');
+        messageResult.value = 'No Record Found.';
       } else if (!selectedBarangays.value.includes(barangay.value)) {
-        alert("Resident doesn't belong in the Program.");
+        messageResult.value = "Resident doesn't belong in the Program.";
+      } else if (pismember.value == 1 && ismember.value == 0) {
+        messageResult.value = "The program is for Members Only.";
       } else {
         await insertScan();
       }
@@ -85,7 +95,8 @@ async function insertScan() {
   try {
     const response = await axios.post('https://marilaomis.com/marilaomis/backend/scanapi.php', newRecord);
     // console.log('Record saved successfully:', response.data);
-    alert(response.data + " \nResident Name:" + unHash(lastName.value));
+    messageResult.value = (response.data + unHash(lastName.value));
+    // alert(response.data + " \nResident Name:" + unHash(lastName.value));
   } catch (error) {
     // console.error('aaaError saving record:', error);
   }
@@ -106,6 +117,7 @@ async function getResident() {
       address.value = residentData.addressline1;
       barangay.value = residentData.barangay;
       birthday.value = residentData.bday;
+      ismember.value = residentData.ismember;
     } else {
       residents.value = [];
     }
@@ -191,6 +203,7 @@ async function getProgram() {
       program.value = programData;
       selectedBarangays.value = programData.barangayscope.split(',').map((b) => b.trim());
       budgetperhead.value = programData.budgetperhead;
+      pismember.value = programData.ismember;
     } else {
       program.value = {};
       selectedBarangays.value = [];
