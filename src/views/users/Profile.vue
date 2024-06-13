@@ -74,10 +74,10 @@ const sendOTP = () => {
   }
 
 
-  axios.post('https://rjprint10.com/marilaomis/backend/check_password.php', { email: userEmail.value, currentPassword: currentPassword.value })
+  axios.post('https://marilaomis.com/marilaomis/backend/check_password.php', { email: userEmail.value, currentPassword: currentPassword.value })
     .then(response => {
       if (response.data.success === true) {
-        axios.post('https://rjprint10.com/marilaomis/backend/send_otp.php', { email: userEmail.value })
+        axios.post('https://marilaomis.com/marilaomis/backend/send_otp.php', { email: userEmail.value })
           .then(response => {
             const responseData = response.data.trim().replace(/^\/\/\s*/, ''); // Remove leading '//'
             const parsedData = JSON.parse(responseData);
@@ -114,7 +114,7 @@ const changePassword = () => {
     email: userEmail.value
   };
 
-  axios.post('https://rjprint10.com/marilaomis/backend/change_password.php', data)
+  axios.post('https://marilaomis.com/marilaomis/backend/change_password.php', data)
     .then(response => {
       if (response.data.success) {
         alert('Password changed successfully');

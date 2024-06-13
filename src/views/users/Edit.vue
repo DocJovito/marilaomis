@@ -75,7 +75,7 @@ id.value = route.params.id;
 const router = useRouter();
 
 onMounted(() => {
-  axios.get(`https://rjprint10.com/marilaomis/backend/userapi.php?action=get_by_id&id=` + id.value)
+  axios.get(`https://marilaomis.com/marilaomis/backend/userapi.php?action=get_by_id&id=` + id.value)
     .then((response) => {
       const user = response.data;
       email.value = user.email;
@@ -101,7 +101,7 @@ const updateUser = () => {
     id: id.value
   };
 
-  axios.post('https://rjprint10.com/marilaomis/backend/userapi.php', updatedUser)
+  axios.post('https://marilaomis.com/marilaomis/backend/userapi.php', updatedUser)
     .then(response => {
       console.log('User updated successfully:', response.data);
 

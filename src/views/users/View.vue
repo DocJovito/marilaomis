@@ -76,7 +76,7 @@ const paginatedUsers = computed(() => {
 const totalPages = computed(() => Math.ceil(users.value.length / pageSize));
 
 onMounted(() => {
-    axios.get('https://rjprint10.com/marilaomis/backend/userapi.php?action=get_all')
+    axios.get('https://marilaomis.com/marilaomis/backend/userapi.php?action=get_all')
         .then((response) => {
             users.value = response.data;
         })
@@ -91,7 +91,7 @@ const deleteUser = (userId) => {
             action: 'delete',
             id: userId
         };
-        axios.delete(`https://rjprint10.com/marilaomis/backend/userapi.php`, { data: targetRecord })
+        axios.delete(`https://marilaomis.com/marilaomis/backend/userapi.php`, { data: targetRecord })
             .then(() => {
                 users.value = users.value.filter(user => user.userid !== userId);
                 console.log('User deleted successfully');
