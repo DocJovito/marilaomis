@@ -57,7 +57,7 @@ const login = () => {
   const data = {
     action: 'login',
     email: email.value,
-    password: password.value
+    password: myHash(password.value),
   };
 
   axios.post('https://marilaomis.com/marilaomis/backend/loginapi.php', data)
@@ -127,4 +127,18 @@ const verifyOtp = () => {
 const forgotPassword = () => {
   router.push('/forgotpassword');
 };
+
+function myHash(text) {
+  let base64Encoded = btoa(text);
+  return base64Encoded;
+}
+
+function unHash(hashed) {
+  try {
+    return atob(hashed);
+  } catch (e) {
+    console.error('Error decoding from Base64:', e);
+    return '';
+  }
+}
 </script>

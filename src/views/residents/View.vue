@@ -1,6 +1,7 @@
 <template>
     <div class="container mt-4">
         <p>Resident Management</p>
+
         <RouterLink to="/residents/create" class="btn btn-success ">Add Resident</RouterLink>
 
         <div class="form-group">
@@ -100,6 +101,7 @@ const currentPage = ref(1);
 
 const store = useStore();
 const address = computed(() => store.state.user.address);
+const userType = computed(() => store.state.user.userType);
 
 const paginatedResidents = computed(() => {
     const startIndex = (currentPage.value - 1) * pageSize;
@@ -113,6 +115,7 @@ const fetchResident = () => {
     const data = {
         action: 'search_resident',
         lastname: searchKey.value,
+        barangay: address.value,
     };
     axios.post('https://marilaomis.com/marilaomis/backend/personapi.php', data)
         .then((response) => {

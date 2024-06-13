@@ -83,7 +83,7 @@ export default {
         return;
       }
 
-      axios.post('https://marilaomis.com/marilaomis/backend/resetpassword.php', { otp: otp.value, newPassword: newPassword.value })
+      axios.post('https://marilaomis.com/marilaomis/backend/resetpassword.php', { otp: otp.value, newPassword: myHash(newPassword.value) })
         .then(response => {
 
           if (response.data.success) {
@@ -109,6 +109,11 @@ export default {
     };
   }
 };
+
+function myHash(text) {
+  let base64Encoded = btoa(text);
+  return base64Encoded;
+}
 </script>
 
 <style scoped>

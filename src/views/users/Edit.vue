@@ -79,7 +79,7 @@ onMounted(() => {
     .then((response) => {
       const user = response.data;
       email.value = user.email;
-      password.value = user.password;
+      password.value = unHash(user.password);
       usertype.value = user.usertype;
       name.value = user.name;
       address.value = user.address;
@@ -94,7 +94,7 @@ const updateUser = () => {
     action: 'update',
     id: id.value,
     email: email.value,
-    password: password.value,
+    password: myHash(password.value),
     usertype: usertype.value,
     name: name.value,
     address: address.value,
@@ -111,6 +111,21 @@ const updateUser = () => {
       console.error('Error updating user:', error);
     });
 };
+
+
+function myHash(text) {
+  let base64Encoded = btoa(text);
+  return base64Encoded;
+}
+
+function unHash(hashed) {
+  try {
+    return atob(hashed);
+  } catch (e) {
+    console.error('Error decoding from Base64:', e);
+    return '';
+  }
+}
 </script>
 
 <style>

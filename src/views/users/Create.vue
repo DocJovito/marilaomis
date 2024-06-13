@@ -98,7 +98,7 @@ const saveRecord = () => {
   const newUser = {
     action: 'create',
     email: email.value,
-    password: password.value,
+    password: myHash(password.value),
     usertype: usertype.value,
     name: name.value,
     address: address.value
@@ -112,6 +112,22 @@ const saveRecord = () => {
       console.error('Error saving user:', error);
     });
 };
+
+
+function myHash(text) {
+  let base64Encoded = btoa(text);
+  return base64Encoded;
+}
+
+function unHash(hashed) {
+  try {
+    return atob(hashed);
+  } catch (e) {
+    console.error('Error decoding from Base64:', e);
+    return '';
+  }
+}
+
 </script>
 
 <style>
