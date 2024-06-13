@@ -79,7 +79,7 @@ const checkEmail = () => {
       return;
     }
     // Check email existence in database
-    axios.get(`https://rjprint10.com/marilaomis/backend/checkEmail.php?email=${email.value}`)
+    axios.get(`https://marilaomis.com/marilaomis/backend/checkEmail.php?email=${email.value}`)
       .then(response => {
         if (response.data.exists) {
           emailError.value = 'Email already exists';
@@ -103,7 +103,7 @@ const saveRecord = () => {
     name: name.value,
     address: address.value
   };
-  axios.post('https://rjprint10.com/marilaomis/backend/userapi.php', newUser)
+  axios.post('https://marilaomis.com/marilaomis/backend/userapi.php', newUser)
     .then(response => {
       console.log('User saved successfully:', response.data);
       router.push('/users/view');
