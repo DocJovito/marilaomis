@@ -24,7 +24,15 @@
                     <input type="date" id="dateEnd" v-model="dateEnd" class="form-control" required>
                 </div>
             </div>
-
+            <div class="form-group">
+                <label for="userID" class="form-label">User</label>
+                <select class="form-control" id="userID" v-model="userID" required>
+                    <option value="All">All</option>
+                    <option v-for="user in users" :key="user.userid" :value="user.userid">
+                        {{ user.name }} ({{ user.email }})
+                    </option>
+                </select>
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
@@ -95,11 +103,11 @@ const pageSize = 10;
 const currentPage = ref(1);
 
 //search related
-const searchKey = ref('');
 const startDate = new Date('1/2/2024').toISOString().split('T')[0];
 const today = new Date().toISOString().split('T')[0];
 const dateStart = ref(startDate);
 const dateEnd = ref(today);
+const userID = ref('All');
 
 const arrayData = ref([]);
 const arrayCount = ref(0);
@@ -126,6 +134,7 @@ function fetchData() {
         action: 'search_funds',
         datestart: dateStart.value,
         dateend: dateEnd.value,
+        userid: userID.value,
     };
     axios.post('https://marilaomis.com/marilaomis/backend/fundapi.php', data)
         .then((response) => {
@@ -145,7 +154,19 @@ function fetchData() {
 
 onMounted(() => {
     fetchData();
+    fetchUsers();
 });
+
+const users = ref([]);
+
+const fetchUsers = async () => {
+    try {
+        const response = await axios.get('https://marilaomis.com/marilaomis/backend/userapi.php?action=get_users');
+        users.value = response.data;
+    } catch (error) {
+        console.error('Error fetching users:', error);
+    }
+};
 
 
 

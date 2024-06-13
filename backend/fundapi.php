@@ -19,12 +19,11 @@ function unHash($encodedText)
     return $decodedText;
 }
 
-
 // Handle GET requests
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Retrieve all records
     if ($_GET['action'] === 'get_all') {
-        $stmt = $conn->prepare("SELECT * FROM tblfund ORDER BY residentid desc");
+        $stmt = $conn->prepare("SELECT * FROM tblfund ORDER BY fundid desc");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($rows);
@@ -38,6 +37,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         echo json_encode($row);
     }
+
+    // Retrieve programs
+    if ($_GET['action'] === 'get_programs') {
+        $stmt = $conn->prepare("SELECT programname FROM tblprogram ORDER BY programname");
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($rows);
+    }
+
+    // Retrieve users
+    if ($_GET['action'] === 'get_users') {
+        $stmt = $conn->prepare("SELECT userid, email, name FROM tbluser ORDER BY name");
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($rows);
+    }
 }
 
 // Handle POST requests
@@ -48,18 +63,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Create a new record
     if ($data['action'] === 'create') {
         try {
+            $budgetfor = $data['budgetfor'];
+            $amount = $data['amount'];
+            $userid = $data['userid'];
+            $createdby = $data['createdby'];
+            $createdat = $data['createdat'];
+            $editedby = $data['editedby'];
+            $editedat = $data['editedat'];
+            $isdeleted = $data['isdeleted'];
+            $deletedby = $data['deletedby'];
 
-            $precintid = $data['precintid'];
-            $lastname = $data['lastname'];
-            $firstname = $data['firstname'];
-            $middlename = $data['middlename'];
-            $addressline1 = $data['addressline1'];
-            $barangay = $data['barangay'];
-            $bday = $data['bday'];
-
-            $stmt = $conn->prepare("INSERT INTO tblperson (precintid, lastname, firstname, middlename, addressline1, barangay, bday) 
-                                    VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$precintid, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday]);
+            $stmt = $conn->prepare("INSERT INTO tblfund (budgetfor, amount, userid, createdby, createdat, editedby, editedat, isdeleted, deletedby) 
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$budgetfor, $amount, $userid, $createdby, $createdat, $editedby, $editedat, $isdeleted, $deletedby]);
 
             echo json_encode(array("message" => "Record created successfully"));
         } catch (PDOException $e) {
@@ -67,17 +83,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($data['action'] === 'update') {
         try {
-            $residentid = $data['residentid'];
-            $precintid = $data['precintid'];
-            $lastname = $data['lastname'];
-            $firstname = $data['firstname'];
-            $middlename = $data['middlename'];
-            $addressline1 = $data['addressline1'];
-            $barangay = $data['barangay'];
-            $bday = $data['bday'];
+            $fundid = $data['fundid'];
+            $budgetfor = $data['budgetfor'];
+            $amount = $data['amount'];
+            $userid = $data['userid'];
+            $createdby = $data['createdby'];
+            $createdat = $data['createdat'];
+            $editedby = $data['editedby'];
+            $editedat = $data['editedat'];
+            $isdeleted = $data['isdeleted'];
+            $deletedby = $data['deletedby'];
 
-            $stmt = $conn->prepare("UPDATE tblperson SET precintid=?, lastname=?, firstname=?, middlename=?, addressline1=?, barangay=?, bday=? WHERE residentid=?");
-            $stmt->execute([$precintid, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday, $residentid]);
+            $stmt = $conn->prepare("UPDATE tblfund SET budgetfor=?, amount=?, userid=?, createdby=?, createdat=?, editedby=?, editedat=?, isdeleted=?, deletedby=? WHERE fundid=?");
+            $stmt->execute([$budgetfor, $amount, $userid, $createdby, $createdat, $editedby, $editedat, $isdeleted, $deletedby, $fundid]);
 
             echo json_encode(array("message" => "Record updated successfully"));
         } catch (PDOException $e) {
@@ -85,61 +103,83 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($data['action'] === 'delete') {
         try {
-            $residentid = $data['residentid'];
+            $fundid = $data['fundid'];
+            $deletedby = isset($data['deletedby']) ? $data['deletedby'] : null; // Ensure deletedby is set
+            $deletedat = date('Y-m-d H:i:s');
 
-            $stmt = $conn->prepare("UPDATE tblperson SET isdeleted=1 WHERE residentid=?");
-            $stmt->execute([$residentid]);
+            $stmt = $conn->prepare("UPDATE tblfund SET isdeleted=1, deletedby=?, deletedat=? WHERE fundid=?");
+            $stmt->execute([$deletedby, $deletedat, $fundid]);
 
-            echo json_encode(array("message" => "Record updated successfully"));
+            echo json_encode(array("message" => "Record marked as deleted successfully"));
         } catch (PDOException $e) {
-            echo json_encode(array("error" => "Error updating record: " . $e->getMessage()));
-        }
-    } else if ($data['action'] === 'import' && isset($data['records']) && is_array($data['records'])) {
-        try {
-
-            $stmt = $conn->prepare("INSERT INTO tblperson (precintid, lastname, firstname, middlename, addressline1, barangay, bday) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)");
-
-            foreach ($data['records'] as $record) {
-                $precintid = $record[0];
-                $lastname = myHash($record[1]);
-                $firstname = myHash($record[2]);
-                $middlename = $record[3];
-                $addressline1 = myHash($record[4]);
-                $barangay = $record[5];
-                $bday = $record[6];
-
-                $stmt->execute([$precintid, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday]);
-            }
-
-            echo json_encode(array("success" => true, "message" => "Records imported successfully"));
-        } catch (PDOException $e) {
-            echo json_encode(array("successaaa" => false, "error" => "Error importing records: " . $e->getMessage()));
+            echo json_encode(array("error" => "Error marking record as deleted: " . $e->getMessage()));
         }
     } elseif ($data['action'] === 'fetch_funds') {
         try {
-            // $lll = $data['lastname'];
-            // $lastname = myHash($lll);
-            $stmt = $conn->prepare("SELECT * FROM tblfund WHERE isdeleted = 0 ORDER BY fundid desc ");
-            $stmt->execute([]);
-
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo json_encode($rows);
-        } catch (PDOException $e) {
-            echo json_encode(array("error" => "Error fetching residents: " . $e->getMessage()));
-        }
-    }  elseif ($data['action'] === 'search_funds') {
-        try {
-            $stmt = $conn->prepare("SELECT * FROM tblfund WHERE isdeleted = 0 ORDER BY fundid desc ");
+            $stmt = $conn->prepare("SELECT * FROM tblfund WHERE isdeleted = 0 ORDER BY fundid desc");
             $stmt->execute();
-
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($rows);
         } catch (PDOException $e) {
-            echo json_encode(array("error" => "Error fetching residents: " . $e->getMessage()));
+            echo json_encode(array("error" => "Error fetching funds: " . $e->getMessage()));
         }
-    } 
-    else {
+    } elseif ($data['action'] === 'search_funds') {
+        $datestart = $data['datestart'];
+        $dateend = $data['dateend'];
+        $userid = $data['userid'];
+
+        try {
+            // Initialize base SQL query
+            $sql = "SELECT 
+            f.fundid,
+            f.budgetfor,
+            f.amount,
+            u1.name AS userid,
+            u2.name AS createdby,
+            f.createdat,
+            u3.name AS editedby,
+            f.editedat,
+            f.isdeleted,
+            f.deletedby
+        FROM 
+            tblfund f
+        LEFT JOIN 
+            tbluser u1 ON f.userid = u1.userid
+        LEFT JOIN 
+            tbluser u2 ON f.createdby = u2.userid
+        LEFT JOIN 
+            tbluser u3 ON f.editedby = u3.userid
+        WHERE 
+            f.isdeleted = 0 
+            AND f.createdat BETWEEN ? AND ?";
+
+            // Initialize parameters array
+            $params = [$datestart, $dateend];
+
+            // Add condition for userid if it's not 'All'
+            if ($userid !== 'All') {
+                $sql .= " AND f.userid = ?";
+                $params[] = $userid;
+            }
+
+            // Order by fundid descending
+            $sql .= " ORDER BY f.fundid DESC";
+
+            // Prepare the statement
+            $stmt = $conn->prepare($sql);
+
+            // Execute the statement with the parameters
+            $stmt->execute($params);
+
+            // Fetch all results
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+            // Output the results as JSON
+            echo json_encode($rows);
+        } catch (PDOException $e) {
+            echo json_encode(array("error" => "Error fetching funds: " . $e->getMessage()));
+        }
+    } else {
         echo json_encode(array("error" => "Invalid action"));
     }
 }
@@ -152,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
     if ($data['action'] === 'delete' && isset($data['id'])) {
         try {
             $id = $data['id'];
-            $stmt = $conn->prepare("DELETE FROM tblperson WHERE id = ?");
+            $stmt = $conn->prepare("DELETE FROM tblfund WHERE fundid = ?");
             $stmt->execute([$id]);
 
             echo json_encode(array("message" => "Record deleted successfully"));
@@ -166,7 +206,3 @@ if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
 
 // Close database connection
 $conn = null;
-
-
-
-//https://rjprint10.com/marilaomis/backend/personapi.php?action=get_by_id&id=3

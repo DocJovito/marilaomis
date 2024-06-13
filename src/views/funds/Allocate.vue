@@ -90,7 +90,7 @@ const allocateFund = () => {
     return;
   }
 
-  if (!newFunding.value.amount || isNaN(newFunding.value.amount) || newFunding.value.amount <= 0) {
+  if (!newFunding.value.amount || isNaN(newFunding.value.amount)) {
     alert("Please enter a valid amount.");
     return;
   }
