@@ -62,23 +62,30 @@ const login = () => {
 
   axios.post('https://marilaomis.com/marilaomis/backend/loginapi.php', data)
     .then(response => {
-      // Remove leading whitespace and characters '//'
-      const responseData = JSON.parse(response.data.trim().replace(/^\/\/\s*/, ''));
+      // console.log('Raw response:', response);
+      try {
+        const cleanedResponse = response.data.trim().replace(/^\/\/\s*/, ''); // Clean response
+        const responseData = JSON.parse(cleanedResponse); // Parse cleaned response
 
-      if (responseData.success === true) {
-        otpSent.value = true;
-        // alert('OTP sent to your email. Please check your email and enter the OTP.');
-        alert(`OTP sent to your email. Please check your email and enter the OTP: ${responseData.otp}`); // remove this OTP after success in Email
-      } else {
-        alert(responseData.error || 'Invalid email or password');
+        if (responseData.success === true) {
+          otpSent.value = true;
+          // alert(`OTP sent to your email. Please check your email and enter the OTP: ${responseData.otp}`); // remove this OTP after success in Email
+          alert(`OTP sent to your email. Please check your email and enter the OTP.`);
+        } else {
+          alert(responseData.error || 'Invalid email or password');
+        }
+      } catch (error) {
+        console.error('Error parsing response:', error);
+        alert('Invalid server response');
       }
     })
     .catch(error => {
-      console.error(error);
+      console.error('Error logging in:', error);
       alert('Error logging in');
     });
-
 };
+
+
 
 const verifyOtp = () => {
   const data = {
@@ -89,39 +96,45 @@ const verifyOtp = () => {
 
   axios.post('https://marilaomis.com/marilaomis/backend/loginapi.php', data)
     .then(response => {
-      const responseData = JSON.parse(response.data.trim().replace(/^\/\/\s*/, ''));
+      try {
+        const cleanedResponse = response.data.trim().replace(/^\/\/\s*/, ''); // Clean response
+        const responseData = JSON.parse(cleanedResponse); // Parse cleaned response
 
-      if (responseData.success === true) {
-        const user = responseData.user; // Access user data from responseData
-        store.dispatch('logIn', {
-          id: user.userid,
-          email: user.email,
-          userType: user.usertype,
-          name: user.name,
-          address: user.address,
-          token: responseData.token // Access token from responseData
-        });
+        if (responseData.success === true) {
+          const user = responseData.user; // Access user data from responseData
+          store.dispatch('logIn', {
+            id: user.userid,
+            email: user.email,
+            userType: user.usertype,
+            name: user.name,
+            address: user.address,
+            token: responseData.token // Access token from responseData
+          });
 
-        // Save user data in local storage
-        localStorage.setItem('token', responseData.token);
-        localStorage.setItem('userid', user.userid);
-        localStorage.setItem('email', user.email);
-        localStorage.setItem('usertype', user.usertype);
-        localStorage.setItem('name', user.name);
-        localStorage.setItem('address', user.address);
+          // Save user data in local storage
+          localStorage.setItem('token', responseData.token);
+          localStorage.setItem('userid', user.userid);
+          localStorage.setItem('email', user.email);
+          localStorage.setItem('usertype', user.usertype);
+          localStorage.setItem('name', user.name);
+          localStorage.setItem('address', user.address);
 
-        alert('OTP verified successfully. Log in successful');
-        router.push('/');
-      } else {
-        alert(responseData.error || 'Invalid OTP');
+          alert('OTP verified successfully. Log in successful');
+          router.push('/');
+        } else {
+          alert(responseData.error || 'Invalid OTP');
+        }
+      } catch (error) {
+        console.error('Error parsing response:', error);
+        alert('Invalid server response');
       }
     })
     .catch(error => {
-      console.error(error);
+      console.error('Error verifying OTP:', error);
       alert('Error verifying OTP');
     });
-
 };
+
 
 
 const forgotPassword = () => {
