@@ -63,6 +63,7 @@ const userEmail = computed(() => store.state.user.email);
 
 const sendOTP = () => {
   // Ensure that currentPassword and userEmail are correctly defined
+  currentPassword.value = myHash(currentPassword.value);
   if (!currentPassword.value) {
     alert('Current password is not provided');
     return;
@@ -110,7 +111,7 @@ const changePassword = () => {
 
   const data = {
     otp: otp.value,
-    newPassword: newPassword.value,
+    newPassword: myHash(newPassword.value),
     email: userEmail.value
   };
 
@@ -128,6 +129,12 @@ const changePassword = () => {
       alert('Error changing password');
     });
 };
+
+function myHash(text) {
+  let base64Encoded = btoa(text);
+  return base64Encoded;
+}
+
 </script>
 
 <style scoped>
