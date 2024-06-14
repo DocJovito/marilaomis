@@ -5,6 +5,7 @@
         <div class="card">
           <div class="card-header">
             <h1 class="text-center">Log In</h1>
+
           </div>
           <div class="card-body">
             <form v-if="!otpSent" @submit.prevent="login">
@@ -21,6 +22,7 @@
               <div class="form-group text-center">
                 <button type="submit" class="btn btn-primary btn-block">Log In</button>
               </div>
+              <p>Version 0.01</p>
             </form>
 
             <form v-if="otpSent" @submit.prevent="verifyOtp">
@@ -93,7 +95,7 @@ const verifyOtp = () => {
     email: email.value,
     otp: otp.value
   };
-// J14 3PM
+  // J14 3PM
   axios.post('https://marilaomis.com/marilaomis/backend/loginapi.php', data)
     .then(response => {
       try {
