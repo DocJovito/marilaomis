@@ -66,7 +66,22 @@
             <h5 class="card-title">Recent Fund Allocations</h5>
             <div class="table-responsive">
               <table class="table table-hover">
-                <!-- Table structure for recent fund allocations -->
+                <thead>
+                  <tr>
+                    <th>Fund ID</th>
+                    <th>Amount</th>
+                    <th>User ID</th>
+                    <th>Created At</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="allocation in recentAllocations" :key="allocation.fundid">
+                    <td>{{ allocation.fundid }}</td>
+                    <td>{{ allocation.amount }}</td>
+                    <td>{{ allocation.userid }}</td>
+                    <td>{{ allocation.createdat }}</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -78,7 +93,22 @@
             <h5 class="card-title">Recent Edits</h5>
             <div class="table-responsive">
               <table class="table table-hover">
-                <!-- Table structure for recent edits -->
+                <thead>
+                  <tr>
+                    <th>Fund ID</th>
+                    <th>Amount</th>
+                    <th>Edited By</th>
+                    <th>Edited At</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr v-for="edit in recentEdits" :key="edit.fundid">
+                    <td>{{ edit.fundid }}</td>
+                    <td>{{ edit.amount }}</td>
+                    <td>{{ edit.editedby }}</td>
+                    <td>{{ edit.editedat }}</td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -94,6 +124,8 @@ import axios from 'axios';
 import Chart from 'chart.js/auto';
 
 const summary = ref(null);
+const recentAllocations = ref([]);
+const recentEdits = ref([]);
 
 const fetchData = async () => {
   try {
@@ -101,6 +133,8 @@ const fetchData = async () => {
     const data = response.data;
 
     summary.value = data.summary;
+    recentAllocations.value = data.recentAllocations;
+    recentEdits.value = data.recentEdits;
 
     if (data.charts) {
       renderCharts(data.charts);
@@ -111,7 +145,49 @@ const fetchData = async () => {
 };
 
 const renderCharts = (chartData) => {
-  // Render charts
+  const allocationByProgramCtx = document.getElementById('allocationByProgramChart').getContext('2d');
+  new Chart(allocationByProgramCtx, {
+    type: 'bar',
+    data: {
+      labels: chartData.programs.labels,
+      datasets: [{
+        label: 'Fund Allocation by Program',
+        data: chartData.programs.data,
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
+
+  const allocationOverTimeCtx = document.getElementById('allocationOverTimeChart').getContext('2d');
+  new Chart(allocationOverTimeCtx, {
+    type: 'line',
+    data: {
+      labels: chartData.time.labels,
+      datasets: [{
+        label: 'Fund Allocation Over Time',
+        data: chartData.time.data,
+        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+        borderColor: 'rgba(153, 102, 255, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
+      }
+    }
+  });
 };
 
 onMounted(() => {
