@@ -11,6 +11,7 @@ header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents('php://input'), true);
 // error_log("Parsed data: " . print_r($data, true));
+//asd
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($data && $data['action'] === 'login') {
