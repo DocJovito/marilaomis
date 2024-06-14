@@ -93,7 +93,7 @@ const verifyOtp = () => {
     email: email.value,
     otp: otp.value
   };
-
+// J14 3PM
   axios.post('https://marilaomis.com/marilaomis/backend/loginapi.php', data)
     .then(response => {
       try {
