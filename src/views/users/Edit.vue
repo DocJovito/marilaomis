@@ -103,7 +103,7 @@ const updateUser = () => {
 
   axios.post('https://marilaomis.com/marilaomis/backend/userapi.php', updatedUser)
     .then(response => {
-      console.log('User updated successfully:', response.data);
+      //console.log('User updated successfully:', response.data);
 
       router.push('/users/view'); // Use router.push to navigate to the desired route
     })

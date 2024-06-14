@@ -1,73 +1,54 @@
 <?php
-// session_start(); // Start the session
-
 include 'connection.php'; // Include the database connection
 include 'email_utils.php'; // Include the email utility functions
 
-// Set headers for allowing CORS and specifying JSON content type
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Authorization");
 header('Content-Type: application/json');
 
+// error_log("Request received: " . file_get_contents('php://input'));
 
-// Handle POST requests
 $data = json_decode(file_get_contents('php://input'), true);
+// error_log("Parsed data: " . print_r($data, true));
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($data && $data['action'] === 'login') {
         $email = $data['email'];
         $password = $data['password'];
 
-        // Authenticate user against your database
         try {
             $user = authenticateUser($email, $password);
             if ($user) {
-                // Set session variables upon successful login
-                // $_SESSION['email'] = $email;
-                // $_SESSION['userid'] = $user['userid']; // Assuming userid is retrieved from the database
-
-                // Generate OTP
                 $otp = rand(100000, 999999);
-
-                // Save OTP to the database
                 saveOtp($email, $otp);
-
-                // Send OTP via email
                 sendOtpEmail($email, $otp);
-
-                // Respond with success and prompt for OTP
-                //echo json_encode(array("success" => true));
-                echo json_encode(array("success" => true, "otp" => $otp));
-                // error_log("OTP sent to email: $email");
+                $response = json_encode(array("success" => true, "otp" => $otp));
+                // error_log("Response: " . $response);
+                echo $response;
             } else {
-                // Authentication failed
-                echo json_encode(array("error" => "Invalid email or password"));
+                $response = json_encode(array("error" => "Invalid email or password"));
+                // error_log("Response: " . $response);
+                echo $response;
             }
         } catch (PDOException $e) {
-            // Handle database errors
-            echo json_encode(array("error" => "Database error: " . $e->getMessage()));
+            $response = json_encode(array("error" => "Database error: " . $e->getMessage()));
+            error_log("Response: " . $response);
+            echo $response;
         } catch (Exception $e) {
-            // Handle other exceptions
-            echo json_encode(array("error" => "An error occurred: " . $e->getMessage()));
+            $response = json_encode(array("error" => "An error occurred: " . $e->getMessage()));
+            error_log("Response: " . $response);
+            echo $response;
         }
     } elseif ($data && $data['action'] === 'verify_otp') {
         $email = $data['email'];
         $otp = $data['otp'];
 
-        // Verify OTP
         try {
             if (verifyOtp($email, $otp)) {
-                // Generate a token
                 $token = generateToken($email);
-
-                // Save the token to the database
                 saveToken($email, $token);
-
-                // Get user details
                 $user = getUserDetails($email);
-
-                // Send success response with token and user data
                 $userData = array(
                     "name" => $user['name'],
                     "email" => $user['email'],
@@ -75,25 +56,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     "userid" => $user['userid'],
                     "address" => $user['address']
                 );
-                echo json_encode(array("success" => true, "token" => $token, "user" => $userData));
-                // error_log("OTP verified for email: $email");
+                $response = json_encode(array("success" => true, "token" => $token, "user" => $userData));
+                // error_log("Response: " . $response);
+                echo $response;
             } else {
-                // OTP verification failed
-                echo json_encode(array("error" => "Invalid OTP"));
+                $response = json_encode(array("error" => "Invalid OTP"));
+                error_log("Response: " . $response);
+                echo $response;
             }
         } catch (PDOException $e) {
-            // Handle database errors
-            echo json_encode(array("error" => "Database error: " . $e->getMessage()));
+            $response = json_encode(array("error" => "Database error: " . $e->getMessage()));
+            error_log("Response: " . $response);
+            echo $response;
         } catch (Exception $e) {
-            // Handle other exceptions
-            echo json_encode(array("error" => "An error occurred: " . $e->getMessage()));
+            $response = json_encode(array("error" => "An error occurred: " . $e->getMessage()));
+            error_log("Response: " . $response);
+            echo $response;
         }
     } else {
-        echo json_encode(array("error" => "Invalid action"));
+        $response = json_encode(array("error" => "Invalid action 2"));
+        error_log("Response: " . $response);
+        echo $response;
     }
 } else {
-    echo json_encode(array("error" => "Invalid request"));
+    $response = json_encode(array("error" => "Invalid request 3"));
+    error_log("Response: " . $response);
+    echo $response;
 }
+
+
 
 function generateToken($email)
 {
