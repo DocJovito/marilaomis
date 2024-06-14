@@ -1,9 +1,9 @@
 <template>
     <div class="container mt-4">
         <p>Resident Management</p>
-
-        <RouterLink to="/residents/create" class="btn btn-success ">Add Resident</RouterLink>
-
+        <div class="form-group" v-if="userType == 'Admin' || userType == 'Municipal Staff'">
+            <RouterLink to="/residents/create" class="btn btn-success ">Add Resident</RouterLink>
+        </div>
         <div class="form-group">
             <div class="row">
                 <div class="col-9">
@@ -45,7 +45,7 @@
                         <td>{{ unHash(resident.addressline1) }}</td>
                         <td>{{ resident.barangay }}</td>
                         <td>{{ resident.bday }}</td>
-                        <td>
+                        <td v-if="userType == 'Admin' || userType == 'Municipal Staff'">
                             <RouterLink :to="'/residents/' + resident.residentid + '/edit'" class="btn btn-success">
                                 Edit
                             </RouterLink>
@@ -79,9 +79,12 @@
             </ul>
         </nav>
 
-        <button class="btn btn-primary" @click="downloadTemplate">Download Template</button>
-        <button class="btn btn-success" @click="exportexcel">Export to Excel</button>
-        <button class="btn btn-danger" @click="readexcel">Import From Excel</button>
+        <div class="form-group d-flex justify-content-center"
+            v-if="userType == 'Admin' || userType == 'Municipal Staff'">
+            <button class="btn btn-primary" @click="downloadTemplate">Download Template</button>
+            <button class="btn btn-success" @click="exportexcel">Export to Excel</button>
+            <button class="btn btn-danger" @click="readexcel">Import From Excel</button>
+        </div>
     </div>
 </template>
 
@@ -96,7 +99,7 @@ import { useStore } from 'vuex';
 const searchKey = ref('');
 
 const residents = ref([]);
-const pageSize = 5;
+const pageSize = 10;
 const currentPage = ref(1);
 
 const store = useStore();
