@@ -65,7 +65,7 @@ import { useRouter } from 'vue-router';
 
 const users = ref([]);
 const currentPage = ref(1);
-const pageSize = 5;
+const pageSize = 10;
 const router = useRouter();
 
 const paginatedUsers = computed(() => {

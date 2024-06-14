@@ -64,7 +64,7 @@ const store = useStore();
 const userId = computed(() => store.state.user.id);
 
 const funds = ref([]);
-const pageSize = 5;
+const pageSize = 10;
 const currentPage = ref(1);
 
 const paginatedFunds = computed(() => {

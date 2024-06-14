@@ -3,7 +3,8 @@
     <h4>Program Management</h4>
     <!-- <RouterLink to="/programs/create" class="btn btn-success">Create Program</RouterLink> -->
 
-    <RouterLink v-if="isAllowedForProgram" to="/programs/create" class="btn btn-success">
+    <RouterLink v-if="userType == 'Admin' || userType == 'Municipal Staff'" to="/programs/create"
+      class="btn btn-success">
       Create Program
     </RouterLink>
     <div class="table-responsive">
@@ -47,8 +48,8 @@
               <!-- <RouterLink :to="'/programs/' + program.programid + '/edit'"
                             class="btn btn-primary ctr">Edit</RouterLink>
                 <button class="btn btn-danger ctr" @click="deleteProgram(program.programid)">Delete</button> -->
-              <RouterLink v-if="isAllowedForProgram" :to="'/programs/' + program.programid + '/edit'"
-                class="btn btn-primary ctr">
+              <RouterLink v-if="userType == 'Admin' || userType == 'Municipal Staff'"
+                :to="'/programs/' + program.programid + '/edit'" class="btn btn-primary ctr">
                 Edit Program
               </RouterLink>
               <!-- <button v-if="isAllowedForProgram" class="btn btn-danger ctr" @click="deleteProgram(program.programid)">
@@ -90,14 +91,9 @@ import { RouterLink } from 'vue-router';
 
 const store = useStore();
 
-// Computed property to check if the user is allowed to create a program
-const isAllowedForProgram = computed(() => {
-  return store.state.user.userType !== 'Area Leader';
-});
-
 // Ensure userState is initialized and has at least one element
-const userState = computed(() => store.state.user.userState);
 const address = computed(() => store.state.user.address);
+const userType = computed(() => store.state.user.userType);
 
 const programs = ref([]);
 const pageSize = 5;
