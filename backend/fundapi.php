@@ -116,7 +116,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($data['action'] === 'fetch_funds') {
         try {
-            $stmt = $conn->prepare("SELECT * FROM tblfund WHERE isdeleted = 0 ORDER BY fundid desc");
+            $stmt = $conn->prepare("SELECT f.fundid,f.budgetfor,f.amount, u.name AS userid 
+            FROM tblfund f
+            LEFT JOIN 
+            tbluser u ON f.userid = u.userid
+            WHERE f.isdeleted = 0 ORDER BY f.fundid desc");
             $stmt->execute();
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($rows);

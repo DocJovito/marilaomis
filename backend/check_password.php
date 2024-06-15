@@ -64,3 +64,4 @@ try {
     error_log("Exception occurred: " . $e->getMessage());
     echo json_encode(array("error" => "An error occurred"));
 }
+?>

@@ -59,6 +59,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
 
             $precintid = $data['precintid'];
+            $ismember = $data['ismember'];
             $lastname = $data['lastname'];
             $firstname = $data['firstname'];
             $middlename = $data['middlename'];
@@ -66,9 +67,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $barangay = $data['barangay'];
             $bday = $data['bday'];
 
-            $stmt = $conn->prepare("INSERT INTO tblperson (precintid, lastname, firstname, middlename, addressline1, barangay, bday) 
-                                    VALUES (?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$precintid, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday]);
+            $stmt = $conn->prepare("INSERT INTO tblperson (precintid, ismember, lastname, firstname, middlename, addressline1, barangay, bday) 
+                                    VALUES (?,?, ?, ?, ?, ?, ?, ?)");
+            $stmt->execute([$precintid, $ismember, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday]);
 
             echo json_encode(array("message" => "Record created successfully"));
         } catch (PDOException $e) {
@@ -78,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $residentid = $data['residentid'];
             $precintid = $data['precintid'];
+              $ismember = $data['ismember'];
             $lastname = $data['lastname'];
             $firstname = $data['firstname'];
             $middlename = $data['middlename'];
@@ -85,8 +87,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $barangay = $data['barangay'];
             $bday = $data['bday'];
 
-            $stmt = $conn->prepare("UPDATE tblperson SET precintid=?, lastname=?, firstname=?, middlename=?, addressline1=?, barangay=?, bday=? WHERE residentid=?");
-            $stmt->execute([$precintid, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday, $residentid]);
+            $stmt = $conn->prepare("UPDATE tblperson SET precintid=?, ismember=?, lastname=?, firstname=?, middlename=?, addressline1=?, barangay=?, bday=? WHERE residentid=?");
+            $stmt->execute([$precintid,$ismember, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday, $residentid]);
 
             echo json_encode(array("message" => "Record updated successfully"));
         } catch (PDOException $e) {
@@ -129,9 +131,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $lll = $data['lastname'];
             $lastname = myHash($lll);
-            $stmt = $conn->prepare("SELECT * FROM tblperson WHERE lastname like ? AND isdeleted = 0 ORDER BY residentid desc ");
+            $barangay = $data['barangay'];
+            
+            if($barangay=='All')
+            {
+                 $stmt = $conn->prepare("SELECT * FROM tblperson WHERE lastname like ? AND isdeleted = 0 ORDER BY residentid desc ");
             $stmt->execute(["%{$lastname}%"]);
-            //   $stmt->execute([$lastname]);
+            }
+            else
+            {
+                            $stmt = $conn->prepare("SELECT * FROM tblperson WHERE lastname like ? AND barangay=? AND isdeleted = 0 ORDER BY residentid desc ");
+            $stmt->execute(["%{$lastname}%",$barangay]);
+            }
+            
+
 
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($rows);
@@ -140,37 +153,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($data['action'] === 'search_residents') {
         try {
-            $isvoter = $data['isvoter'];
-            $barangay = $data['barangay'];
+    $isvoter = $data['isvoter'];
+    $ismember = $data['ismember'];
+    $barangay = $data['barangay'];
 
-            if ($barangay == 'All' && $isvoter == 'All') {
-                $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = 0 ORDER BY residentid DESC;");
-                $stmt->execute();
-            } else if ($isvoter == 'All') {
-                $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = 0 AND barangay = ? ORDER BY residentid DESC;");
-                $stmt->execute([$barangay]);
-            } else if ($barangay == 'All') {
-                if ($isvoter == 'true') {
-                    $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = 0 AND precintid !='' ORDER BY residentid DESC;");
-                    $stmt->execute();
-                } else {
-                    $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = 0 AND precintid ='' ORDER BY residentid DESC;");
-                    $stmt->execute();
-                }
-            } else {
-                if ($isvoter == 'true') {
-                    $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = 0 AND precintid !='' AND barangay = ? ORDER BY residentid DESC;");
-                    $stmt->execute([$barangay]);
-                } else {
-                    $stmt = $conn->prepare("SELECT * FROM tblperson WHERE isdeleted = 0 AND precintid ='' AND barangay = ? ORDER BY residentid DESC;");
-                    $stmt->execute([$barangay]);
-                }
-            }
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo json_encode($rows);
-        } catch (PDOException $e) {
-            echo json_encode(array("error" => "Error fetching residents: " . $e->getMessage()));
+    // Base query
+    $query = "SELECT * FROM tblperson WHERE isdeleted = 0";
+    $params = [];
+
+    // Add conditions based on inputs
+    if ($barangay != 'All') {
+        $query .= " AND barangay = ?";
+        $params[] = $barangay;
+    }
+        if ($ismember != 'All') {
+        $query .= " AND ismember = ?";
+        $params[] = $ismember;
+    }
+
+    if ($isvoter != 'All') {
+        if ($isvoter == 'true') {
+            $query .= " AND precintid != ''";
+        } else {
+            $query .= " AND precintid = ''";
         }
+    }
+
+    // Order by residentid descending
+    $query .= " ORDER BY residentid DESC";
+
+    // Prepare and execute the statement
+    $stmt = $conn->prepare($query);
+    $stmt->execute($params);
+
+    // Fetch and return the results
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($rows);
+} catch (PDOException $e) {
+    echo json_encode(array("error" => "Error fetching residents: " . $e->getMessage()));
+}
+
     } else {
         echo json_encode(array("error" => "Invalid action"));
     }

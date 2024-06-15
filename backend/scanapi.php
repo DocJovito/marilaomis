@@ -27,9 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     VALUES (?,?, ?, ?, ?, NOW(), ?)");
             $stmt->execute([$id, $programid, $residentid, $barangay, $createdby, $budgetperhead]);
 
-            echo json_encode(array("Scan Success"));
+            echo json_encode(array("Scan Success. Resident Name: "));
         } catch (PDOException $e) {
-            echo json_encode(array("Already Scanned"));
+            echo json_encode(array("Resident is Already Scanned: "));
             // echo json_encode(array("error" => "Error creating record: " . $e->getMessage()));
         }
     } else if ($data['action'] === 'getscan') {
@@ -40,10 +40,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $programid = $data['programid']; // Define programid
 
             // Build the SQL query with search filters
-            $sql = "SELECT tblscan.id, tblscan.programid, tblscan.residentid, tblscan.barangay, tblscan.createdby, tblscan.createdat,
-            tblperson.lastname, tblperson.firstname, tblperson.addressline1
+            $sql = "SELECT tblscan.id, tblscan.programid, tblscan.residentid, tblscan.barangay, tbluser.name AS createdby, tblscan.createdat,
+            tblperson.lastname, tblperson.firstname, tblperson.addressline1, tblscan.budgetperhead
             FROM tblscan
-            INNER JOIN tblperson ON tblscan.residentid = tblperson.residentid
+            LEFT JOIN tblperson ON tblscan.residentid = tblperson.residentid
+            LEFT JOIN tbluser ON tblscan.createdby = tbluser.userid
     WHERE (tblscan.residentid LIKE ? OR tblperson.lastname LIKE ?) and tblscan.barangay like ?
       AND tblscan.programid = ?;
             ";
@@ -58,21 +59,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (PDOException $e) {
             echo json_encode(array("error" => "Error fetching records: " . $e->getMessage()));
         }
-    } elseif ($data['action'] === 'search_program') {
+    }elseif ($data['action'] === 'search_scans') {
         try {
             $datestart = $data['datestart'];
             $dateend = $data['dateend'];
             $barangay = $data['barangay'];
+            $programid = $data['programid'];
+            $userid = $data['userid'];
+            
+$query = "SELECT tblscan.id, tblprogram.programname AS programid, tblperson.lastname AS residentid, tblscan.barangay, 
+                 tbluser.name AS createdby, tblscan.createdat, tblscan.budgetperhead
+          FROM tblscan
+          LEFT JOIN tblprogram ON tblscan.programid = tblprogram.programid
+          LEFT JOIN tblperson ON tblscan.residentid = tblperson.residentid
+          LEFT JOIN tbluser ON tblscan.createdby = tbluser.userid
+          WHERE 1=1";
 
-            if ($barangay == 'All') {
-                $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0 AND createdat BETWEEN ? AND ? ORDER BY programid desc");
-                $stmt->execute([$datestart, $dateend]);
-            } else {
-                $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0 AND createdat BETWEEN ? AND ? AND barangayscope like ? ORDER BY programid desc");
-                $stmt->execute([$datestart, $dateend, "%{$barangay}%"]);
-            }
+// Add conditions dynamically based on input values
+$params = [];
+if ($barangay !== 'All') {
+    $query .= " AND tblscan.barangay = ?";
+    $params[] = $barangay;
+}
+if ($programid !== 'All') {
+    $query .= " AND tblscan.programid = ?";
+    $params[] = $programid;
+}
+if ($userid !== 'All') {
+    $query .= " AND tblscan.createdby = ?";
+    $params[] = $userid;
+}
 
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$query .= " AND tblscan.createdat BETWEEN ? AND ? ORDER BY tblscan.createdat";
+            $params[] = $datestart;
+            $params[] = $dateend;
+            $stmt = $conn->prepare($query);
+            $stmt->execute($params);      
+            
+           $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($rows);
         } catch (PDOException $e) {
             echo json_encode(array("error" => "Error updating program: " . $e->getMessage()));

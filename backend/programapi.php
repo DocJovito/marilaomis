@@ -25,6 +25,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         echo json_encode($row);
     }
+        // Retrieve programs
+    if ($_GET['action'] === 'get_programs') {
+        $stmt = $conn->prepare("SELECT programid, programname FROM tblprogram ORDER BY programname");
+        $stmt->execute();
+        $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        echo json_encode($rows);
+    }
 }
 
 // Handle POST requests
@@ -40,15 +47,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $description = $data['description'];
             $barangayscope = $data['barangayscope'];
             $budgetperhead = $data['budgetPerHead'];
+            $ismember = $data['ismember'];
             $eventDate = $data['eventDate'];
             $isactive = 1;  // palaging 1  active
             $createdby = $data['createdby'];
             $createdat = date('Y-m-d'); // Assuming current date for createdat field
             $isdeleted = 0; // Assuming newly created program is not deleted
 
-            $stmt = $conn->prepare("INSERT INTO tblprogram (programname, description, barangayscope,budgetperhead, eventDate, isactive, createdby, createdat, isdeleted) 
-                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?,?)");
-            $stmt->execute([$programname, $description, $barangayscope, $budgetperhead, $eventDate, $isactive, $createdby, $createdat, $isdeleted]);
+            $stmt = $conn->prepare("INSERT INTO tblprogram (programname, description, barangayscope,budgetperhead, ismember, eventDate, isactive, createdby, createdat, isdeleted) 
+                                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?,?)");
+            $stmt->execute([$programname, $description, $barangayscope, $budgetperhead,$ismember,  $eventDate, $isactive, $createdby, $createdat, $isdeleted]);
 
             echo json_encode(array("message" => "Program created successfully"));
         } catch (PDOException $e) {
@@ -61,11 +69,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $description = $data['description'];
             $barangayscope = $data['barangayscope'];
             $budgetperhead = $data['budgetperhead'];
+            $ismember =  $data['ismember'];
             $eventDate = $data['eventDate'];
             $isactive = $data['isactive'];
 
-            $stmt = $conn->prepare("UPDATE tblprogram SET programname=?, description=?, barangayscope=?, budgetperhead=?, eventDate=?, isactive=? WHERE programid=?");
-            $stmt->execute([$programname, $description, $barangayscope, $budgetperhead, $eventDate, $isactive, $programid]);
+            $stmt = $conn->prepare("UPDATE tblprogram SET programname=?, description=?, barangayscope=?, budgetperhead=?, ismember=?, eventDate=?, isactive=? WHERE programid=?");
+            $stmt->execute([$programname, $description, $barangayscope, $budgetperhead, $ismember , $eventDate, $isactive, $programid]);
 
             echo json_encode(array("message" => "Program updated successfully"));
         } catch (PDOException $e) {
@@ -87,21 +96,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         } catch (PDOException $e) {
             echo json_encode(array("error" => "Error updating user: " . $e->getMessage()));
         }
-    } elseif ($data['action'] === 'search_program') {
-        try {
-            $datestart = $data['datestart'];
-            $dateend = $data['dateend'];
-            $barangay = $data['barangay'];
-            $stmt = $conn->prepare("SELECT * FROM tblprogram WHERE isdeleted = 0 AND createdat BETWEEN ? AND ? AND barangay like ? ORDER BY programid desc");
-            $stmt->execute([$datestart, $dateend, "%{$barangay}%"]);
-            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-            echo json_encode($rows);
-        } catch (PDOException $e) {
-            echo json_encode(array("error" => "Error updating program: " . $e->getMessage()));
-        }
-    } else {
-        echo json_encode(array("error" => "Invalid action"));
+        
+    }elseif ($data['action'] === 'search_program') try {
+    $datestart = $data['datestart'];
+    $dateend = $data['dateend'];
+    $barangay = $data['barangay'];
+    $ismember = $data['ismember'];
+
+    // Base query
+    $query = "
+        SELECT 
+            p.programid,
+            p.programname,
+            p.description,
+            p.ismember,
+            p.barangayscope,
+            p.eventDate,
+            p.isactive,
+            u.name AS createdby,
+            p.createdat,
+            p.isdeleted,
+            p.budgetperhead
+        FROM 
+            tblprogram p
+        JOIN 
+            tbluser u ON p.createdby = u.userid
+        WHERE 
+            p.isdeleted = 0 
+            AND p.createdat BETWEEN ? AND ?
+    ";
+    
+    // Parameters array
+    $params = [$datestart, $dateend];
+
+    // Add conditions based on inputs
+    if ($barangay != 'All') {
+        $query .= " AND p.barangayscope LIKE ?";
+        $params[] = "%{$barangay}%";
     }
+
+    if ($ismember != 'All') {
+        $query .= " AND p.ismember = ?";
+        $params[] = $ismember;
+    }
+
+    // Order by programid descending
+    $query .= " ORDER BY p.programid DESC";
+
+    // Prepare and execute the statement
+    $stmt = $conn->prepare($query);
+    $stmt->execute($params);
+
+    // Fetch and return the results
+    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    echo json_encode($rows);
+} catch (PDOException $e) {
+    echo json_encode(array("error" => "Error updating program: " . $e->getMessage()));
+}
+
+  
 }
 
 // Handle DELETE requests

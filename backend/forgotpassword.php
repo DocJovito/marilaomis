@@ -61,8 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
-function generateOTP()
-{
+function generateOTP() {
     // Generate a random OTP (6 digits)
     return rand(100000, 999999);
 }
@@ -70,7 +69,7 @@ function generateOTP()
 function saveOtp($email, $otp)
 {
     global $conn;
-
+    
     // Calculate OTP expiry time based on PHP timezone
     $expiry_time = date('Y-m-d H:i:s', strtotime('+10 minutes'));
 
@@ -83,3 +82,4 @@ function saveOtp($email, $otp)
     // After setting OTP expiry time
     error_log("OTP Expiry Time: " . $expiry_time);
 }
+?>

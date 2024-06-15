@@ -60,8 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     exit();
 }
 
-function generateOTP()
-{
+function generateOTP() {
     // Generate a random OTP (6 digits)
     return rand(100000, 999999);
 }
@@ -74,3 +73,4 @@ function saveOtp($email, $otp)
     $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->execute();
 }
+?>

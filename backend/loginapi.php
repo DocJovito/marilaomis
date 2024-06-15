@@ -11,7 +11,6 @@ header('Content-Type: application/json');
 
 $data = json_decode(file_get_contents('php://input'), true);
 // error_log("Parsed data: " . print_r($data, true));
-//asd
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($data && $data['action'] === 'login') {
@@ -80,8 +79,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo $response;
     }
 } else {
-    $response = json_encode(array("error" => "Invalid request 3"));
-    error_log("Response: " . $response);
+    $response = json_encode(array("error" => "Invalid request 3a"));
+    // error_log("Response: " . $response);
     echo $response;
 }
 

@@ -86,3 +86,4 @@ function resetPassword($email, $new_password)
     $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->execute();
 }
+?>
