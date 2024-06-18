@@ -79,7 +79,7 @@
                         <td>{{ Data.programname }}</td>
                         <td>{{ Data.description }}</td>
                         <!-- <td>{{ Data.ismember }}</td> -->
-                        <td v-if="Data.ismember">Yes</td>
+                        <td v-if="Data.ismember == 1">Yes</td>
                         <td v-else>No</td>
                         <td>{{ Data.barangayscope }}</td>
                         <td>{{ Data.eventDate }}</td>

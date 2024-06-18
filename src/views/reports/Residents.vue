@@ -16,8 +16,8 @@
                 <label for="ismember">ismember:</label><br>
                 <select id="ismember" class="form-control" v-model="ismember">
                     <option value="All">All</option>
-                    <option value="true">true</option>
-                    <option value="false">false</option>
+                    <option value="1">true</option>
+                    <option value="0">false</option>
                 </select>
             </div>
             <div class="form-group">

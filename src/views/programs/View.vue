@@ -75,9 +75,9 @@
         </li>
       </ul>
     </nav>
-
+    <!-- 
     <button class="btn btn-success" @click="exportExcel">Export to Excel</button>
-    <button class="btn btn-danger" @click="importExcel">Import From Excel</button>
+    <button class="btn btn-danger" @click="importExcel">Import From Excel</button> -->
   </div>
 </template>
 

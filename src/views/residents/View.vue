@@ -30,7 +30,7 @@
                         <th scope="col">Address</th>
                         <th scope="col">Barangay</th>
                         <th scope="col">Birthday</th>
-                        <th scope="col">Actions</th>
+                        <th v-if="userType == 'Admin' || userType == 'Municipal Staff'" scope="col">Actions</th>
                     </tr>
                 </thead>
                 <tbody>
