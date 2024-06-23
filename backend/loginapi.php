@@ -133,7 +133,7 @@ function authenticateUser($email, $password)
 {
     global $conn;
     // error_log("Email: $email, Password: $password"); // Log received email and password
-    $query = $conn->prepare("SELECT * FROM tbluser WHERE email = :email AND password = :password");
+    $query = $conn->prepare("SELECT * FROM tbluser WHERE email = :email AND password = :password AND isdeleted = 0");
     $query->bindParam(':email', $email, PDO::PARAM_STR);
     $query->bindParam(':password', $password, PDO::PARAM_STR);
     $query->execute();
