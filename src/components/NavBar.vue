@@ -114,12 +114,14 @@ let bsCollapse;
 
 const activityTimeout = ref(null);
 const warningTimeout = ref(null);
-// for testing
-// const logoutTime = 50 * 1000; // 20 sec in milliseconds
-// const warningTime = logoutTime - 20000; // 20 sec before logout
 
+// Adjusting the logout and warning time for testing
+// const logoutTime = 50 * 1000; // 50 sec in milliseconds
+// const warningTime = logoutTime - 20 * 1000; // 20 sec before logout
+
+// Actual timings for production
 const logoutTime = 1800 * 1000; // 30 min in milliseconds
-const warningTime = logoutTime - 6000; // 1 minute before logout
+const warningTime = logoutTime - 60000; // 1 minute before logout
 const userToken = computed(() => store.state.user.token);
 const showWarning = ref(false);
 
@@ -128,6 +130,7 @@ const startInactivityTimer = () => {
   window.addEventListener('mousemove', resetInactivityTimer);
   window.addEventListener('keydown', resetInactivityTimer);
   window.addEventListener('beforeunload', handleBrowserClose);
+  window.addEventListener('unload', handleBrowserClose);
 };
 
 const resetInactivityTimer = () => {
@@ -142,7 +145,7 @@ const showLogoutWarning = () => {
   showWarning.value = true;
 };
 
-const handleBrowserClose = () => {
+const handleBrowserClose = (event) => {
   logoutUser();
 };
 
@@ -173,6 +176,7 @@ onBeforeUnmount(() => {
   window.removeEventListener('mousemove', resetInactivityTimer);
   window.removeEventListener('keydown', resetInactivityTimer);
   window.removeEventListener('beforeunload', handleBrowserClose);
+  window.removeEventListener('unload', handleBrowserClose);
   clearTimeout(activityTimeout.value);
   clearTimeout(warningTimeout.value);
 });
@@ -183,6 +187,7 @@ const closeNavbar = () => {
   }
 };
 </script>
+
 
 
 <style scoped>
