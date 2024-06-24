@@ -79,7 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
             $residentid = $data['residentid'];
             $precintid = $data['precintid'];
-              $ismember = $data['ismember'];
+            $ismember = $data['ismember'];
             $lastname = $data['lastname'];
             $firstname = $data['firstname'];
             $middlename = $data['middlename'];
@@ -88,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $bday = $data['bday'];
 
             $stmt = $conn->prepare("UPDATE tblperson SET precintid=?, ismember=?, lastname=?, firstname=?, middlename=?, addressline1=?, barangay=?, bday=? WHERE residentid=?");
-            $stmt->execute([$precintid,$ismember, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday, $residentid]);
+            $stmt->execute([$precintid, $ismember, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday, $residentid]);
 
             echo json_encode(array("message" => "Record updated successfully"));
         } catch (PDOException $e) {
@@ -107,20 +107,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } else if ($data['action'] === 'import' && isset($data['records']) && is_array($data['records'])) {
         try {
-
             $stmt = $conn->prepare("INSERT INTO tblperson (precintid, lastname, firstname, middlename, addressline1, barangay, bday) 
-            VALUES (?, ?, ?, ?, ?, ?, ?)");
+        VALUES (?, ?, ?, ?, ?, ?, ?)");
 
             foreach ($data['records'] as $record) {
                 $precintid = $record[0];
                 $lastname = myHash($record[1]);
                 $firstname = myHash($record[2]);
-                $middlename = $record[3];
+                $middlename = myHash($record[3]);
                 $addressline1 = myHash($record[4]);
                 $barangay = $record[5];
                 $bday = $record[6];
 
-                $stmt->execute([$precintid, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday]);
+                // Check if $lastname is null
+                if ($lastname != null || $lastname != "") {
+                    $stmt->execute([$precintid, $lastname, $firstname, $middlename, $addressline1, $barangay, $bday]);
+                }
             }
 
             echo json_encode(array("success" => true, "message" => "Records imported successfully"));
@@ -132,18 +134,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $lll = $data['lastname'];
             $lastname = myHash($lll);
             $barangay = $data['barangay'];
-            
-            if($barangay=='All')
-            {
-                 $stmt = $conn->prepare("SELECT * FROM tblperson WHERE lastname like ? AND isdeleted = 0 ORDER BY residentid desc ");
-            $stmt->execute(["%{$lastname}%"]);
+
+            if ($barangay == 'All') {
+                $stmt = $conn->prepare("SELECT * FROM tblperson WHERE lastname like ? AND isdeleted = 0 ORDER BY residentid desc ");
+                $stmt->execute(["%{$lastname}%"]);
+            } else {
+                $stmt = $conn->prepare("SELECT * FROM tblperson WHERE lastname like ? AND barangay=? AND isdeleted = 0 ORDER BY residentid desc ");
+                $stmt->execute(["%{$lastname}%", $barangay]);
             }
-            else
-            {
-                            $stmt = $conn->prepare("SELECT * FROM tblperson WHERE lastname like ? AND barangay=? AND isdeleted = 0 ORDER BY residentid desc ");
-            $stmt->execute(["%{$lastname}%",$barangay]);
-            }
-            
+
 
 
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -153,46 +152,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($data['action'] === 'search_residents') {
         try {
-    $isvoter = $data['isvoter'];
-    $ismember = $data['ismember'];
-    $barangay = $data['barangay'];
+            $isvoter = $data['isvoter'];
+            $ismember = $data['ismember'];
+            $barangay = $data['barangay'];
 
-    // Base query
-    $query = "SELECT * FROM tblperson WHERE isdeleted = 0";
-    $params = [];
+            // Base query
+            $query = "SELECT * FROM tblperson WHERE isdeleted = 0";
+            $params = [];
 
-    // Add conditions based on inputs
-    if ($barangay != 'All') {
-        $query .= " AND barangay = ?";
-        $params[] = $barangay;
-    }
-        if ($ismember != 'All') {
-        $query .= " AND ismember = ?";
-        $params[] = $ismember;
-    }
+            // Add conditions based on inputs
+            if ($barangay != 'All') {
+                $query .= " AND barangay = ?";
+                $params[] = $barangay;
+            }
+            if ($ismember != 'All') {
+                $query .= " AND ismember = ?";
+                $params[] = $ismember;
+            }
 
-    if ($isvoter != 'All') {
-        if ($isvoter == 'true') {
-            $query .= " AND precintid != ''";
-        } else {
-            $query .= " AND precintid = ''";
+            if ($isvoter != 'All') {
+                if ($isvoter == 'true') {
+                    $query .= " AND precintid != ''";
+                } else {
+                    $query .= " AND precintid = ''";
+                }
+            }
+
+            // Order by residentid descending
+            $query .= " ORDER BY residentid DESC";
+
+            // Prepare and execute the statement
+            $stmt = $conn->prepare($query);
+            $stmt->execute($params);
+
+            // Fetch and return the results
+            $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            echo json_encode($rows);
+        } catch (PDOException $e) {
+            echo json_encode(array("error" => "Error fetching residents: " . $e->getMessage()));
         }
-    }
-
-    // Order by residentid descending
-    $query .= " ORDER BY residentid DESC";
-
-    // Prepare and execute the statement
-    $stmt = $conn->prepare($query);
-    $stmt->execute($params);
-
-    // Fetch and return the results
-    $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    echo json_encode($rows);
-} catch (PDOException $e) {
-    echo json_encode(array("error" => "Error fetching residents: " . $e->getMessage()));
-}
-
     } else {
         echo json_encode(array("error" => "Invalid action"));
     }

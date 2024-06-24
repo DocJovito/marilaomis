@@ -34,6 +34,7 @@
                                 <p>address: {{ unHash(address) }}</p>
                                 <p>barangay: {{ barangay }}</p>
                                 <p>birthday: {{ birthday }}</p>
+                                <p>Member: {{ isMember }}</p>
                             </div>
                         </div>
                     </div>
@@ -90,6 +91,7 @@ const middleName = ref('');
 const address = ref('');
 const barangay = ref('');
 const birthday = ref('');
+const isMember = ref('');
 
 const hResidentID = ref('');
 
@@ -111,6 +113,13 @@ onMounted(() => {
             address.value = residents.value.addressline1;
             barangay.value = residents.value.barangay;
             birthday.value = residents.value.bday;
+            if (residents.value.ismember == 1) {
+                isMember.value = 'Yes';
+            }
+            else {
+                isMember.value = 'No';
+            }
+
 
             hResidentID.value = myhash(residents.value.residentid);
         })

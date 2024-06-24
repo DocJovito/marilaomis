@@ -57,7 +57,7 @@
                     </div>
                     <div class="form-group">
                         <label for="birthday">Birthday:</label><br>
-                        <input type="date" id="birthday" class="form-control" v-model="birthday" required>
+                        <input type="date" id="birthday" class="form-control" v-model="birthday">
                     </div>
                     <button type="submit" class="btn btn-primary">Update</button>
                 </form>

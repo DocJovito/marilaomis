@@ -41,7 +41,7 @@
                     </div>
                     <div class="form-group">
                         <label for="barangay">Barangay:</label><br>
-                        <select id="barangay" class="form-control" v-model="barangay" required>
+                        <select id="barangay" class="form-control" v-model="barangay">
                             <option value="">Select Barangay</option>
                             <option value="Abangan Norte">Abangan Norte</option>
                             <option value="Abangan Sur">Abangan Sur</option>

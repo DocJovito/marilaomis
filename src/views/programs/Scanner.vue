@@ -68,12 +68,18 @@ watch(scannedOutput, async (newValue) => {
       await getResident();
       if (residents.value.length === 0) {
         messageResult.value = 'No Record Found.';
-      } else if (!selectedBarangays.value.includes(barangay.value)) {
-        messageResult.value = "Resident doesn't belong in the Program.";
-      } else if (pismember.value == 1 && ismember.value == 0) {
-        messageResult.value = "The program is for Members Only.";
       } else {
-        await insertScan();
+        // Convert selectedBarangays and barangay to uppercase
+        const upperSelectedBarangays = selectedBarangays.value.map(b => b.toUpperCase());
+        const upperBarangay = barangay.value.toUpperCase();
+
+        if (!upperSelectedBarangays.includes(upperBarangay)) {
+          messageResult.value = "Resident doesn't belong in the Program.";
+        } else if (pismember.value == 1 && ismember.value == 0) {
+          messageResult.value = "The program is for Members Only.";
+        } else {
+          await insertScan();
+        }
       }
     } catch (error) {
       console.error('Error:', error);

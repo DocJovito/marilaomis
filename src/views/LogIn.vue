@@ -22,7 +22,7 @@
               <div class="form-group text-center">
                 <button type="submit" class="btn btn-primary btn-block">Log In</button>
               </div>
-              <p>Version 0.02</p>
+              <p>Version 0.04</p>
             </form>
 
             <form v-if="otpSent" @submit.prevent="verifyOtp">
