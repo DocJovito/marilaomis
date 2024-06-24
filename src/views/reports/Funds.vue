@@ -33,6 +33,15 @@
                     </option>
                 </select>
             </div>
+            <div class="form-group">
+                <label for="programID" class="form-label">Budget For</label>
+                <select class="form-control" id="programID" v-model="programID" required>
+                    <option value="All">All</option>
+                    <option v-for="program in programs" :key="program.programid" :value="program.programid">
+                        {{ program.programname }}
+                    </option>
+                </select>
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
 
@@ -57,7 +66,7 @@
                     <tr v-for="( Data, index ) in  paginatedArrayData " :key="Data.residentid">
                         <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
                         <!-- <td>{{ Data.fundid }}</td> -->
-                        <td>{{ Data.budgetfor }}</td>
+                        <td>{{ Data.programname }}</td>
                         <td>{{ formatNumber(Data.amount) }}</td>
                         <td>{{ Data.userid }}</td>
                         <td>{{ Data.createdby }}</td>
@@ -108,6 +117,7 @@ const today = new Date().toISOString().split('T')[0];
 const dateStart = ref(startDate);
 const dateEnd = ref(today);
 const userID = ref('All');
+const programID = ref('All');
 
 const arrayData = ref([]);
 const arrayCount = ref(0);
@@ -135,7 +145,9 @@ function fetchData() {
         datestart: dateStart.value,
         dateend: dateEnd.value,
         userid: userID.value,
+        programid: programID.value,
     };
+    console.log(userID.value);
     axios.post('https://marilaomis.com/marilaomis/backend/fundapi.php', data)
         .then((response) => {
             arrayData.value = response.data;
@@ -155,9 +167,11 @@ function fetchData() {
 onMounted(() => {
     fetchData();
     fetchUsers();
+    fetchPrograms();
 });
 
 const users = ref([]);
+const programs = ref([]);
 
 const fetchUsers = async () => {
     try {
@@ -165,6 +179,15 @@ const fetchUsers = async () => {
         users.value = response.data;
     } catch (error) {
         console.error('Error fetching users:', error);
+    }
+};
+
+const fetchPrograms = async () => {
+    try {
+        const response = await axios.get('https://marilaomis.com/marilaomis/backend/programapi.php?action=get_programs');
+        programs.value = response.data;
+    } catch (error) {
+        console.error('Error fetching programs:', error);
     }
 };
 
