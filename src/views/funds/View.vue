@@ -11,7 +11,8 @@
                     <tr>
                         <th scope="col">#</th>
                         <th scope="col">fundid</th>
-                        <th scope="col">budgetfor</th>
+                        <th scope="col">programid</th>
+                        <th scope="col">programname</th>
                         <th scope="col">amount</th>
                         <th scope="col">userid</th>
                         <th scope="col">Actions</th>
@@ -21,7 +22,8 @@
                     <tr v-for="(fund, index) in paginatedFunds" :key="funds.fundid">
                         <th scope="row">{{ (currentPage - 1) * pageSize + index + 1 }}</th>
                         <td>{{ fund.fundid }}</td>
-                        <td>{{ fund.budgetfor }}</td>
+                        <td>{{ fund.programid }}</td>
+                        <td>{{ fund.programname }}</td>
                         <td>{{ fund.amount }}</td>
                         <td>{{ fund.userid }}</td>
                         <td>

@@ -3,10 +3,10 @@
     <h4>Edit Fund Allocation</h4>
     <form @submit.prevent="updateFund">
       <div class="mb-3">
-        <label for="budgetfor" class="form-label">Budget For</label>
-        <select class="form-control" id="budgetfor" v-model="fund.budgetfor" required>
+        <label for="programid" class="form-label">Budget For</label>
+        <select class="form-control" id="programid" v-model="fund.programid" required>
           <option value="">Select a Program</option>
-          <option v-for="program in programs" :key="program.programname" :value="program.programname">
+          <option v-for="program in programs" :key="program.programid" :value="program.programid">
             {{ program.programname }}
           </option>
         </select>
@@ -48,7 +48,7 @@ function getCurrentDate() {
 
 const fund = ref({
   fundid: '',
-  budgetfor: '',
+  programid: '',
   amount: '',
   userid: '',
   createdat: '',
@@ -105,7 +105,7 @@ const updateFund = () => {
     return;
   }
 
-  if (!fund.value.budgetfor) {
+  if (!fund.value.programid) {
     alert("Please select a program.");
     return;
   }

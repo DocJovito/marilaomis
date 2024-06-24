@@ -43,7 +43,7 @@
           <div class="form-group">
             <label for="isActive">Is Active:</label><br>
             <input type="checkbox" id="isActive" class="form-check-input" v-model="program.isactive" true-value="1"
-              false-value="0" required>
+              false-value="0">
           </div>
           <button type="submit" class="btn btn-primary">Update Program</button>
         </form>

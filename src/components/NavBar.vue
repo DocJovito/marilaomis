@@ -91,16 +91,17 @@
         </div>
       </div>
     </nav>
+    <div v-if="showWarning" class="warning-message">
+      You will be logged out due to inactivity in 1 minute.
+    </div>
   </div>
 </template>
 
 
 <script setup>
-import { computed, ref, onMounted } from 'vue';
+import { computed, ref, onMounted, onBeforeUnmount } from 'vue';
 import { useStore } from 'vuex';
 import { RouterLink } from 'vue-router';
-
-// Bootstrap 5 Collapse API
 import Collapse from 'bootstrap/js/dist/collapse';
 
 const store = useStore();
@@ -111,18 +112,82 @@ const userName = computed(() => store.state.user.name);
 const navbarNavDropdown = ref(null);
 let bsCollapse;
 
+const activityTimeout = ref(null);
+const warningTimeout = ref(null);
+
+// Adjusting the logout and warning time for testing
+// const logoutTime = 50 * 1000; // 50 sec in milliseconds
+// const warningTime = logoutTime - 20 * 1000; // 20 sec before logout
+
+// Actual timings for production
+const logoutTime = 1800 * 1000; // 30 min in milliseconds
+const warningTime = logoutTime - 60000; // 1 minute before logout
+const userToken = computed(() => store.state.user.token);
+const showWarning = ref(false);
+
+const startInactivityTimer = () => {
+  resetInactivityTimer();
+  window.addEventListener('mousemove', resetInactivityTimer);
+  window.addEventListener('keydown', resetInactivityTimer);
+  window.addEventListener('beforeunload', handleBrowserClose);
+  window.addEventListener('unload', handleBrowserClose);
+};
+
+const resetInactivityTimer = () => {
+  clearTimeout(activityTimeout.value);
+  clearTimeout(warningTimeout.value);
+  showWarning.value = false;
+  warningTimeout.value = setTimeout(showLogoutWarning, warningTime);
+  activityTimeout.value = setTimeout(logoutUser, logoutTime);
+};
+
+const showLogoutWarning = () => {
+  showWarning.value = true;
+};
+
+const handleBrowserClose = (event) => {
+  logoutUser();
+};
+
+const logoutUser = async () => {
+  try {
+    await fetch('path/to/your/logout/api', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ action: 'logout', token: userToken.value })
+    });
+    store.dispatch('logout'); // Assuming you have a logout action in your Vuex store
+    window.location.href = '/login?message=logout'; // Redirect to login page with a message
+  } catch (error) {
+    console.error('Error logging out:', error);
+  }
+};
+
 onMounted(() => {
   bsCollapse = new Collapse(navbarNavDropdown.value, {
     toggle: false
   });
+  startInactivityTimer();
 });
 
-function closeNavbar() {
+onBeforeUnmount(() => {
+  window.removeEventListener('mousemove', resetInactivityTimer);
+  window.removeEventListener('keydown', resetInactivityTimer);
+  window.removeEventListener('beforeunload', handleBrowserClose);
+  window.removeEventListener('unload', handleBrowserClose);
+  clearTimeout(activityTimeout.value);
+  clearTimeout(warningTimeout.value);
+});
+
+const closeNavbar = () => {
   if (bsCollapse) {
     bsCollapse.hide();
   }
-}
+};
 </script>
+
 
 
 <style scoped>
@@ -131,6 +196,18 @@ function closeNavbar() {
 }
 
 .active-link {
+  font-weight: bold;
+}
+
+.warning-message {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: yellow;
+  color: red;
+  text-align: center;
+  padding: 10px;
   font-weight: bold;
 }
 </style>

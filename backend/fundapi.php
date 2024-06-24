@@ -32,7 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Retrieve a single record by ID
     if ($_GET['action'] === 'get_by_id' && isset($_GET['fundid'])) {
         $fundid = $_GET['fundid'];
-        $stmt = $conn->prepare("SELECT * FROM tblfund WHERE fundid = ?");
+        // Modified to join with tblprogram to get programname
+        $stmt = $conn->prepare("
+            SELECT f.fundid, f.programid, p.programname, f.amount, f.userid 
+            FROM tblfund f
+            LEFT JOIN tblprogram p ON f.programid = p.programid
+            WHERE f.fundid = ?");
         $stmt->execute([$fundid]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         echo json_encode($row);
@@ -40,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // Retrieve programs
     if ($_GET['action'] === 'get_programs') {
-        $stmt = $conn->prepare("SELECT programname FROM tblprogram ORDER BY programname");
+        // Modified to include programid
+        $stmt = $conn->prepare("SELECT programid, programname FROM tblprogram ORDER BY programname");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($rows);
@@ -63,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Create a new record
     if ($data['action'] === 'create') {
         try {
-            $budgetfor = $data['budgetfor'];
+            $programid = $data['programid'];
             $amount = $data['amount'];
             $userid = $data['userid'];
             $createdby = $data['createdby'];
@@ -73,9 +79,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $isdeleted = $data['isdeleted'];
             $deletedby = $data['deletedby'];
 
-            $stmt = $conn->prepare("INSERT INTO tblfund (budgetfor, amount, userid, createdby, createdat, editedby, editedat, isdeleted, deletedby) 
+            $stmt = $conn->prepare("INSERT INTO tblfund (programid, amount, userid, createdby, createdat, editedby, editedat, isdeleted, deletedby) 
                                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)");
-            $stmt->execute([$budgetfor, $amount, $userid, $createdby, $createdat, $editedby, $editedat, $isdeleted, $deletedby]);
+            $stmt->execute([$programid, $amount, $userid, $createdby, $createdat, $editedby, $editedat, $isdeleted, $deletedby]);
 
             echo json_encode(array("message" => "Record created successfully"));
         } catch (PDOException $e) {
@@ -84,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } elseif ($data['action'] === 'update') {
         try {
             $fundid = $data['fundid'];
-            $budgetfor = $data['budgetfor'];
+            $programid = $data['programid'];
             $amount = $data['amount'];
             $userid = $data['userid'];
             $createdby = $data['createdby'];
@@ -94,8 +100,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $isdeleted = $data['isdeleted'];
             $deletedby = $data['deletedby'];
 
-            $stmt = $conn->prepare("UPDATE tblfund SET budgetfor=?, amount=?, userid=?, createdby=?, createdat=?, editedby=?, editedat=?, isdeleted=?, deletedby=? WHERE fundid=?");
-            $stmt->execute([$budgetfor, $amount, $userid, $createdby, $createdat, $editedby, $editedat, $isdeleted, $deletedby, $fundid]);
+            $stmt = $conn->prepare("UPDATE tblfund SET programid=?, amount=?, userid=?, createdby=?, createdat=?, editedby=?, editedat=?, isdeleted=?, deletedby=? WHERE fundid=?");
+            $stmt->execute([$programid, $amount, $userid, $createdby, $createdat, $editedby, $editedat, $isdeleted, $deletedby, $fundid]);
 
             echo json_encode(array("message" => "Record updated successfully"));
         } catch (PDOException $e) {
@@ -116,11 +122,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($data['action'] === 'fetch_funds') {
         try {
-            $stmt = $conn->prepare("SELECT f.fundid,f.budgetfor,f.amount, u.name AS userid 
-            FROM tblfund f
-            LEFT JOIN 
-            tbluser u ON f.userid = u.userid
-            WHERE f.isdeleted = 0 ORDER BY f.fundid desc");
+            // Modified to join with tblprogram and tbluser
+            $stmt = $conn->prepare("SELECT f.fundid, f.programid, p.programname, f.amount, u.name AS userid 
+                                    FROM tblfund f
+                                    LEFT JOIN tbluser u ON f.userid = u.userid
+                                    LEFT JOIN tblprogram p ON f.programid = p.programid
+                                    WHERE f.isdeleted = 0 
+                                    ORDER BY f.fundid DESC");
             $stmt->execute();
             $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
             echo json_encode($rows);
@@ -136,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Initialize base SQL query
             $sql = "SELECT 
             f.fundid,
-            f.budgetfor,
+            f.programid,
             f.amount,
             u1.name AS userid,
             u2.name AS createdby,

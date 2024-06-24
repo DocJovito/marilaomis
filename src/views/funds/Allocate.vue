@@ -3,10 +3,10 @@
     <h4>Allocate Fund</h4>
     <form @submit.prevent="allocateFund">
       <div class="mb-3">
-        <label for="budgetfor" class="form-label">Budget For</label>
-        <select class="form-control" id="budgetfor" v-model="newFunding.budgetfor" required>
+        <label for="programid" class="form-label">Budget For</label>
+        <select class="form-control" id="programid" v-model="newFunding.programid" required>
           <option value="">Select a Program</option>
-          <option v-for="program in programs" :key="program.programname" :value="program.programname">
+          <option v-for="program in programs" :key="program.programid" :value="program.programid">
             {{ program.programname }}
           </option>
         </select>
@@ -25,7 +25,7 @@
         </select>
       </div>
       <button type="submit" class="btn btn-primary">Allocate</button>
-      <RouterLink to="/funds/view" class="btn btn-secondary ml-2">Cancel</RouterLink>
+      <router-link to="/funds/view" class="btn btn-secondary ml-2">Cancel</router-link>
     </form>
   </div>
 </template>
@@ -46,7 +46,7 @@ function getCurrentDate() {
 }
 
 const newFunding = ref({
-  budgetfor: '',
+  programid: '',
   amount: '',
   userid: '',
   createdby: '',
@@ -85,12 +85,12 @@ onMounted(() => {
 
 const allocateFund = () => {
   // Validation
-  if (!newFunding.value.budgetfor) {
+  if (!newFunding.value.programid) {
     alert("Please select a program.");
     return;
   }
 
-  if (!newFunding.value.amount || isNaN(newFunding.value.amount)) {
+  if (!newFunding.value.amount || isNaN(newFunding.value.amount) || newFunding.value.amount <= 0) {
     alert("Please enter a valid amount.");
     return;
   }

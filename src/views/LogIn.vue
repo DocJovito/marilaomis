@@ -5,9 +5,11 @@
         <div class="card">
           <div class="card-header">
             <h1 class="text-center">Log In</h1>
-
           </div>
           <div class="card-body">
+            <div v-if="logoutMessage" class="alert alert-warning">
+              You have been logged out due to inactivity.
+            </div>
             <form v-if="!otpSent" @submit.prevent="login">
               <div class="form-group">
                 <label for="email">Email Address</label>
@@ -43,17 +45,28 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { useRouter } from 'vue-router';
+import { useRouter, useRoute } from 'vue-router';
 import { useStore } from 'vuex';
 
 const email = ref('');
 const password = ref('');
 const otp = ref('');
 const otpSent = ref(false);
+const logoutMessage = ref(false);
+
 const router = useRouter();
+const route = useRoute();
 const store = useStore();
+
+onMounted(() => {
+  if (route.query.message === 'logout') {
+    logoutUser();
+    logoutMessage.value = true;
+    router.push({ name: 'logout' }); // Redirect to the logout route
+  }
+});
 
 const login = () => {
   const data = {
@@ -64,14 +77,12 @@ const login = () => {
 
   axios.post('https://marilaomis.com/marilaomis/backend/loginapi.php', data)
     .then(response => {
-      // console.log('Raw response:', response);
       try {
         const cleanedResponse = response.data.trim().replace(/^\/\/\s*/, ''); // Clean response
         const responseData = JSON.parse(cleanedResponse); // Parse cleaned response
 
         if (responseData.success === true) {
           otpSent.value = true;
-          // alert(`OTP sent to your email. Please check your email and enter the OTP: ${responseData.otp}`); // remove this OTP after success in Email
           alert(`OTP sent to your email. Please check your email and enter the OTP.`);
         } else {
           alert(responseData.error || 'Invalid email or password');
@@ -87,15 +98,13 @@ const login = () => {
     });
 };
 
-
-
 const verifyOtp = () => {
   const data = {
     action: 'verify_otp',
     email: email.value,
     otp: otp.value
   };
-  // J14 3PM
+
   axios.post('https://marilaomis.com/marilaomis/backend/loginapi.php', data)
     .then(response => {
       try {
@@ -137,10 +146,18 @@ const verifyOtp = () => {
     });
 };
 
-
-
 const forgotPassword = () => {
   router.push('/forgotpassword');
+};
+
+const logoutUser = () => {
+  // Clear relevant items from local storage
+  localStorage.removeItem('token');
+  localStorage.removeItem('userid');
+  localStorage.removeItem('email');
+  localStorage.removeItem('usertype');
+  localStorage.removeItem('name');
+  localStorage.removeItem('address');
 };
 
 function myHash(text) {
