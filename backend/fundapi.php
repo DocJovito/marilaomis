@@ -32,7 +32,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     // Retrieve a single record by ID
     if ($_GET['action'] === 'get_by_id' && isset($_GET['fundid'])) {
         $fundid = $_GET['fundid'];
-        $stmt = $conn->prepare("SELECT * FROM tblfund WHERE fundid = ?");
+        // Modified to join with tblprogram to get programname
+        $stmt = $conn->prepare("
+            SELECT f.fundid, f.programid, p.programname, f.amount, f.userid 
+            FROM tblfund f
+            LEFT JOIN tblprogram p ON f.programid = p.programid
+            WHERE f.fundid = ?");
         $stmt->execute([$fundid]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
         echo json_encode($row);
@@ -40,7 +45,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     // Retrieve programs
     if ($_GET['action'] === 'get_programs') {
-        $stmt = $conn->prepare("SELECT programname FROM tblprogram ORDER BY programname");
+        // Modified to include programid
+        $stmt = $conn->prepare("SELECT programid, programname FROM tblprogram ORDER BY programname");
         $stmt->execute();
         $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
         echo json_encode($rows);
@@ -116,6 +122,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     } elseif ($data['action'] === 'fetch_funds') {
         try {
+            // Modified to join with tblprogram and tbluser
             $stmt = $conn->prepare("SELECT f.fundid, f.programid, p.programname, f.amount, u.name AS userid 
                                     FROM tblfund f
                                     LEFT JOIN tbluser u ON f.userid = u.userid
