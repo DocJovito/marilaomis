@@ -70,7 +70,7 @@
 
     <br>
     <div style="text-align: center;">
-        <button type="button" class="btn btn-primary" @click="printID">Print</button>
+        <button type="button" class="btn btn-primary" @click="printID" v-if="showPrint">Print</button>
     </div>
 </template>
 
@@ -79,6 +79,15 @@ import { ref, onMounted } from 'vue';
 import axios from 'axios';
 import { useRoute } from 'vue-router';
 import QrcodeVue from 'qrcode.vue';
+
+import { defineEmits } from 'vue'
+
+const showPrint = ref(true);
+const togglePrintButton = () => {
+    showPrint.value = !showPrint.value
+}
+
+const emit = defineEmits(['toggle-nav'])
 
 const residents = ref([]);
 
@@ -94,6 +103,8 @@ const birthday = ref('');
 const isMember = ref('');
 
 const hResidentID = ref('');
+
+
 
 //use route to get target id from params
 const route = useRoute();
@@ -129,18 +140,22 @@ onMounted(() => {
 });
 
 function printID() {
-    window.print();
+    emit('toggle-nav');
+    togglePrintButton();
+
+
+    setTimeout(() => {
+        window.print();
+    }, 500);
+
+
+
+    setTimeout(() => {
+        emit('toggle-nav');
+        togglePrintButton();
+    }, 500);
+
 }
-
-// function printID() {
-//     const printableContainer = document.getElementById('printable-container');
-//     const originalContents = document.body.innerHTML;
-//     const printContents = printableContainer.innerHTML;
-
-//     document.body.innerHTML = printContents;
-//     window.print();
-//     document.body.innerHTML = originalContents;
-// }
 
 function myhash(text) {
     let base64Encoded = btoa(text).slice(0, 14);
