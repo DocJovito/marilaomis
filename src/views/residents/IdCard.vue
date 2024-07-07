@@ -72,9 +72,6 @@
     <div style="text-align: center;">
         <button type="button" class="btn btn-primary" @click="printID" v-if="showPrint">Print</button>
     </div>
-    <div style="text-align: center;">
-        <button type="button" class="btn btn-primary" @click="toggleNav">toggleNav</button>
-    </div>
 </template>
 
 <script setup>
@@ -143,18 +140,20 @@ onMounted(() => {
 });
 
 function printID() {
-    window.print();
+    emit('toggle-nav');
+    togglePrintButton();
+
+
+    setTimeout(() => {
+        window.print();
+    }, 500);
+
+    setTimeout(() => {
+        emit('toggle-nav');
+        togglePrintButton();
+    }, 500);
 }
 
-// function printID() {
-//     const printableContainer = document.getElementById('printable-container');
-//     const originalContents = document.body.innerHTML;
-//     const printContents = printableContainer.innerHTML;
-
-//     document.body.innerHTML = printContents;
-//     window.print();
-//     document.body.innerHTML = originalContents;
-// }
 
 function myhash(text) {
     let base64Encoded = btoa(text).slice(0, 14);
