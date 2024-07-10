@@ -148,14 +148,12 @@ function printID() {
         window.print();
     }, 500);
 
-
-
     setTimeout(() => {
         emit('toggle-nav');
         togglePrintButton();
     }, 500);
-
 }
+
 
 function myhash(text) {
     let base64Encoded = btoa(text).slice(0, 14);
