@@ -55,6 +55,11 @@
                             <RouterLink to="/residents/view" class="btn btn-danger"
                                 @:click="deleterec(resident.residentid)">Delete
                             </RouterLink>
+                            <button @click="showModal">Open Modal</button>
+                            <MyModal v-if="isModalVisible" :isVisible="isModalVisible" title="My Custom Title"
+                                @close="hideModal">
+                                <p>This is the content of the modal.</p>
+                            </MyModal>
                         </td>
                     </tr>
                 </tbody>
@@ -94,6 +99,17 @@ import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { useStore } from 'vuex';
+
+import MyModal from '@components/MyModal.vue';
+
+const isModalVisible = ref(false);
+
+function showModal() {
+    this.isModalVisible = true;
+}
+function hideModal() {
+    this.isModalVisible = false;
+}
 
 
 const searchKey = ref('');
