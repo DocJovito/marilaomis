@@ -55,6 +55,11 @@
                             <RouterLink to="/residents/view" class="btn btn-danger"
                                 @:click="deleterec(resident.residentid)">Delete
                             </RouterLink>
+                            <button @click="showModal(resident.residentid)">Open Modal</button>
+
+
+
+
                         </td>
                     </tr>
                 </tbody>
@@ -86,6 +91,15 @@
             <button class="btn btn-danger" @click="readexcel">Import From Excel</button>
         </div>
     </div>
+
+    <!-- <button @click="showModal">Open Modal</button> -->
+    <div>
+        <MyModal v-if="isModalVisible" :isVisible="isModalVisible" :title="modalResidentID" @close="hideModal">
+            <!-- <p>This is the content of the modal.</p> -->
+            <ModalCard :residentIDParam="modalResidentID" />
+        </MyModal>
+    </div>
+
 </template>
 
 <script setup>
@@ -94,6 +108,22 @@ import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { useStore } from 'vuex';
+
+import MyModal from '@/components/MyModal.vue';
+import ModalCard from '@/components/ModalCard.vue';
+const isModalVisible = ref(false);
+const modalResidentID = ref();
+
+const showModal = (modalResID) => {
+    modalResidentID.value = modalResID;
+    // console.log(modalResID)
+    isModalVisible.value = true;
+};
+
+const hideModal = () => {
+    isModalVisible.value = false;
+};
+
 
 
 const searchKey = ref('');
@@ -279,6 +309,29 @@ function unHash(hashed) {
 
 </script>
 
-<style>
-/* Add your custom styles here */
+<style scoped>
+@media print {
+    body * {
+        visibility: hidden;
+        height: 0;
+    }
+
+    .print-modal,
+    .print-modal * {
+        visibility: visible;
+        height: auto;
+    }
+
+    .print-modal {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: auto;
+    }
+
+    .print-hide {
+        display: none;
+    }
+}
 </style>
