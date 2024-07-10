@@ -55,11 +55,6 @@
                             <RouterLink to="/residents/view" class="btn btn-danger"
                                 @:click="deleterec(resident.residentid)">Delete
                             </RouterLink>
-                            <button @click="showModal(resident.residentid)">Open Modal</button>
-
-
-
-
                         </td>
                     </tr>
                 </tbody>
@@ -108,22 +103,6 @@ import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { useStore } from 'vuex';
-
-import MyModal from '@/components/MyModal.vue';
-import ModalCard from '@/components/ModalCard.vue';
-const isModalVisible = ref(false);
-const modalResidentID = ref();
-
-const showModal = (modalResID) => {
-    modalResidentID.value = modalResID;
-    // console.log(modalResID)
-    isModalVisible.value = true;
-};
-
-const hideModal = () => {
-    isModalVisible.value = false;
-};
-
 
 
 const searchKey = ref('');
