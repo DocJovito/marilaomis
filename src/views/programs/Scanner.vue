@@ -11,7 +11,7 @@
     <br>
     <!-- <label>Scanned output</label> -->
     <!-- <p style="font-weight: bolder; font-size: 48px;">{{ scannedOutput }}</p> -->
-    <p style="font-weight: bolder; font-size: 48px;">{{ messageResult }}</p>
+    <p style="font-weight: bolder; font-size: 32px;">{{ messageResult }}</p>
     <div id="vidsize"></div>
   </div>
 </template>

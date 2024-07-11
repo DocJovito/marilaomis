@@ -7,9 +7,9 @@
             <div class="modal-body">
                 <slot></slot>
             </div>
-            <div class="modal-footer">
-                <button class="print-hide" @click="closeModal">Close</button>
-                <button class="print-hide" @click="printID">Print</button>
+            <div class="modal-footer mt-2">
+                <button class="print-hide btn btn-success" @click="printID">Print</button>
+                <button class="print-hide btn btn-danger" @click="closeModal">Close</button>
             </div>
         </div>
     </div>
@@ -57,7 +57,7 @@ function printID() {
     background: white;
     padding: 20px;
     border-radius: 8px;
-    width: 500px;
+    width: 380px;
     max-width: 100%;
 }
 
@@ -68,12 +68,16 @@ function printID() {
 }
 
 .modal-body {
+    display: flex;
+    justify-content: center;
     margin: 0px 0;
 }
 
 .modal-footer {
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
+    gap: 10px;
+    /* Optional: Adds space between buttons */
 }
 
 /* Print-specific styles */
