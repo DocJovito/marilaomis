@@ -1,5 +1,5 @@
 <template>
-    <div id="printable-container" class="container mt-4">
+    <div id="printable-container" class="container ">
         <div class="row">
             <div class="card"
                 style="width:350px; height:220px; background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20210824/pngtree-yellow-green-background-stock-images-wallpaper-image_769660.jpg');">
@@ -25,36 +25,27 @@
                         <div class="col-7">
                             <div id="data">
                                 <p>Resident Number: {{ residentID }}</p>
-                                <p>precintID: {{ precintID }}</p>
-                                <p>lastName: {{ unHash(lastName) }}</p>
-                                <p>firstName: {{ unHash(firstName) }}</p>
-                                <p>middleName: {{ unHash(middleName) }}</p>
-                                <p>address: {{ unHash(address) }}</p>
-                                <p>barangay: {{ barangay }}</p>
-                                <p>birthday: {{ birthday }}</p>
-                                <p>Member: {{ isMember }}</p>
+                                <p>Precint ID: {{ precintID }}</p>
+                                <p>Last Name: {{ unHash(lastName) }}</p>
+                                <p>First Name: {{ unHash(firstName) }}</p>
+                                <p>Middle Name: {{ unHash(middleName) }}</p>
+                                <p>Address: {{ unHash(address) }}</p>
+                                <p>Barangay: {{ barangay }}</p>
+                                <p>Birthday: {{ birthday }}</p>
+                                <!-- <p>Member: {{ isMember }}</p> -->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="card" style="width:350px; height:220px;">
-                <div class="card-body">
-                    <h5 style="text-align: center;">ID Back</h5>
-                    <ul>
-                        <li>Lorem ipsum dolor sit amet consectetur</li>
-                        <li>Lorem ipsum dolor sit amet consectetur</li>
-                        <li>Lorem ipsum dolor sit amet consectetur</li>
-                        <li>Lorem ipsum dolor sit amet consectetur</li>
-                        <li>Lorem ipsum dolor sit amet consectetur</li>
-                        <li>Lorem ipsum dolor sit amet consectetur</li>
-                        <li>Lorem ipsum dolor sit amet consectetur</li>
-                        <li>Lorem ipsum dolor sit amet consectetur</li>
-                    </ul>
-                    <p style="text-align: center;" class="mt-4">Signature</p>
+            <div class="card"
+                style="width:350px; height:220px; display: flex; align-items: center; justify-content: center;">
+                <div class="card-body" style="display: flex; align-items: center; justify-content: center;">
+                    <img src="@/assets/images/greenmarilao.png" alt="MIS" style="width:90%; height:90%;">
                 </div>
             </div>
+
         </div>
     </div>
 

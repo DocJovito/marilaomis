@@ -68,7 +68,7 @@ function printID() {
 }
 
 .modal-body {
-    margin: 20px 0;
+    margin: 0px 0;
 }
 
 .modal-footer {

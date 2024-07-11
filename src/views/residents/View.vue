@@ -49,12 +49,18 @@
                             <RouterLink :to="'/residents/' + resident.residentid + '/edit'" class="btn btn-success">
                                 Edit
                             </RouterLink>
-                            <RouterLink :to="'/residents/' + resident.residentid + '/idcard'" class="btn btn-primary">
+                            <button class="btn btn-primary" @click="showModal(resident.residentid)">Print</button>
+                            <!-- <RouterLink :to="'/residents/' + resident.residentid + '/idcard'" class="btn btn-primary">
                                 Print
-                            </RouterLink>
+                            </RouterLink> -->
                             <RouterLink to="/residents/view" class="btn btn-danger"
                                 @:click="deleterec(resident.residentid)">Delete
                             </RouterLink>
+
+
+
+
+
                         </td>
                     </tr>
                 </tbody>
@@ -103,6 +109,22 @@ import axios from 'axios';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import { useStore } from 'vuex';
+
+import MyModal from '@/components/MyModal.vue';
+import ModalCard from '@/components/ModalCard.vue';
+const isModalVisible = ref(false);
+const modalResidentID = ref();
+
+const showModal = (modalResID) => {
+    modalResidentID.value = modalResID;
+    // console.log(modalResID)
+    isModalVisible.value = true;
+};
+
+const hideModal = () => {
+    isModalVisible.value = false;
+};
+
 
 
 const searchKey = ref('');
