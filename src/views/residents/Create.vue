@@ -92,8 +92,6 @@ const address = ref('');
 const barangay = ref('');
 const birthday = ref('');
 
-
-
 function saveRecord() {
 
     const newRecord = {
