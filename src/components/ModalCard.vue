@@ -4,7 +4,7 @@
             <div class="card" style="width:325px; height:206px;">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-12">
+                        <div class="col-12 text-center">
                             <h5 style="display: inline-block; vertical-align: top;">Marilao Resident ID</h5>
                         </div>
                     </div>
@@ -27,7 +27,7 @@
                                 <p>Middle Name: {{ unHash(middleName) }}</p>
                                 <p>Address: {{ unHash(address) }}</p>
                                 <p>Barangay: {{ barangay }}</p>
-                                <p>Birthday: {{ birthday }}</p>
+                                <!-- <p>Birthday: {{ birthday }}</p> -->
                                 <!-- <p>Member: {{ isMember }}</p> -->
                             </div>
                         </div>
@@ -124,7 +124,7 @@ function unHash(hashed) {
 
 <style scoped>
 p {
-    font-size: 11px;
+    font-size: 10px;
     margin: 0;
 }
 

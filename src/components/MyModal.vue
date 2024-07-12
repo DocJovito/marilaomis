@@ -55,7 +55,7 @@ function printID() {
 .modalbg {
     background: white;
     border-radius: 0;
-    width: 334px;
+    width: 326px;
 }
 
 .modal-header {
