@@ -1,6 +1,6 @@
 <template>
   <div>
-    <nav class="navbar navbar-expand-lg bg-greenish">
+    <nav class="navbar navbar-expand-lg bg-greenish print-hide">
       <div class="container-fluid">
         <a class="navbar-brand" href="#">
           <img src="/src/assets/images/greenmarilao.png" width="30" height="30" class="d-inline-block align-top" alt="">
@@ -209,5 +209,11 @@ const closeNavbar = () => {
   text-align: center;
   padding: 10px;
   font-weight: bold;
+}
+
+@media print {
+  .print-hide {
+    display: none;
+  }
 }
 </style>

@@ -1,15 +1,14 @@
 <template>
     <div v-if="isVisible" class="modal-overlay" @click="closeModal">
-        <div class="modal1 print-modal" @click.stop>
-            <div class="modal-header">
-                <!-- <h3>{{ title }}</h3> -->
+        <div class="modalbg " @click.stop>
+            <div class="modal-header print-hide">
             </div>
-            <div class="modal-body">
+            <div class="modal-body print-modal ">
                 <slot></slot>
             </div>
-            <div class="modal-footer mt-2">
-                <button class="print-hide btn btn-success" @click="printID">Print</button>
-                <button class="print-hide btn btn-danger" @click="closeModal">Close</button>
+            <div class="modal-footer mt-2 print-hide">
+                <button class="btn btn-success" @click="printID">Print</button>
+                <button class="btn btn-danger" @click="closeModal">Close</button>
             </div>
         </div>
     </div>
@@ -53,52 +52,45 @@ function printID() {
     justify-content: center;
 }
 
-.modal1 {
+.modalbg {
     background: white;
-    padding: 20px;
-    border-radius: 8px;
-    width: 380px;
-    max-width: 100%;
+    border-radius: 0;
+    width: 334px;
 }
 
 .modal-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
 }
 
 .modal-body {
     display: flex;
-    justify-content: center;
-    margin: 0px 0;
+    margin: 0;
 }
 
 .modal-footer {
     display: flex;
     justify-content: center;
     gap: 10px;
-    /* Optional: Adds space between buttons */
 }
 
-/* Print-specific styles */
 @media print {
     body * {
         visibility: hidden;
-        height: 0;
     }
 
-    .print-modal,
-    .print-modal * {
+    .modal-overlay,
+    .modalbg {
         visibility: visible;
-        height: auto;
+        position: static !important;
+        /* Ensure it's not fixed for printing */
+        width: auto !important;
+        /* Allow natural width */
     }
 
-    .print-modal {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: auto;
+    .modal-body {
+        display: block;
+        /* Ensure body content flows */
     }
 
     .print-hide {

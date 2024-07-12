@@ -1,5 +1,5 @@
 <template>
-    <div class="container mt-4">
+    <div class="print-hide container mt-4">
         <p>Resident Management</p>
         <div class="form-group" v-if="userType == 'Admin' || userType == 'Municipal Staff'">
             <RouterLink to="/residents/create" class="btn btn-success ">Add Resident</RouterLink>
@@ -101,6 +101,7 @@
         </MyModal>
     </div>
 
+    <!-- <button @click="printID">aaaaaaa</button> -->
 </template>
 
 <script setup>
@@ -308,29 +309,13 @@ function unHash(hashed) {
     }
 }
 
+function printID() {
+    window.print();
+}
 </script>
 
 <style scoped>
 @media print {
-    body * {
-        visibility: hidden;
-        height: 0;
-    }
-
-    .print-modal,
-    .print-modal * {
-        visibility: visible;
-        height: auto;
-    }
-
-    .print-modal {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: auto;
-    }
-
     .print-hide {
         display: none;
     }

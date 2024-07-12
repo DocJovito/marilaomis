@@ -1,14 +1,10 @@
 <template>
-    <div id="printable-container" class="container ">
+    <div class="container">
         <div class="row">
-            <div class="card"
-                style="width:332px; height:209px; background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20210824/pngtree-yellow-green-background-stock-images-wallpaper-image_769660.jpg');">
+            <div class="card" style="width:325px; height:206px;">
                 <div class="card-body">
                     <div class="row">
-                        <div class="col-3">
-                            <img src="@/assets/images/greenmarilao.png" alt="MIS" style="width:100%; height:100%;">
-                        </div>
-                        <div class="col-8">
+                        <div class="col-12">
                             <h5 style="display: inline-block; vertical-align: top;">Marilao Resident ID</h5>
                         </div>
                     </div>
@@ -40,19 +36,14 @@
             </div>
 
             <div class="card"
-                style="width:332px; height:209px; display: flex; align-items: center; justify-content: center;">
+                style="width:325px; height:206px; background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20210824/pngtree-yellow-green-background-stock-images-wallpaper-image_769660.jpg');">
                 <div class="card-body" style="display: flex; align-items: center; justify-content: center;">
                     <img src="@/assets/images/greenmarilao.png" alt="MIS" style="width:90%; height:90%;">
                 </div>
             </div>
-
         </div>
     </div>
 
-    <br>
-    <!-- <div style="text-align: center;">
-        <button type="button" class="btn btn-primary" @click="printID" v-if="showPrint">Print</button>
-    </div> -->
 </template>
 
 <script setup>
@@ -69,12 +60,9 @@ const props = defineProps({
     },
 });
 
-const showPrint = ref(true);
-const togglePrintButton = () => {
-    showPrint.value = !showPrint.value
-}
 
-const emit = defineEmits(['toggle-nav'])
+
+const emit = defineEmits(['toggle-nav']);
 
 const residents = ref([]);
 
@@ -115,9 +103,6 @@ onMounted(() => {
         });
 });
 
-function printID() {
-    window.print();
-}
 
 function myhash(text) {
     let base64Encoded = btoa(text).slice(0, 14);
@@ -150,5 +135,25 @@ li {
 
 h5 {
     font-size: 18px;
+}
+
+
+@media print {
+    body * {
+        visibility: hidden;
+    }
+
+    .print-modal {
+        visibility: visible;
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+
+
+    .print-hide {
+        display: none;
+    }
+
 }
 </style>
