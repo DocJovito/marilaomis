@@ -43,22 +43,22 @@
                         <label for="barangay">Barangay:</label><br>
                         <select id="barangay" class="form-control" v-model="barangay">
                             <option value="">Select Barangay</option>
-                            <option value="Abangan Norte">Abangan Norte</option>
-                            <option value="Abangan Sur">Abangan Sur</option>
-                            <option value="Ibayo">Ibayo</option>
-                            <option value="Lambakin">Lambakin</option>
-                            <option value="Lias">Lias</option>
-                            <option value="Loma de Gato">Loma de Gato</option>
-                            <option value="Nagbalon">Nagbalon</option>
-                            <option value="Patubig">Patubig</option>
-                            <option value="Poblacion 1st">Poblacion 1st</option>
-                            <option value="Poblacion 2nd">Poblacion 2nd</option>
-                            <option value="Prenza 1st">Prenza 1st</option>
-                            <option value="Prenza 2nd">Prenza 2nd</option>
-                            <option value="Santa Rosa 1st">Santa Rosa 1st</option>
-                            <option value="Santa Rosa 2nd">Santa Rosa 2nd</option>
-                            <option value="Saog">Saog</option>
-                            <option value="Tabing-ilog">Tabing-ilog</option>
+                            <option value="ABANGAN NORTE">ABANGAN NORTE</option>
+                            <option value="ABANGAN SUR">ABANGAN SUR</option>
+                            <option value="IBAYO">IBAYO</option>
+                            <option value="LAMBAKIN">LAMBAKIN</option>
+                            <option value="LIAS">LIAS</option>
+                            <option value="LOMA DE GATO">LOMA DE GATO</option>
+                            <option value="NAGBALON">NAGBALON</option>
+                            <option value="PATUBIG">PATUBIG</option>
+                            <option value="POBLACION 1ST">POBLACION 1ST</option>
+                            <option value="POBLACION 2ND">POBLACION 2ND</option>
+                            <option value="PRENZA 1ST">PRENZA 1ST</option>
+                            <option value="PRENZA 2ND">PRENZA 2ND</option>
+                            <option value="SANTA ROSA 1ST">SANTA ROSA 1ST</option>
+                            <option value="SANTA ROSA 2ND">SANTA ROSA 2ND</option>
+                            <option value="SAOG">SAOG</option>
+                            <option value="TABING-ILOG">TABING-ILOG</option>
                         </select>
                     </div>
                     <div class="form-group">

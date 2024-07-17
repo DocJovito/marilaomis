@@ -115,22 +115,22 @@ function updateProgram() {
 
 // List of barangays
 const barangays = [
-  "Abangan Norte",
-  "Abangan Sur",
-  "Ibayo",
-  "Lambakin",
-  "Lias",
-  "Loma de Gato",
-  "Nagbalon",
-  "Patubig",
-  "Poblacion 1st",
-  "Poblacion 2nd",
-  "Prenza 1st",
-  "Prenza 2nd",
-  "Santa Rosa 1st",
-  "Santa Rosa 2nd",
-  "Saog",
-  "Tabing-ilog"
+  "ABANGAN NORTE",
+  "ABANGAN SUR",
+  "IBAYO",
+  "LAMBAKIN",
+  "LIAS",
+  "LOMA DE GATO",
+  "NAGBALON",
+  "PATUBIG",
+  "POBLACION 1ST",
+  "POBLACION 2ND",
+  "PRENZA 1ST",
+  "PRENZA 2ND",
+  "SANTA ROSA 1ST",
+  "SANTA ROSA 2ND",
+  "SAOG",
+  "TABING-ILOG"
 ];
 </script>
 

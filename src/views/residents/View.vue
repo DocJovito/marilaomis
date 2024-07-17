@@ -4,17 +4,48 @@
         <div class="form-group" v-if="userType == 'Admin' || userType == 'Municipal Staff'">
             <RouterLink to="/residents/create" class="btn btn-success ">Add Resident</RouterLink>
         </div>
-        <div class="form-group">
-            <div class="row">
-                <div class="col-9">
-                    <input type="text" id="search" class="form-control" v-model="searchKey"
-                        placeholder="Search by Complete Surname Only">
-                </div>
-                <div class="col-3">
-                    <button class="btn btn-primary" @click="fetchResident">Search</button>
+
+        <form @submit.prevent="fetchResident" class="mt-2">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="form-group">
+                            <input type="text" id="search" class="form-control" v-model="searchKey"
+                                placeholder="Search by Complete Surname Only">
+                        </div>
+
+
+                    </div>
+                    <div class="col-2">
+                        <div class="form-group">
+                            <select id="barangay" class="form-control" v-model="searchBarangay" v-if="address = 'ALL'">
+                                <option value="ALL">ALL</option>
+                                <option value="ABANGAN NORTE">ABANGAN NORTE</option>
+                                <option value="ABANGAN SUR">ABANGAN SUR</option>
+                                <option value="IBAYO">IBAYO</option>
+                                <option value="LAMBAKIN">LAMBAKIN</option>
+                                <option value="LIAS">LIAS</option>
+                                <option value="LOMA DE GATO">LOMA DE GATO</option>
+                                <option value="NAGBALON">NAGBALON</option>
+                                <option value="PATUBIG">PATUBIG</option>
+                                <option value="POBLACION 1ST">POBLACION 1ST</option>
+                                <option value="POBLACION 2ND">POBLACION 2ND</option>
+                                <option value="PRENZA 1ST">PRENZA 1ST</option>
+                                <option value="PRENZA 2ND">PRENZA 2ND</option>
+                                <option value="SANTA ROSA 1ST">SANTA ROSA 1ST</option>
+                                <option value="SANTA ROSA 2ND">SANTA ROSA 2ND</option>
+                                <option value="SAOG">SAOG</option>
+                                <option value="TABING-ILOG">TABING-ILOG</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-primary ">Search</button>
+                    </div>
                 </div>
             </div>
-        </div>
+
+        </form>
 
         <div class="table-responsive">
             <table class="table table-hover ">
@@ -127,8 +158,9 @@ const hideModal = () => {
 };
 
 
-
+// search
 const searchKey = ref('');
+const searchBarangay = ref('ALL');
 
 const residents = ref([]);
 const pageSize = 10;
@@ -150,7 +182,9 @@ const fetchResident = () => {
     const data = {
         action: 'search_resident',
         lastname: searchKey.value,
+        searchBarangay: searchBarangay.value,
         barangay: address.value,
+
     };
     axios.post('https://marilaomis.com/marilaomis/backend/personapi.php', data)
         .then((response) => {
